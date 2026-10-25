@@ -1,0 +1,24 @@
+{
+  "gradle": {
+    "compile": "classes",
+    "build": "build",
+    "gameTest": "runGameTestServer"
+  },
+  "agents": {
+    "implementation": {
+      "command": "codex",
+      "model": null
+    },
+    "review": {
+      "command": "claude",
+      "model": null
+    }
+  },
+  "runtime": {
+    "command": "mct",
+    "server": null,
+    "clients": [],
+    "deploy": [],
+    "logs": []
+  }
+}
