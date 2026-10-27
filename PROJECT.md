@@ -1,6 +1,6 @@
 # Project
 
-Status: draft
+Status: active
 
 Project ID: tfc-overdims
 Mod ID: tfcoverdims
@@ -183,31 +183,47 @@ Preconditions: Vanilla Basaltと `tfc:rock/raw/basalt` を同一試験ワール�
 Action: Loose Rock生成、採掘、崩落、レシピ、タグを確認する。
 Expected Result: Vanilla Basaltに専用Loose Rock、TFC Basalt由来の変換レシピ・崩落・鉱石母岩登録が新規導入されない。TFC Basaltは従来どおり動作する。
 
-### F-008: Crimson / Warped 木材の TFC 互換
+### F-008: Crimson / Warped の TFC 木材と樹木生成
 
 #### Description
 
-Vanilla の Crimson Stem/Hyphae と Warped Stem/Hyphaeを、Beneathの1.21.x木材対応を参考にTFC Lumberと木材加工・設備レシピへ接続する。必要なLumber/SupportおよびTFC既存設備の対応木材バリエーションを実装するが、独自の樹種、成長方法、Sapling、装置は追加しない。Vanillaの巨大菌類生成方法を維持する。
+Crimson / Warped を `RegistryWood` に基づく独立した TFC 木種として登録する。各樹種について Beneath 1.21.x と同じ `Wood.BlockType` 系統を `tfcoverdims` 名前空間に追加し、Lumber、Log、Hyphae相当のWood、Planks、Sapling、Leaves、Twig、Fallen Leaves、Support、各種建築材、収納・作業設備、機械部品を TFC 本来の動作へ接続する。Vanilla の同種ブロックは削除・置換登録せず、IDの重複を許容する。新規の樹種は追加しない。
+
+自然生成の `minecraft:crimson_fungi` と `minecraft:warped_fungi` を除外し、Beneathの `tfc:random_tree` 型樹木を各対応バイオームへ追加する。樹形は Crimson 16種、Warped 17種、幹高3～5、`count_on_every_layer=8` を基準とし、生成された幹・枝・葉は本MODのTFC木材で構成する。Saplingの成長時間は両種8 TFC日とする。既存のFungusは小型植物として残すが、骨粉によるVanilla巨大菌類生成は無効化する。
+
+Vanilla木材に由来する加工レシピは、TFCのSaw・Lumber工程およびTFC木材設備を迂回しないよう無効にする。両樹種の木材と派生物は非可燃とし、燃料・木炭原料に使用しない。
 
 #### Acceptance Criteria
 
-##### AC-F008-001: Lumber と Support
+##### AC-F008-001: 独立したTFC木材系統
 
-Preconditions: Vanilla Crimson/Warped Stem、TFC Saw、およびSupportの構成材料がある。
-Action: TFCの製材・Support製作を実行する。
-Expected Result: それぞれの樹種についてLumberと使用可能なSupportを取得でき、TFCの木材入力を使う対応レシピに利用できる。必要な処理量・工具耐久はBeneathの同等レシピに合わせる。
+Preconditions: TFC Overdims とTFCを導入している。
+Action: Crimson / Warpedの全`Wood.BlockType`登録、レシピ、表示およびBlockEntityTypeを確認する。
+Expected Result: 両木種のTFC木材系列が`tfcoverdims`名前空間で登録され、Vanillaの各IDは変更されない。Lumber、Support、Chest、Barrel、Crate、Tool Rack、Workbench、機械部品などが対応するTFC機能を持ち、不要な独自設備は追加されない。
 
-##### AC-F008-002: 木材設備と非可燃性
+##### AC-F008-002: Nether樹木の自然生成
 
-Preconditions: 両種の木材から作られたTFC木材設備とLumberがある。
-Action: Chest、Barrel、Workbench、Tool Rackなど、TFC木材familyが実際に要求する設備を製作・設置・利用し、燃焼試験を実施する。
-Expected Result: 対応設備はTFC標準仕様で利用できる。Crimson/WarpedのLumber、Planks、Support、設備はVanillaと同様に燃えず、Firepit燃料とCharcoal Pit原料として受け付けられない。
+Preconditions: 新規のCrimson ForestとWarped Forestのチャンクを生成する。
+Action: 自然生成Featureと生成された樹木の構成ブロックを検査する。
+Expected Result: `minecraft:crimson_fungi`・`minecraft:warped_fungi` の自然生成Featureは使われず、Crimson Forestには本MODのCrimson樹木、Warped ForestにはWarped樹木が生成される。樹形候補数は16・17、幹高は3～5、各Featureのevery-layer countは8である。幹・枝・葉にVanilla Stem/Hyphae/Wart Blockを生成しない。他のNether地形や鉱石生成は変更されない。
 
-##### AC-F008-003: Vanillaの菌類生成維持
+##### AC-F008-003: Saplingと巨大菌類の迂回防止
 
-Preconditions: Crimson / Warped Fungusと対応Nyliumがある。
-Action: Vanillaの巨大菌類生成操作を実行する。
-Expected Result: 既存のCrimson/Warped Stem/Hyphaeで構成される巨大菌類が生成され、新規Sapling・独自樹木worldgenを必要としない。
+Preconditions: 両樹種のSapling、対応する植栽地、VanillaのCrimson/Warped Fungusと骨粉がある。
+Action: TFC Calendarを8日以上進めてSaplingの成長を確認し、Vanilla Fungusへ骨粉を使用する。
+Expected Result: SaplingがTFC式の樹木へ成長し、対応木種のLog・Leaves等を生成する。Vanilla FungusからVanillaの巨大菌類は生成されない。既存Fungusの小型植物としての配置・回収は維持される。
+
+##### AC-F008-004: 木材加工・収納・非可燃性
+
+Preconditions: 本MODのCrimson/Warped Log、TFC Saw、木材設備、着火源がある。
+Action: Saw加工、Lumberによる製作、Chest/Barrel/Crateの保存・再読込、Supportおよび機械部品の動作と燃焼を検査する。
+Expected Result: 両木種ともTFC既存レシピの加工量・工具消耗規則に従う。収納・機械・SupportはTFCの同等木材設備として動作し、内容を保持する。Log、Lumber、Planks、派生ブロックは燃焼せず、FirepitとCharcoal Pitの燃料にならない。
+
+##### AC-F008-005: Vanilla木材レシピの無効化
+
+Preconditions: VanillaのCrimson/Warped Stem、Hyphae、Planksおよび本MODのTFC木材がある。
+Action: VanillaのStem/HyphaeからPlanks、Planksから既存木材製品への通常レシピと、本MODのTFC Saw/Lumberレシピを確認する。
+Expected Result: Vanilla木材を供給・増殖するレシピと、TFC製材工程を迂回するVanilla木材専用レシピが無効である。本MODのTFC木材からVanilla木材への無条件変換も存在しない。TFCのSaw/Lumber加工経路と非木材のVanillaレシピは正常に動作する。
 
 ### F-009: Nether Wart / Chorus の Calendar 対応
 
