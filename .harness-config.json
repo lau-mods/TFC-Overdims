@@ -7,17 +7,30 @@
   "agents": {
     "implementation": {
       "command": "codex",
-      "model": null
+      "model": null,
+      "effort": null,
+      "fast": false
     },
-    "review": {
+    "codeReview": {
       "command": "claude",
-      "model": null
+      "model": null,
+      "effort": null
+    },
+    "e2eReview": {
+      "command": "claude",
+      "model": null,
+      "effort": null
     }
   },
   "runtime": {
-    "command": "mct",
-    "server": null,
-    "clients": [],
+    "command": ".harness-state/runtime/pilot/node_modules/.bin/mct",
+    "server": {
+      "directory": ".harness-state/runtime/server",
+      "command": ["./run.sh", "--nogui"],
+      "address": "127.0.0.1:25579",
+      "world": "harness-world"
+    },
+    "clients": ["tfcoverdims-a"],
     "deploy": [],
     "logs": []
   }
