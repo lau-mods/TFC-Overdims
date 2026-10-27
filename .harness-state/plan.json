@@ -1,0 +1,250 @@
+{
+  "milestones": [
+    {
+      "id": "M01",
+      "features": [
+        "F-001"
+      ],
+      "dependsOn": [],
+      "approach": "MDK雛形 com.example.examplemod を削除し、net.claustra01.tfcoverdims.TFCOverdims（@Mod(\"tfcoverdims\")）と DeferredRegister 集約クラス、client専用エントリを分離した基盤へ置き換える。gradle.properties の mod_id/mod_name/mod_group_id を tfcoverdims 系へ更新し、build.gradle に TFC 1.21.1-4.2.12 を Maven（Modrinth/Curse maven 等、ローカルJARはGit管理外）経由で compileOnly+runtime 依存として追加、neoforge.mods.toml に tfc の required 依存（versionRange [4.2.12,4.3) 相当、ordering AFTER）を記述し Beneath は追加しない。mixin 設定ファイル（tfcoverdims.mixins.json）と GameTest 基盤（@GameTestHolder(\"tfcoverdims\")、空構造テンプレート、tests/acceptance.json へのAC対応表）をここで用意し、Dedicated Server 起動で client クラスが読まれないことを確認する。F-001 は TFC v4.2.12 ソースで ClimateModel / ClimateModelType の登録と Level への割当経路（SelectClimateModelEvent 等）を確認したうえで、NetherClimateModel と EndClimateModel を ClimateModelType として登録し、Level.NETHER / Level.END に割り当てる。Nether は biome ID→基準気温（nether_wastes 70, basalt_deltas 80, crimson_forest 60, warped_forest 60, soul_sand_valley 55）の表を持ち、平均・瞬間気温とも base - Mth.clampedMap(y,32,128,-5,5)、降水量 0、季節・Calendar 非依存。End は 20℃/20℃/0mm 固定。Calendar は TFC 既存のワールド時計を共用し独自時計を作らない。Overworld のモデル選択には介入しない。GameTest で5バイオームY=80、Nether Wastes Y=32/128、End 地点、Calendar 進行前後、Overworld 不変を検証する。AGENTS.md に気候表と依存・パッケージ構成を記録する。",
+      "scope": [
+        "gradle.properties",
+        "build.gradle",
+        "settings.gradle",
+        "src/main/templates/META-INF/neoforge.mods.toml",
+        "src/main/java/com/example/examplemod/ (削除)",
+        "src/main/resources/assets/examplemod/ (削除)",
+        "src/main/java/net/claustra01/tfcoverdims/TFCOverdims.java",
+        "src/main/java/net/claustra01/tfcoverdims/client/",
+        "src/main/java/net/claustra01/tfcoverdims/climate/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "src/main/resources/tfcoverdims.mixins.json",
+        "src/main/resources/assets/tfcoverdims/lang/en_us.json",
+        "src/main/resources/assets/tfcoverdims/lang/ja_jp.json",
+        "tests/acceptance.json",
+        "AGENTS.md",
+        "README.md"
+      ]
+    },
+    {
+      "id": "M02",
+      "features": [
+        "F-002",
+        "F-003",
+        "F-004",
+        "F-005"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "3種の Loose Rock（loose_netherrack / loose_blackstone / loose_end_stone）と Brick item（blackstone_brick / end_stone_brick）を共通実装でまとめて追加する。Loose Rock は TFC の LooseRockBlock（1～4個の COUNT プロパティ、右クリック回収・設置で個数増加）を再利用し、BlockItem を共通 helper で登録する。採掘戦利品は data/minecraft/loot_table/blocks/{netherrack,blackstone,end_stone}.json を上書きし、alternatives で tfc:is_isolated を満たす場合は元ブロック1個、それ以外は該当 Loose Rock を uniform 2～4 個（Beneath の block loot を参照）とする。鉱石・Gilded Blackstone の loot には触れない。Loose Rock 自身の loot は TFC の loose rock と同じく COUNT に応じた個数。地表小石は Beneath の小石パッチ定義を参照した configured/placed feature（rarity 3、count_on_every_layer: netherrack 5 / blackstone 2 / end_stone 5、下面ブロックが対応岩石の場合のみ配置）を作成し、neoforge:add_features biome modifier で Nether 各バイオーム（Netherrack/Blackstone）と End バイオーム（End Stone）へ追加する。地形・鉱脈 feature は変更しない。レシピは Beneath の既存JSONを基準に、tfc の damage_inputs 系 shapeless recipe で Loose Rock 1 + #tfc:tools/chisel → minecraft:nether_brick / tfcoverdims:blackstone_brick / tfcoverdims:end_stone_brick、Brick 4 + tfc:mortar 4 のチェッカー配置 → minecraft:nether_bricks / polished_blackstone_bricks / end_stone_bricks 各4、Loose 4(2×2)→元ブロック1、元ブロック1→Loose 4 を追加する。Blackstone は Beneath と同じ Hammer recipe で cracked_polished_blackstone_bricks、Brick 1 + Chisel → polished_blackstone_button、Brick 2 + Chisel → polished_blackstone_pressure_plate を追加する。Vanilla の netherrack→nether_brick 製錬（minecraft:nether_brick.json）と Mortar なし nether_bricks、および新経路を迂回する Vanilla polished_blackstone_bricks / end_stone_bricks 等の基本レシピは neoforge:false 条件で無効化し、階段・塀・ハーフ等の派生レシピは残す。Knapping は TFC v4.2.12 の rock knapping 用 item tag（metamorphic / sedimentary 区分）を確認し、loose_blackstone を metamorphic、loose_end_stone を sedimentary 側へ tag 追加して既存の stone tool head recipe を使う。モデル・テクスチャは TFC/Beneath の loose rock・brick 資産をコピーまたは色調変換し、Item Size/Weight（tfc item_size data）を TFC の loose rock・brick と同分類で付与、en_us/ja_jp に名称を追加する。GameTest で固定シードのloot（非孤立/孤立/鉱石不変）、全レシピの出力・Chisel/Hammer耐久消費・Mortar消費、旧レシピ無効、knapping結果、配置feature設定値を検証し、地表配置と1～4個描画は E2E で確認する。全JSONの構文解析と tag/recipe/loot/model 参照整合性を検査する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/common/blocks/",
+        "src/main/java/net/claustra01/tfcoverdims/common/items/",
+        "src/main/java/net/claustra01/tfcoverdims/TFCOverdims.java",
+        "src/main/resources/data/minecraft/loot_table/blocks/",
+        "src/main/resources/data/minecraft/recipe/",
+        "src/main/resources/data/tfcoverdims/recipe/",
+        "src/main/resources/data/tfcoverdims/loot_table/blocks/",
+        "src/main/resources/data/tfcoverdims/worldgen/configured_feature/",
+        "src/main/resources/data/tfcoverdims/worldgen/placed_feature/",
+        "src/main/resources/data/tfcoverdims/neoforge/biome_modifier/",
+        "src/main/resources/data/tfc/tags/item/",
+        "src/main/resources/data/tfcoverdims/tfc/item_size/",
+        "src/main/resources/data/minecraft/tags/block/mineable/",
+        "src/main/resources/assets/tfcoverdims/blockstates/",
+        "src/main/resources/assets/tfcoverdims/models/",
+        "src/main/resources/assets/tfcoverdims/textures/",
+        "src/main/resources/assets/tfcoverdims/lang/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M03",
+      "features": [
+        "F-006",
+        "F-007"
+      ],
+      "dependsOn": [
+        "M01",
+        "M02"
+      ],
+      "approach": "F-006 は TFC v4.2.12 の collapse 関連 Block Tag（can_collapse / can_start_collapse / can_trigger_collapse 等）と tfc:collapse recipe 形式を確認し、minecraft:blackstone と minecraft:end_stone だけを tag に追加、collapse recipe で崩落後の結果を同じ既存ブロック（blackstone→blackstone、end_stone→end_stone）にする。Support Beam による保護は TFC 既存処理に任せ Java は追加しない。netherrack、nether_bricks、end_stone_bricks、minecraft:basalt、鉱石には tag/recipe を追加しない。F-007 は lang ファイルで block.minecraft.basalt / polished_basalt / smooth_basalt の en_us（Nether Basalt / Polished Nether Basalt / Smooth Nether Basalt）と ja_jp（ネザー玄武岩 / 磨かれたネザー玄武岩 / 滑らかなネザー玄武岩）だけを上書きし、TFC basalt の翻訳キーには触れない。Registry、model、loot、recipe、worldgen、rock tag は変更しない。GameTest で崩落構造（支保あり/なし）、対象外ブロックの非崩落、tfc:rock/raw/basalt の既存挙動維持、Vanilla Basalt に M02 の loose rock・loot・recipe・collapse・ore host tag が付いていないこと（tag/recipe manager 照会）を検証し、表示名は英日クライアントの E2E で確認する。",
+      "scope": [
+        "src/main/resources/data/tfc/tags/block/",
+        "src/main/resources/data/tfcoverdims/recipe/collapse/",
+        "src/main/resources/assets/tfcoverdims/lang/en_us.json",
+        "src/main/resources/assets/tfcoverdims/lang/ja_jp.json",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "src/main/resources/data/tfcoverdims/structure/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M04",
+      "features": [
+        "F-008"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "Beneath 1.21.x の Nether 木材実装を参照し、TFC の RegistryWood を実装する enum（CRIMSON / WARPED、sapling 成長8日、非可燃）を作り、Wood.BlockType の全種を tfcoverdims 名前空間で TFC の生成 helper により Block/Item 登録する（Vanilla ID は置換しない）。TFC の BlockEntityType（chest、trapped chest、barrel、sluice、tool rack、loom、bookshelf、sign、axle/gearbox 等の機械部品）が本MODの木材ブロックを受け付けるよう、Beneath と同様の手段（v4.2.12/NeoForge 21.1.264 で利用可能な BlockEntityType 有効ブロック追加経路）を確認して接続し、独自設備は作らない。Workbench・Support・Lumber 等の TFC 機能は TFC の既存クラスに任せる。レシピは TFC の木材レシピ（Log→Lumber の Saw、Lumber からの各製品、Support 等）を Beneath を基準に両木種分用意し、Vanilla の crimson/warped stem・hyphae→planks、planks 由来の Vanilla 木材製品、TFC 工程を迂回する Vanilla 木材専用レシピを neoforge:false で無効化し、本MOD木材→Vanilla木材の変換は作らない。燃焼は flammability 登録と firepit_fuel・logs_that_burn・charcoal pit 対象 tag から除外して非可燃にする。世界生成は Beneath の tfc:random_tree configured feature と NBT 構造（Crimson 16、Warped 17、幹高3～5）を本MODブロックで再構成し、placed feature に count_on_every_layer 8 を設定、neoforge:remove_features で minecraft:crimson_fungi / warped_fungi を対応バイオームから除外し neoforge:add_features で追加する（PROJECT.md のF-008記載に基づく例外として扱い、他の Nether feature は変更しない）。Vanilla Fungus は小型植物として残し、BonemealEvent 等の公開イベントで crimson/warped fungus への骨粉による巨大菌類生成を抑止する。モデル・テクスチャは Beneath/TFC 資産のコピー・色調変換、Item Size/Weight は TFC の同等木材アイテムと同分類、en_us/ja_jp を追加。GameTest で全 BlockType 登録と BlockEntity 有効性、収納の保存・再読込、Saw/Lumber レシピと工具消耗、非可燃・燃料不可、Vanilla レシピ無効、Sapling の8日成長、骨粉抑止、feature 設定値（候補数・幹高・count）と生成樹木の構成ブロックを検証し、表示は E2E で確認する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/common/wood/",
+        "src/main/java/net/claustra01/tfcoverdims/common/blocks/",
+        "src/main/java/net/claustra01/tfcoverdims/common/items/",
+        "src/main/java/net/claustra01/tfcoverdims/common/blockentities/",
+        "src/main/java/net/claustra01/tfcoverdims/events/",
+        "src/main/java/net/claustra01/tfcoverdims/client/",
+        "src/main/resources/data/tfcoverdims/recipe/wood/",
+        "src/main/resources/data/minecraft/recipe/",
+        "src/main/resources/data/tfcoverdims/loot_table/blocks/wood/",
+        "src/main/resources/data/tfcoverdims/structure/crimson/",
+        "src/main/resources/data/tfcoverdims/structure/warped/",
+        "src/main/resources/data/tfcoverdims/worldgen/",
+        "src/main/resources/data/tfcoverdims/neoforge/biome_modifier/",
+        "src/main/resources/data/tfc/tags/",
+        "src/main/resources/data/minecraft/tags/",
+        "src/main/resources/data/tfcoverdims/tfc/item_size/",
+        "src/main/resources/assets/tfcoverdims/blockstates/wood/",
+        "src/main/resources/assets/tfcoverdims/models/",
+        "src/main/resources/assets/tfcoverdims/textures/",
+        "src/main/resources/assets/tfcoverdims/lang/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M05",
+      "features": [
+        "F-009"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "TFC v4.2.12 の Calendar API（ICalendar / Calendars の tick・日数取得）と、作物・植物が経過時間で成長を追いつく既存の仕組みを確認し、NetherWartBlock と ChorusFlowerBlock の randomTick に狭い Mixin を当てる。各ブロックの最終更新 Calendar tick を chunk の data attachment に保持し、random tick 時に Calendar 経過時間から Vanilla の期待成長回数に相当する更新を算出して Vanilla 本来の成長処理（Nether Wart の age 0～3、Chorus Flower の age 上限・分岐・Plant 生成）を必要回数呼び出す。成長土台（Soul Sand / End Stone）、形状、成熟・採取 loot は変更せず、新規農地・栄養素・成長段階は追加しない。Mixin は common 側のみで client クラスを参照しない。GameTest で Calendar を進めた際の age 進行・上限・採取結果、Chorus の分岐と Flower 上限、土台条件の維持を検証する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/mixin/NetherWartBlockMixin.java",
+        "src/main/java/net/claustra01/tfcoverdims/mixin/ChorusFlowerBlockMixin.java",
+        "src/main/java/net/claustra01/tfcoverdims/common/growth/",
+        "src/main/java/net/claustra01/tfcoverdims/TFCOverdims.java",
+        "src/main/resources/tfcoverdims.mixins.json",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M06",
+      "features": [
+        "F-010",
+        "F-015"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "Nether/End での TFC 生存・設備互換をまとめて扱う。Hoglin は data/minecraft/loot_table/entities/hoglin.json を上書きし、Looting なしで tfc:food/pork 2～4、bone 3～6（Beneath を参照、Cursed Hide なし）とし、TFC の食品 component 初期化・調理レシピが既存どおり適用されることを確認する。Chorus Fruit は TFC の food data（v4.2.12 の data path と形式を確認）で Food/Decay/Nutrition を付与し、テレポートは Vanilla の finishUsingItem に任せて上書きしない（腐敗品の扱いは TFC 既存規則）。渇きは M01 の気候に基づき TFC の thirst 計算が Nether の高温で動作することを確認し、Dimension 判定で無効化される箇所があればその箇所だけ修正する。Vanilla の ultraWarm による設置水蒸発は維持し、TFC Jug/Barrel 等の容器内流体が ultraWarm で失われる/充填拒否される経路がある場合のみ狭い修正を入れる。F-015 は Vanilla Portal・Stronghold・Dragon・Elytra に一切触れず、TFC Firepit・Barrel・Anvil を Nether/End で動作させて Dimension（ultraWarm、雨・気候参照、Calendar）起因の失敗がある箇所のみ互換修正する。修正不要なら Java を追加しない。GameTest で Hoglin loot（固定複数シード）、Chorus Fruit の food component と腐敗、容器内水の保持と設置水の蒸発、渇き減少、Firepit 加熱・Barrel 貯蔵・Anvil 加工を Nether/End で検証し、Portal 移動とテレポートは E2E で確認する。",
+      "scope": [
+        "src/main/resources/data/minecraft/loot_table/entities/hoglin.json",
+        "src/main/resources/data/tfcoverdims/tfc/food/",
+        "src/main/java/net/claustra01/tfcoverdims/mixin/",
+        "src/main/java/net/claustra01/tfcoverdims/events/",
+        "src/main/resources/tfcoverdims.mixins.json",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M07",
+      "features": [
+        "F-011",
+        "F-012"
+      ],
+      "dependsOn": [
+        "M01",
+        "M06"
+      ],
+      "approach": "Vanilla 報酬を TFC 既存品へ置換する loot・Mob 互換をまとめる。Piglin は Vanilla の PiglinAi が gold ingot を直接比較しているため、isBarterCurrency 等の判定へ狭い Mixin を当て #tfcoverdims:piglin_currency（minecraft:gold_ingot と tfc:metal/ingot/gold）を受け付け、tfc 金インゴットを minecraft:piglin_loved に追加して拾得させる。Bartering の結果 loot（minecraft:gameplay/piglin_bartering）と金装備判定（Vanilla Gold Armor）は変更せず、新規 Gold Armor は作らない。Piglin、Zombified Piglin、Enderman、Shulker 等の entity loot は TFC に対応品がある Vanilla 汎用品（金インゴット等）だけを TFC 品へ置き換え、Blaze Rod・Ghast Tear・Ender Pearl・Shulker Shell・Netherite 関連は維持する（Hoglin は M06 の上書きを再利用）。F-012 は Beneath 1.21.x のチェスト定義を参照して minecraft:chests/nether_bridge、bastion_treasure・bastion_other・bastion_bridge・bastion_hoglin_stable、ruined_portal、end_city_treasure を上書きし、Vanilla 完成金属装備・Ingot・食品だけを TFC の対応品へ置換、Fortress の TFC Diamond Gem/Wrought Iron Ingot/Gold Ingot/Wrought Iron Sword/Wrought Iron Chestplate 各5、Saddle 10、Bismuth Bronze Horse Armor 8、主pool 2～4 rolls、Bastion Treasure の Black Steel 防具各6・Sword 7・Diamond/Opal/Ruby 各10、主pool 3・副pool 3～4 を設定する。Ancient Debris、Netherite、Smithing Template、Obsidian、Ender Pearl、Elytra、Shulker Shell 等の固有報酬と Beneath 固有品の不在を保証する。GameTest で bartering 受付・Gold Armor の敵対抑制、各 entity/chest loot を複数固定シードで生成し、出現品集合・重み・roll 数・Netherite 系保持を検証する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/mixin/PiglinAiMixin.java",
+        "src/main/resources/tfcoverdims.mixins.json",
+        "src/main/resources/data/tfcoverdims/tags/item/piglin_currency.json",
+        "src/main/resources/data/minecraft/tags/item/piglin_loved.json",
+        "src/main/resources/data/minecraft/loot_table/entities/",
+        "src/main/resources/data/minecraft/loot_table/chests/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M08",
+      "features": [
+        "F-013"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "Powered TFC の EnchantmentMenuLapisMixin を参考に、EnchantmentMenu のラピス枠 Slot.mayPlace（内部匿名クラス）と quickMoveStack 内の Items.LAPIS_LAZULI 比較、および枠内素材の判定箇所へ狭い Mixin を当て、#tfcoverdims:enchanting_lapis（minecraft:lapis_lazuli と tfc:gem/lapis_lazuli）で判定し、tag 未解決時は両 Registry ID を直接照合する fallback を持つ共通判定 helper を使う。スロット位置・アイコン・消費量・Enchantment 選択規則は変更しない。TFC 完成装備は v4.2.12 で Vanilla enchantable 系 item tag（minecraft:enchantable/sword, mining, armor 等）と enchantable component が付いているかを確認し、不足する完成武器・工具・防具だけに tag を補完する。Tool Head・Metal Sheet 等の未完成部品には追加せず、Forging Bonus component は触らない。GameTest で通常投入・Shift クリック（誤移動なし）・tag 無効時の fallback・両素材での消費と Enchant 成功、完成 Steel Sword/Pickaxe/Chestplate への Anvil/Book 付与可、未完成部品の不適格、Forging Bonus と Unbreaking 等の両立を検証し、GUI 表示は E2E で確認する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/mixin/EnchantmentMenuMixin.java",
+        "src/main/java/net/claustra01/tfcoverdims/mixin/EnchantmentMenuLapisSlotMixin.java",
+        "src/main/java/net/claustra01/tfcoverdims/common/EnchantingLapis.java",
+        "src/main/resources/tfcoverdims.mixins.json",
+        "src/main/resources/data/tfcoverdims/tags/item/enchanting_lapis.json",
+        "src/main/resources/data/minecraft/tags/item/enchantable/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M09",
+      "features": [
+        "F-014"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "TFC v4.2.12 の ItemSizeManager / Size 規則と、TFC 自身の収納容器（chest/crate/vessel）が適用する上限・入れ子禁止の判定を確認し、Vanilla Shulker Box でそれを迂回できる経路（ShulkerBoxSlot.mayPlace、ShulkerBoxBlockEntity.canPlaceItem / canPlaceItemThroughFace によるホッパー・ドロッパー搬入、item component 経由の格納）を洗い出して、同じ TFC 判定を適用する狭い Mixin を当てる。許可サイズの収納、染色、破壊時の内容保持、設置・再配置、保存・再読込、色・モデルは Vanilla のまま維持し、新規収納設備は作らない。GameTest で各サイズの収納可否、入れ子容器拒否、ホッパー搬入拒否、破壊→再設置での内容と component 保持、ワールド保存・再読込を End で検証する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/mixin/ShulkerBoxSlotMixin.java",
+        "src/main/java/net/claustra01/tfcoverdims/mixin/ShulkerBoxBlockEntityMixin.java",
+        "src/main/java/net/claustra01/tfcoverdims/common/ContainerRules.java",
+        "src/main/resources/tfcoverdims.mixins.json",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M10",
+      "features": [
+        "F-016"
+      ],
+      "dependsOn": [
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "approach": "全追加資産と表示の最終統合・監査を行う。M02/M04 で追加した Loose Rock 3種、Brick item 2種、Crimson/Warped 木材系列のモデル・blockstate・テクスチャを走査し、親モデルとテクスチャ参照がすべて解決すること、テクスチャが TFC 4.2.12 / Beneath 1.21.x の原本コピーか色調変換版であることを確認する。各同梱画像について元ファイルパス・取得リビジョン（TFC v4.2.12 タグ、Beneath 1.21.x のコミット）・変換規則を AGENTS.md の資産表へ記録し、帰属・クレジット文は追加しない（LICENCE は変更しない）。Vanilla block は Vanilla テクスチャ参照のままとし Vanilla 資産を同梱しない。en_us/ja_jp の全登録キー網羅（未翻訳キーなし）と Vanilla Basalt / TFC Basalt の名称非重複を検査する。tfc item_size data が全新規 item に1件ずつ存在し、対応する TFC 既存品（loose rock、brick、lumber、support、各木材設備）と同じ Size/Weight であることを GameTest で全 registry 走査により検証する。.tmp/ の監査用 script は Git 管理外に置く。表示（Missing Texture、UV、地表配置、言語切替、ツールチップ、独自 GUI 不在）は英日クライアントの E2E で確認し、最後に ./gradlew build と Dedicated Server・クライアント起動を確認する。",
+      "scope": [
+        "src/main/resources/assets/tfcoverdims/models/",
+        "src/main/resources/assets/tfcoverdims/blockstates/",
+        "src/main/resources/assets/tfcoverdims/textures/",
+        "src/main/resources/assets/tfcoverdims/lang/en_us.json",
+        "src/main/resources/assets/tfcoverdims/lang/ja_jp.json",
+        "src/main/resources/data/tfcoverdims/tfc/item_size/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md",
+        "README.md"
+      ]
+    }
+  ]
+}
