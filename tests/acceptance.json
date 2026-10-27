@@ -1,4 +1,23 @@
 {
-  "gameTests": [],
+  "gameTests": [
+    {
+      "acId": "AC-F001-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherclimate"
+    },
+    {
+      "acId": "AC-F001-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endclimate"
+    },
+    {
+      "acId": "AC-F001-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "overworldunchanged"
+    }
+  ],
   "e2e": []
 }

@@ -46,7 +46,7 @@ displayName="${mod_name}" #mandatory
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Example mod description.
+TFC climate models for the Nether and End.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
@@ -78,6 +78,13 @@ Example mod description.
     side="BOTH"
 
 # Here's another dependency
+[[dependencies.${mod_id}]]
+    modId="tfc"
+    type="required"
+    versionRange="[4.2.12,4.3)"
+    ordering="AFTER"
+    side="BOTH"
+
 [[dependencies.${mod_id}]]
     modId="minecraft"
     type="required"
