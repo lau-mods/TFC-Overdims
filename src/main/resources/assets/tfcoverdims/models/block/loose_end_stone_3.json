@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "texture": "tfcoverdims:block/loose/end_stone",
+    "texture": "minecraft:block/end_stone",
     "particle": "#texture"
   },
   "elements": [

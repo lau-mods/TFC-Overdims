@@ -353,6 +353,24 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "shulkercontentspreserved"
+    },
+    {
+      "acId": "AC-F016-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "assetreferences"
+    },
+    {
+      "acId": "AC-F016-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "allitemnames"
+    },
+    {
+      "acId": "AC-F016-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "allitemsizes"
     }
   ],
   "e2e": [
@@ -391,6 +409,10 @@
     {
       "acId": "AC-F014-002",
       "scenario": "tests/e2e/shulker-box.mjs"
+    },
+    {
+      "acId": "AC-F016-001",
+      "scenario": "tests/e2e/asset-integration.mjs"
     }
   ]
 }

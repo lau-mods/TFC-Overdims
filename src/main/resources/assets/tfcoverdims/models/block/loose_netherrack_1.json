@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "texture": "tfcoverdims:block/loose/netherrack",
+    "texture": "minecraft:block/netherrack",
     "particle": "#texture"
   },
   "elements": [

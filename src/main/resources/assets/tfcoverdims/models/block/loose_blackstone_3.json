@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "texture": "tfcoverdims:block/loose/blackstone",
+    "texture": "minecraft:block/blackstone",
     "particle": "#texture"
   },
   "elements": [

@@ -92,5 +92,9 @@
   "block.tfcoverdims.wood.crate.warped": "Warped Crate",
   "item.tfcoverdims.wood.lumber.warped": "Warped Lumber",
   "item.tfcoverdims.wood.sign.crimson": "Crimson Sign",
-  "item.tfcoverdims.wood.sign.warped": "Warped Sign"
+  "item.tfcoverdims.wood.sign.warped": "Warped Sign",
+  "block.tfcoverdims.wood.potted_sapling.crimson": "Potted Crimson Sapling",
+  "block.tfcoverdims.wood.wall_sign.crimson": "Crimson Wall Sign",
+  "block.tfcoverdims.wood.potted_sapling.warped": "Potted Warped Sapling",
+  "block.tfcoverdims.wood.wall_sign.warped": "Warped Wall Sign"
 }

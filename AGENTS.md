@@ -6,7 +6,7 @@
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
 M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
 M08 のエンチャント台と TFC 装備の互換、M09 の Shulker Box 収納規則、
-および GameTest / E2E シナリオを実装している。
+M10 の追加資産と表示の統合、および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
@@ -311,6 +311,132 @@ M08 のエンチャント台と TFC 装備の互換、M09 の Shulker Box 収納
   GameTest は F014-001=`shulkerstoragerules`、F014-002=`shulkercontentspreserved`、
   classname はともに `tfcoverdims:empty`。`tests/e2e/shulker-box.mjs` は F014-002 の
   色・モデル・GUI を撮影する。
+
+## M10 追加資産と表示の統合
+
+- `assetreferences` は全 blockstate / model JSON の model、parent、texture 参照と、
+  同梱 PNG の下表への記載を検査する。`allitemnames` は en_us / ja_jp のキー集合、
+  空欄、全登録 Item / Block の表示名と Vanilla / TFC Basalt の名称非重複を検査する。
+  両 GameTest は F016-001、classname `tfcoverdims:empty` に対応する。
+  `tests/e2e/asset-integration.mjs` は英日クライアントで小石、Brick、木材の
+  植物・建材・設備・機械、インベントリと tooltip を撮影する。
+- `allitemsizes` は F016-002、classname `tfcoverdims:empty` に対応する。
+  全登録 Item に `tfc:item_size` が1件ずつ適用されることを検査する。
+  Loose Rock 3種は TFC granite Loose Rock、Brick 2種は TFC granite Brick、
+  両木種の Lumber / Support / Sign と Item を持つ全 `Wood.BlockType` は
+  TFC oak の同種と Size / Weight を比較する。
+- 下表のパスは `src/main/resources/` からの相対パス。TFC 原本は `v4.2.12` タグ、
+  Beneath 原本は `1.21.x` の `eab10327879400aeb67b3f9b3f7e2fbaf60946d0`。
+  木材は HSV の H を Crimson=0.94、Warped=0.49 に置き換え、S・V・alpha を保持し、
+  RGB を255倍して整数化する。パレット画像は TFC oak の色展開後に同じ変換を行う。
+  Vanilla 岩石画像は同梱せず、地表小石モデルから Vanilla テクスチャを参照する。
+
+| Bundled image | Source image | Revision | Transformation |
+| --- | --- | --- | --- |
+| `assets/tfc/textures/block/wood/planks/crimson.png` | `assets/tfc/textures/block/wood/planks/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/block/wood/planks/warped.png` | `assets/tfc/textures/block/wood/planks/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/horse/crimson.png` | `assets/tfc/textures/entity/chest/horse/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/horse/crimson_barrel.png` | `assets/tfc/textures/entity/chest/horse/oak_barrel.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/horse/warped.png` | `assets/tfc/textures/entity/chest/horse/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/horse/warped_barrel.png` | `assets/tfc/textures/entity/chest/horse/oak_barrel.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/normal/crimson.png` | `assets/tfc/textures/entity/chest/normal/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/normal/warped.png` | `assets/tfc/textures/entity/chest/normal/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/normal_left/crimson.png` | `assets/tfc/textures/entity/chest/normal_left/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/normal_left/warped.png` | `assets/tfc/textures/entity/chest/normal_left/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/normal_right/crimson.png` | `assets/tfc/textures/entity/chest/normal_right/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/normal_right/warped.png` | `assets/tfc/textures/entity/chest/normal_right/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/trapped/crimson.png` | `assets/tfc/textures/entity/chest/trapped/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/trapped/warped.png` | `assets/tfc/textures/entity/chest/trapped/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/trapped_left/crimson.png` | `assets/tfc/textures/entity/chest/trapped_left/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/trapped_left/warped.png` | `assets/tfc/textures/entity/chest/trapped_left/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/trapped_right/crimson.png` | `assets/tfc/textures/entity/chest/trapped_right/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/chest/trapped_right/warped.png` | `assets/tfc/textures/entity/chest/trapped_right/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/water_wheel/crimson.png` | `assets/tfc/textures/entity/water_wheel/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/entity/water_wheel/warped.png` | `assets/tfc/textures/entity/water_wheel/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfc/textures/gui/knapping/loose_blackstone.png` | `assets/tfc/textures/gui/knapping/blackstone_pebble.png` | TFC v4.2.12 | copy |
+| `assets/tfc/textures/gui/knapping/loose_end_stone.png` | `assets/tfc/textures/gui/knapping/rock/loose/limestone.png` | TFC v4.2.12 | copy |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/crimson_empty.png` | `assets/tfc/textures/block/wood/bookshelf/oak_empty.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/crimson_occupied.png` | `assets/tfc/textures/block/wood/bookshelf/oak_occupied.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/side_crimson.png` | `assets/tfc/textures/block/wood/bookshelf/side.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/side_warped.png` | `assets/tfc/textures/block/wood/bookshelf/side.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/top_crimson.png` | `assets/tfc/textures/block/wood/bookshelf/top.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/top_warped.png` | `assets/tfc/textures/block/wood/bookshelf/top.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/warped_empty.png` | `assets/tfc/textures/block/wood/bookshelf/oak_empty.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/bookshelf/warped_occupied.png` | `assets/tfc/textures/block/wood/bookshelf/oak_occupied.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/crate/crimson.png` | `assets/tfc/textures/block/wood/crate/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/crate/warped.png` | `assets/tfc/textures/block/wood/crate/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/door/crimson_bottom.png` | `assets/tfc/textures/block/wood/door/oak_bottom.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/door/crimson_top.png` | `assets/tfc/textures/block/wood/door/oak_top.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/door/warped_bottom.png` | `assets/tfc/textures/block/wood/door/oak_bottom.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/door/warped_top.png` | `assets/tfc/textures/block/wood/door/oak_top.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/bare/crimson.png` | `assets/tfc/textures/block/wood/leaves/bare/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/bare/warped.png` | `assets/tfc/textures/block/wood/leaves/bare/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/blooming/crimson.png` | `assets/tfc/textures/block/wood/leaves/blooming/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/blooming/warped.png` | `assets/tfc/textures/block/wood/leaves/blooming/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/dense_leaves/crimson.png` | `assets/tfc/textures/block/wood/leaves/dense_leaves/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/dense_leaves/warped.png` | `assets/tfc/textures/block/wood/leaves/dense_leaves/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/sparse_leaves/crimson.png` | `assets/tfc/textures/block/wood/leaves/sparse_leaves/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/leaves/sparse_leaves/warped.png` | `assets/tfc/textures/block/wood/leaves/sparse_leaves/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/crimson/base.png` | `assets/tfc/textures/block/wood/lectern/oak/base.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/crimson/front.png` | `assets/tfc/textures/block/wood/lectern/oak/front.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/crimson/sides.png` | `assets/tfc/textures/block/wood/lectern/oak/sides.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/crimson/top.png` | `assets/tfc/textures/block/wood/lectern/oak/top.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/warped/base.png` | `assets/tfc/textures/block/wood/lectern/oak/base.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/warped/front.png` | `assets/tfc/textures/block/wood/lectern/oak/front.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/warped/sides.png` | `assets/tfc/textures/block/wood/lectern/oak/sides.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/lectern/warped/top.png` | `assets/tfc/textures/block/wood/lectern/oak/top.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/log/crimson.png` | `assets/tfc/textures/block/wood/log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/log/warped.png` | `assets/tfc/textures/block/wood/log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/log_top/crimson.png` | `assets/tfc/textures/block/wood/log_top/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/log_top/warped.png` | `assets/tfc/textures/block/wood/log_top/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/planks/crimson.png` | `assets/tfc/textures/block/wood/planks/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/planks/warped.png` | `assets/tfc/textures/block/wood/planks/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/sapling/crimson.png` | `assets/tfc/textures/block/wood/sapling/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/sapling/warped.png` | `assets/tfc/textures/block/wood/sapling/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/scribing_table/crimson.png` | `assets/tfc/textures/block/wood/scribing_table/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/scribing_table/warped.png` | `assets/tfc/textures/block/wood/scribing_table/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/sheet/crimson.png` | `assets/tfc/textures/block/wood/sheet/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/sheet/warped.png` | `assets/tfc/textures/block/wood/sheet/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/stripped_log/crimson.png` | `assets/tfc/textures/block/wood/stripped_log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/stripped_log/warped.png` | `assets/tfc/textures/block/wood/stripped_log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/stripped_log_top/crimson.png` | `assets/tfc/textures/block/wood/stripped_log_top/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/stripped_log_top/warped.png` | `assets/tfc/textures/block/wood/stripped_log_top/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/trapdoor/crimson.png` | `assets/tfc/textures/block/wood/trapdoor/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/trapdoor/warped.png` | `assets/tfc/textures/block/wood/trapdoor/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/workbench/crimson_front.png` | `assets/tfc/textures/block/wood/workbench/oak_front.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/workbench/crimson_side.png` | `assets/tfc/textures/block/wood/workbench/oak_side.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/workbench/crimson_top.png` | `assets/tfc/textures/block/wood/workbench/oak_top.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/workbench/warped_front.png` | `assets/tfc/textures/block/wood/workbench/oak_front.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/workbench/warped_side.png` | `assets/tfc/textures/block/wood/workbench/oak_side.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/block/wood/workbench/warped_top.png` | `assets/tfc/textures/block/wood/workbench/oak_top.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/entity/signs/crimson.png` | `assets/tfc/textures/entity/signs/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/entity/signs/warped.png` | `assets/tfc/textures/entity/signs/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/blackstone_brick.png` | `assets/beneath/textures/item/blackstone_brick.png` | Beneath eab10327879400aeb67b3f9b3f7e2fbaf60946d0 | copy |
+| `assets/tfcoverdims/textures/item/end_stone_brick.png` | `assets/tfc/textures/item/brick/limestone.png` | TFC v4.2.12 | copy |
+| `assets/tfcoverdims/textures/item/loose_blackstone.png` | `assets/beneath/textures/item/blackstone_pebble.png` | Beneath eab10327879400aeb67b3f9b3f7e2fbaf60946d0 | copy |
+| `assets/tfcoverdims/textures/item/loose_end_stone.png` | `assets/tfc/textures/item/loose_rock/limestone.png` | TFC v4.2.12 | copy |
+| `assets/tfcoverdims/textures/item/loose_netherrack.png` | `assets/beneath/textures/item/nether_pebble.png` | Beneath eab10327879400aeb67b3f9b3f7e2fbaf60946d0 | copy |
+| `assets/tfcoverdims/textures/item/wood/door/crimson.png` | `assets/tfc/textures/item/wood/door/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/door/warped.png` | `assets/tfc/textures/item/wood/door/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/log/crimson.png` | `assets/tfc/textures/item/wood/log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/log/warped.png` | `assets/tfc/textures/item/wood/log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/lumber_crimson.png` | `assets/tfc/textures/item/wood/lumber.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/lumber_warped.png` | `assets/tfc/textures/item/wood/lumber.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/sign/crimson.png` | `assets/tfc/textures/item/wood/sign/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/sign/warped.png` | `assets/tfc/textures/item/wood/sign/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/sign_head_crimson.png` | `assets/tfc/textures/item/wood/sign_head.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/sign_head_overlay.png` | `assets/beneath/textures/item/wood/sign_head_overlay.png` | Beneath eab10327879400aeb67b3f9b3f7e2fbaf60946d0 | copy |
+| `assets/tfcoverdims/textures/item/wood/sign_head_warped.png` | `assets/tfc/textures/item/wood/sign_head.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/stripped_log/crimson.png` | `assets/tfc/textures/item/wood/stripped_log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/stripped_log/warped.png` | `assets/tfc/textures/item/wood/stripped_log/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/stripped_wood/crimson.png` | `assets/tfc/textures/item/wood/stripped_wood/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/stripped_wood/warped.png` | `assets/tfc/textures/item/wood/stripped_wood/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/twig_crimson.png` | `assets/tfc/textures/item/wood/twig.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/twig_warped.png` | `assets/tfc/textures/item/wood/twig.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/water_wheel_crimson.png` | `assets/tfc/textures/item/wood/water_wheel.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/water_wheel_warped.png` | `assets/tfc/textures/item/wood/water_wheel.png` | TFC v4.2.12 | oak palette expansion, then H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/wood/crimson.png` | `assets/tfc/textures/item/wood/wood/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
+| `assets/tfcoverdims/textures/item/wood/wood/warped.png` | `assets/tfc/textures/item/wood/wood/oak.png` | TFC v4.2.12 | H=0.94/0.49 |
 
 ## Harness runtime
 
