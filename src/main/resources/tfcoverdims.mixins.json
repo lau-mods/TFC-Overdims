@@ -10,7 +10,10 @@
     "PiglinAiMixin",
     "PiglinCurrencyMixin",
     "EnchantmentMenuMixin",
-    "EnchantmentMenuLapisSlotMixin"
+    "EnchantmentMenuLapisSlotMixin",
+    "ShulkerBoxSlotMixin",
+    "ShulkerBoxBlockEntityMixin",
+    "ShulkerBoxComponentsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

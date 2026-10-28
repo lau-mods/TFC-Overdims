@@ -341,6 +341,18 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "tfcequipmentenchanting"
+    },
+    {
+      "acId": "AC-F014-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "shulkerstoragerules"
+    },
+    {
+      "acId": "AC-F014-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "shulkercontentspreserved"
     }
   ],
   "e2e": [
@@ -375,6 +387,10 @@
     {
       "acId": "AC-F013-002",
       "scenario": "tests/e2e/enchanting-lapis.mjs"
+    },
+    {
+      "acId": "AC-F014-002",
+      "scenario": "tests/e2e/shulker-box.mjs"
     }
   ]
 }

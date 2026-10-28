@@ -9,7 +9,7 @@
       "command": "codex",
       "model": "gpt-6-sol",
       "effort": "medium",
-      "fast": true
+      "fast": false
     },
     "codeReview": {
       "command": "claude",

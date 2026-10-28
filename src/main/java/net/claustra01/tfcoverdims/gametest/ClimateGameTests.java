@@ -38,11 +38,14 @@ import net.claustra01.tfcoverdims.climate.OverdimsClimateModels;
 @GameTestHolder(TFCOverdims.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class ClimateGameTests {
+    private static boolean reportConfigured;
+
     @BeforeBatch(batch = "climate")
     public static void configureReport(ServerLevel level) throws ParserConfigurationException {
         String report = System.getProperty("tfcoverdims.gametest.report");
-        if (report != null) {
+        if (report != null && !reportConfigured) {
             GlobalTestReporter.replaceWith(new JUnitLikeTestReporter(new File(report)));
+            reportConfigured = true;
         }
     }
 

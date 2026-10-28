@@ -5,7 +5,7 @@
 現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
 M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
-M08 のエンチャント台と TFC 装備の互換、
+M08 のエンチャント台と TFC 装備の互換、M09 の Shulker Box 収納規則、
 および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
@@ -299,6 +299,18 @@ M08 のエンチャント台と TFC 装備の互換、
   F013-003=`tfcequipmentenchanting`。通常投入と消費、Shift クリックと tag 不在時の
   判定、完成装備のエンチャント効果・耐久・Forging Bonus を検証する。
 - E2E `tests/e2e/enchanting-lapis.mjs` は F013-001 と F013-002 の GUI 表示を撮影する。
+
+## M09 Shulker Box 収納規則
+
+- Vanilla Shulker Box の収納可否には `TFCChestBlockEntity.isValid` を使う。
+  入れ子は `Item.canFitInsideContainerItems` に従う。GUI の
+  `ShulkerBoxSlot.mayPlace` とホッパーの `canPlaceItemThroughFace` は
+  Vanilla の入れ子判定に TFC 判定だけを加え、`canPlaceItem` は両方を判定する。
+  Item component の読み込みは通常の挿入判定を通らないため、禁止品は読み込み時に破棄する。
+- 既存の色・モデル・染色・破壊時の内容保持・設置と保存は Vanilla の処理を使う。
+  GameTest は F014-001=`shulkerstoragerules`、F014-002=`shulkercontentspreserved`、
+  classname はともに `tfcoverdims:empty`。`tests/e2e/shulker-box.mjs` は F014-002 の
+  色・モデル・GUI を撮影する。
 
 ## Harness runtime
 
