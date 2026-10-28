@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "BMB",
+    "M M",
+    "BMB"
+  ],
+  "key": {
+    "B": {
+      "item": "tfcoverdims:blackstone_brick"
+    },
+    "M": {
+      "item": "tfc:mortar"
+    }
+  },
+  "result": {
+    "id": "minecraft:polished_blackstone_bricks",
+    "count": 4
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tfcoverdims:item/end_stone_brick"
+  }
+}

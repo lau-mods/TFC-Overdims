@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": [
+    "tfcoverdims:loose_netherrack_patch"
+  ],
+  "step": "vegetal_decoration"
+}

@@ -1,0 +1,28 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "tfcoverdims:blackstone_brick"
+    },
+    {
+      "item": "tfcoverdims:blackstone_brick"
+    },
+    {
+      "tag": "c:tools/chisel"
+    }
+  ],
+  "result": {
+    "id": "minecraft:polished_blackstone_pressure_plate",
+    "count": 1
+  },
+  "primary_ingredient": {
+    "tag": "c:tools/chisel"
+  },
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  }
+}

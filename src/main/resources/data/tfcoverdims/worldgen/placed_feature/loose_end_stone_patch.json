@@ -1,0 +1,16 @@
+{
+  "feature": "tfcoverdims:loose_end_stone_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": 5
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

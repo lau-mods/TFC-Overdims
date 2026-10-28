@@ -73,9 +73,11 @@ neoForge {
         // The gametest system is also enabled by default for other run configs under the /test command.
         gameTestServer {
             type = "gameTestServer"
+            // Keep installed run/mods jars from shadowing the sources under test.
+            gameDirectory = project.file('run/gametest')
             jvmArgument '-Xmx3G'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            systemProperty 'tfcoverdims.gametest.report', 'gametest-results.xml'
+            systemProperty 'tfcoverdims.gametest.report', '../gametest-results.xml'
         }
 
         data {

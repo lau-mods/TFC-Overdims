@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_end",
+  "features": [
+    "tfcoverdims:loose_end_stone_patch"
+  ],
+  "step": "vegetal_decoration"
+}

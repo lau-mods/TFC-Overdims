@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfcoverdims:loose_blackstone"
+    }
+  },
+  "result": {
+    "id": "minecraft:blackstone",
+    "count": 1
+  }
+}

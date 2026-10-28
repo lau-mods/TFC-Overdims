@@ -1,0 +1,76 @@
+{
+  "variants": {
+    "count=1": [
+      {
+        "model": "tfcoverdims:block/loose_end_stone_1",
+        "y": 0
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_1",
+        "y": 90
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_1",
+        "y": 180
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_1",
+        "y": 270
+      }
+    ],
+    "count=2": [
+      {
+        "model": "tfcoverdims:block/loose_end_stone_2",
+        "y": 0
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_2",
+        "y": 90
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_2",
+        "y": 180
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_2",
+        "y": 270
+      }
+    ],
+    "count=3": [
+      {
+        "model": "tfcoverdims:block/loose_end_stone_3",
+        "y": 0
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_3",
+        "y": 90
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_3",
+        "y": 180
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_3",
+        "y": 270
+      }
+    ],
+    "count=4": [
+      {
+        "model": "tfcoverdims:block/loose_end_stone_4",
+        "y": 0
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_4",
+        "y": 90
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_4",
+        "y": 180
+      },
+      {
+        "model": "tfcoverdims:block/loose_end_stone_4",
+        "y": 270
+      }
+    ]
+  }
+}

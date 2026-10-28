@@ -17,7 +17,118 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "overworldunchanged"
+    },
+    {
+      "acId": "AC-F002-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherrackloot"
+    },
+    {
+      "acId": "AC-F002-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "blackstoneloot"
+    },
+    {
+      "acId": "AC-F002-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherrockplacement"
+    },
+    {
+      "acId": "AC-F002-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockresources"
+    },
+    {
+      "acId": "AC-F002-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockitemsizes"
+    },
+    {
+      "acId": "AC-F003-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherbrickprocessing"
+    },
+    {
+      "acId": "AC-F003-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherrackreconstruction"
+    },
+    {
+      "acId": "AC-F004-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "blackstonereconstruction"
+    },
+    {
+      "acId": "AC-F004-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "blackstonebrickprocessing"
+    },
+    {
+      "acId": "AC-F004-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "blackstonederivatives"
+    },
+    {
+      "acId": "AC-F004-004",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "blackstoneknapping"
+    },
+    {
+      "acId": "AC-F005-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endstoneloot"
+    },
+    {
+      "acId": "AC-F005-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endrockplacement"
+    },
+    {
+      "acId": "AC-F005-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockresources"
+    },
+    {
+      "acId": "AC-F005-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockitemsizes"
+    },
+    {
+      "acId": "AC-F005-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endstoneprocessing"
+    },
+    {
+      "acId": "AC-F005-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endstoneknapping"
     }
   ],
-  "e2e": []
+  "e2e": [
+    {
+      "acId": "AC-F002-003",
+      "scenario": "tests/e2e/loose-rocks.mjs"
+    },
+    {
+      "acId": "AC-F005-001",
+      "scenario": "tests/e2e/loose-rocks.mjs"
+    }
+  ]
 }

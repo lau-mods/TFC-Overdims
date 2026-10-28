@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": [
+    "tfcoverdims:loose_blackstone_patch"
+  ],
+  "step": "vegetal_decoration"
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "BMB",
+    "M M",
+    "BMB"
+  ],
+  "key": {
+    "B": {
+      "item": "tfcoverdims:end_stone_brick"
+    },
+    "M": {
+      "item": "tfc:mortar"
+    }
+  },
+  "result": {
+    "id": "minecraft:end_stone_bricks",
+    "count": 4
+  }
+}

@@ -2,8 +2,8 @@
 
 製品要求と Acceptance Criteria の正本は `PROJECT.md`。計画は
 `.harness-state/plan.json`、進捗は `.harness-state/progress.json` に保存する。
-現在のコードは M01 の Nether / End 気候モデルと GameTest を実装している。
-他の milestone の製品機能は実装済みとは扱わない。
+現在のコードは M01 の Nether / End 気候モデルと M02 の岩石加工、地表小石、
+GameTest / E2E シナリオを実装している。他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
 
@@ -39,6 +39,59 @@
   name は `netherclimate`、`endclimate`、`overworldunchanged` となる。
   Nether 5 バイオーム・高度補正、End 5 バイオーム、Calendar 進行後の不変性、
   Overworld 不変性とモデル型の通信 codec を検証する。M01 に表示要件はない。
+
+## M02 岩石と加工
+
+- `tfcoverdims:loose_netherrack`、`tfcoverdims:loose_blackstone`、
+  `tfcoverdims:loose_end_stone` を Block / BlockItem として登録する。
+  Item のみの追加は `tfcoverdims:blackstone_brick` と `tfcoverdims:end_stone_brick`。
+  Vanilla の岩石・加工ブロック ID を維持し、独自の石器・tool head は登録しない。
+- `.common.blocks.LooseRockBlock` は TFC の `GroundcoverBlock` を継承する。
+  TFC の `LooseRockBlock` は COUNT が 1～3 のため、独自の COUNT 1～4 を使い、
+  同じ小石で右クリックすると1個増加、空の手などで回収すると全個数を返す。
+  破壊・支持ブロック消失時の loot も COUNT と同数。流体処理と回収は基底に従う。
+- Netherrack / Blackstone / End Stone の block loot のみを上書きする。
+  `tfc:is_isolated` なら元ブロック1個、それ以外は対応する Loose Rock を uniform 2～4個。
+  3種を `tfc:breaks_when_isolated` に追加して TFC の孤立検出を使う。
+  Nether Gold Ore、Nether Quartz Ore、Ancient Debris、Gilded Blackstone は変更しない。
+- 各 Loose Rock 4個の2×2から元ブロック1個、元ブロック1個から Loose Rock 4個。
+  Loose Rock 1個 + `#c:tools/chisel` から対応する Brick 1個
+  （Netherrack は `minecraft:nether_brick`）を作る。
+  Brick 4個 + `tfc:mortar` 4個の `BMB / M M / BMB` から対応する
+  Nether Bricks / Polished Blackstone Bricks / End Stone Bricks を4個作る。
+  工具加工は TFC の advanced shapeless recipe と damage crafting remainder を使う。
+  Polished Blackstone Bricks 1個 + `#c:tools/hammer` から cracked variant 1個、
+  Blackstone Brick 1個 / 2個 + Chisel から既存 Button / Pressure Plate 各1個。
+- `neoforge:false` で無効にする Vanilla recipe ID は `nether_brick`、`nether_bricks`、
+  `polished_blackstone_bricks`、`polished_blackstone_bricks_from_blackstone_stonecutting`、
+  `polished_blackstone_bricks_from_polished_blackstone_stonecutting`、
+  `cracked_polished_blackstone_bricks`、`polished_blackstone_button`、
+  `polished_blackstone_pressure_plate`、`end_stone_bricks`、
+  `end_stone_bricks_from_end_stone_stonecutting`。
+  Polished Blackstone 自体の製作・石切りと階段・塀・ハーフの派生レシピは維持する。
+- 各 `loose_*` configured feature は `tfc:random_property` で COUNT 1～4 を選ぶ。
+  placed feature は空気かつ下面が対応する Vanilla 岩石で生存可能な場合のみ配置する。
+  `loose_*_patch` は random_patch の tries=16、xz_spread=10、y_spread=1。
+  placed patch は rarity=3、count_on_every_layer が Netherrack=5、Blackstone=2、
+  End Stone=5、biome filter の順。`neoforge:add_features` の vegetal_decoration で
+  Nether 2種は `#minecraft:is_nether`、End Stone は `#minecraft:is_end` を対象とする。
+  地形・鉱脈 feature は変更しない。
+- Loose Blackstone を `tfc:stones/loose/metamorphic`、Loose End Stone を
+  `tfc:stones/loose/sedimentary` に追加し、両方を `tfc:rock_knapping` に追加して既存石器レシピを使う。
+  Loose Rock の Item Size / Weight は small / light、Brick は very_small / very_light。
+  5アイテムそれぞれに item_size を1件設定する。名称は en_us / ja_jp に追加する。
+- GameTest は M01 と同じ batch / report / classname を使用する。
+  `tests/acceptance.json` の対応は F002-001=`netherrackloot`、F002-002=`blackstoneloot`、
+  F002-003=`netherrockplacement` / `rockresources` / `rockitemsizes`、
+  F003-001=`netherbrickprocessing`、F003-002=`netherrackreconstruction`、
+  F004-001=`blackstonereconstruction`、F004-002=`blackstonebrickprocessing`、
+  F004-003=`blackstonederivatives`、F004-004=`blackstoneknapping`、
+  F005-001=`endstoneloot` / `endrockplacement` / `rockresources` / `rockitemsizes`、
+  F005-002=`endstoneprocessing`、F005-003=`endstoneknapping`。
+  複数固定シードの loot、回収、生成設定、工具耐久・材料消費、旧レシピ無効、
+  既存派生材・石器、登録アイテム集合、Size / Weight、JSON・モデル・タグ参照を検証する。
+  E2E は `tests/e2e/loose-rocks.mjs` を F002-003 / F005-001 に対応させ、
+  自然生成地点と各 COUNT の描画を撮影する。
 
 ## Harness runtime
 

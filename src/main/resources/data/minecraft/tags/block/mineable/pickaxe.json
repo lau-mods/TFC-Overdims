@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:loose_netherrack",
+    "tfcoverdims:loose_blackstone",
+    "tfcoverdims:loose_end_stone"
+  ]
+}

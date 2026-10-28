@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "tfc:random_property",
+      "state": {
+        "Name": "tfcoverdims:loose_netherrack"
+      },
+      "property": "count"
+    }
+  }
+}
