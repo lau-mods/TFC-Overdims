@@ -1,0 +1,1 @@
+{"parent":"minecraft:block/flower_pot_cross","textures":{"plant":"tfcoverdims:block/wood/sapling/warped","dirt":"tfc:block/dirt/entisol"},"render_type":"minecraft:cutout"}

@@ -1,0 +1,1 @@
+{"loader":"tfc:leaves","dense_leaves":{"parent":"tfcoverdims:block/wood/leaves/dense_leaves/crimson"},"sparse_leaves":{"parent":"tfcoverdims:block/wood/leaves/sparse_leaves/crimson"},"bare":{"parent":"tfcoverdims:block/wood/leaves/bare/crimson"},"blooming":{"parent":"tfcoverdims:block/wood/leaves/blooming/crimson"},"render_type":"minecraft:cutout_mipped"}

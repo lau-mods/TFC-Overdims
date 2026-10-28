@@ -167,6 +167,72 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:collapse",
       "name": "tfcbasaltcollapse"
+    },
+    {
+      "acId": "AC-F008-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "woodregistry"
+    },
+    {
+      "acId": "AC-F008-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "woodstorage"
+    },
+    {
+      "acId": "AC-F008-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:nether_tree",
+      "name": "nethertrees"
+    },
+    {
+      "acId": "AC-F008-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:nether_tree",
+      "name": "saplingandfungus"
+    },
+    {
+      "acId": "AC-F008-004",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "woodprocessing"
+    },
+    {
+      "acId": "AC-F008-004",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "woodfuel"
+    },
+    {
+      "acId": "AC-F008-005",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "vanillawoodrecipes"
+    },
+    {
+      "acId": "AC-F008-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "woodharvest"
+    },
+    {
+      "acId": "AC-F008-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockresources"
+    },
+    {
+      "acId": "AC-F008-004",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "woodstorage"
+    },
+    {
+      "acId": "AC-F008-004",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "woodsupportsandmachines"
     }
   ],
   "e2e": [
@@ -181,6 +247,10 @@
     {
       "acId": "AC-F007-001",
       "scenario": "tests/e2e/basalt-names.mjs"
+    },
+    {
+      "acId": "AC-F008-001",
+      "scenario": "tests/e2e/nether-wood.mjs"
     }
   ]
 }

@@ -1,0 +1,1 @@
+{"parent":"tfc:block/ore_column","textures":{"side":"tfcoverdims:block/wood/stripped_log/crimson","end":"tfcoverdims:block/wood/planks/crimson","overlay":"tfc:block/axle_casing","overlay_end":"tfc:block/axle_casing_front","particle":"tfcoverdims:block/wood/stripped_log/crimson"},"render_type":"minecraft:cutout"}

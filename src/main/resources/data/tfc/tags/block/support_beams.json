@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:wood/vertical_support/crimson",
+    "tfcoverdims:wood/horizontal_support/crimson",
+    "tfcoverdims:wood/vertical_support/warped",
+    "tfcoverdims:wood/horizontal_support/warped"
+  ]
+}

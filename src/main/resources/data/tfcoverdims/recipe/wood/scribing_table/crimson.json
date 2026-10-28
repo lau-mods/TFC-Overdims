@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"D":{"tag":"c:dyes/black"},"F":{"tag":"c:feathers"},"S":{"item":"tfcoverdims:wood/planks/crimson_slab"},"W":{"item":"tfcoverdims:wood/planks/crimson"}},"pattern":["F D","SSS","W W"],"result":{"count":1,"id":"tfcoverdims:wood/scribing_table/crimson"}}

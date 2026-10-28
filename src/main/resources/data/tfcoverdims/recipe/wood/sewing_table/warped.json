@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"G":{"item":"tfcoverdims:wood/log/warped"},"L":{"tag":"c:leathers"},"P":{"item":"tfcoverdims:wood/planks/warped"},"S":{"tag":"c:tools/shear"}},"pattern":[" LS","PPP","G G"],"result":{"count":1,"id":"tfcoverdims:wood/sewing_table/warped"}}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:wood/planks/crimson_slab",
+    "tfcoverdims:wood/planks/warped_slab"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:wood/chest/crimson",
+    "tfcoverdims:wood/chest/warped",
+    "tfcoverdims:wood/trapped_chest/crimson",
+    "tfcoverdims:wood/trapped_chest/warped"
+  ]
+}

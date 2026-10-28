@@ -30,14 +30,9 @@ public final class RockResourceGameTests {
                 helper.assertTrue(json.isJsonObject(), "Resources must contain JSON objects: " + root.relativize(path));
                 String relative = root.relativize(path).toString().replace('\\', '/');
                 if (relative.startsWith("assets/tfcoverdims/models/")) {
-                    assertModel(helper, json.getAsJsonObject());
+                    assertModel(helper, json.getAsJsonObject(), relative.startsWith("assets/tfcoverdims/models/block/loose_"));
                 } else if (relative.startsWith("assets/tfcoverdims/blockstates/")) {
-                    for (JsonElement variants : json.getAsJsonObject().getAsJsonObject("variants").asMap().values()) {
-                        for (JsonElement variant : variants.getAsJsonArray()) {
-                            helper.assertTrue(Files.exists(asset(variant.getAsJsonObject().get("model").getAsString(), "models", ".json")),
-                                "Every blockstate model must resolve");
-                        }
-                    }
+                    assertBlockstateModels(helper, json);
                 } else if (relative.contains("/tags/item/") || relative.contains("/tags/block/")) {
                     assertTag(helper, json.getAsJsonObject(), relative.contains("/tags/block/"));
                 }
@@ -49,7 +44,7 @@ public final class RockResourceGameTests {
                 helper.assertTrue(names.has("block.tfcoverdims.loose_" + rock), "Loose rock must have a localized name");
                 for (int count = 1; count <= 4; count++) {
                     assertModel(helper, JsonParser.parseString(Files.readString(resource("tfcoverdims",
-                        "assets/tfcoverdims/models/block/loose_" + rock + "_" + count + ".json"))).getAsJsonObject());
+                        "assets/tfcoverdims/models/block/loose_" + rock + "_" + count + ".json"))).getAsJsonObject(), true);
                 }
             }
             for (String brick : List.of("blackstone_brick", "end_stone_brick")) {
@@ -59,18 +54,27 @@ public final class RockResourceGameTests {
         helper.succeed();
     }
 
-    private static void assertModel(GameTestHelper helper, JsonObject model) {
+    private static void assertModel(GameTestHelper helper, JsonObject model, boolean looseRock) {
         if (model.has("parent")) {
             String parent = model.get("parent").getAsString();
-            helper.assertTrue(parent.equals("minecraft:item/generated") || Files.exists(asset(parent, "models", ".json")), "Model parent must resolve: " + parent);
+            helper.assertTrue(ResourceLocation.parse(parent).getNamespace().equals("minecraft") || Files.exists(asset(parent, "models", ".json")), "Model parent must resolve: " + parent);
         }
         if (model.has("textures")) {
             for (JsonElement value : model.getAsJsonObject("textures").asMap().values()) {
                 String texture = value.getAsString();
-                helper.assertTrue(texture.startsWith("#") || Files.exists(asset(texture, "textures", ".png")), "Texture must resolve: " + texture);
+                helper.assertTrue(texture.startsWith("#") || ResourceLocation.parse(texture).getNamespace().equals("minecraft") || Files.exists(asset(texture, "textures", ".png")), "Texture must resolve: " + texture);
             }
         }
-        if (model.has("elements")) {
+        for (JsonElement child : model.asMap().values()) {
+            if (child.isJsonObject()) {
+                assertModel(helper, child.getAsJsonObject(), false);
+            } else if (child.isJsonArray()) {
+                for (JsonElement entry : child.getAsJsonArray()) {
+                    if (entry.isJsonObject()) assertModel(helper, entry.getAsJsonObject(), false);
+                }
+            }
+        }
+        if (looseRock && model.has("elements")) {
             for (JsonElement value : model.getAsJsonArray("elements")) {
                 JsonObject element = value.getAsJsonObject();
                 for (String bound : List.of("from", "to")) {
@@ -82,6 +86,24 @@ public final class RockResourceGameTests {
                     for (JsonElement uv : face.getAsJsonObject().getAsJsonArray("uv")) {
                         helper.assertTrue(uv.getAsDouble() >= 0 && uv.getAsDouble() <= 16, "Loose rock UVs must stay inside the original texture");
                     }
+                }
+            }
+        }
+    }
+
+    private static void assertBlockstateModels(GameTestHelper helper, JsonElement element) {
+        if (element.isJsonArray()) {
+            for (JsonElement child : element.getAsJsonArray()) {
+                assertBlockstateModels(helper, child);
+            }
+        } else if (element.isJsonObject()) {
+            for (var entry : element.getAsJsonObject().entrySet()) {
+                if (entry.getKey().equals("model")) {
+                    String model = entry.getValue().getAsString();
+                    helper.assertTrue(ResourceLocation.parse(model).getNamespace().equals("minecraft") || Files.exists(asset(model, "models", ".json")),
+                        "Blockstate model must resolve: " + model);
+                } else {
+                    assertBlockstateModels(helper, entry.getValue());
                 }
             }
         }

@@ -3,7 +3,7 @@
 製品要求と Acceptance Criteria の正本は `PROJECT.md`。計画は
 `.harness-state/plan.json`、進捗は `.harness-state/progress.json` に保存する。
 現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
-M03 の崩落と Basalt 名称、および GameTest / E2E シナリオを実装している。
+M03 の崩落と Basalt 名称、M04 の Nether 木材、および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
@@ -123,6 +123,74 @@ M03 の崩落と Basalt 名称、および GameTest / E2E シナリオを実装�
   英語名はゲームの言語解決と ItemStack の表示名で検証する。
 - `tests/e2e/basalt-names.mjs` を F007-001 に対応させ、英語・日本語それぞれで
   Vanilla 3種と TFC Basalt のブロック、表示名、Registry ID、アイテムの tooltip を撮影する。
+
+## M04 Nether 木材
+
+- `.common.wood.OverdimsWood` は `RegistryWood` を実装し、CRIMSON / WARPED のみを追加する。
+  Block ID は `tfcoverdims:wood/<type>/<crimson|warped>`、Slab / Stairs は
+  `tfcoverdims:wood/planks/<wood>_slab` / `<wood>_stairs`。
+  `Wood.BlockType` の全43種（log、stripped_log、wood、stripped_wood、leaves、planks、
+  sapling、potted_sapling、bookshelf、door、trapdoor、fence、log_fence、fence_gate、button、
+  pressure_plate、slab、stairs、tool_rack、twig、fallen_leaves、vertical_support、
+  horizontal_support、workbench、trapped_chest、chest、loom、sluice、sign、wall_sign、barrel、
+  lectern、scribing_table、sewing_table、shelf、axle、bladed_axle、encased_axle、clutch、gear_box、
+  windmill、water_wheel、crate）を登録する。BlockItem は `needsItem()` に従い、別途
+  `wood/lumber/<wood>`、`wood/support/<wood>`、`wood/sign/<wood>` を登録する。
+  Vanilla ID は置換せず、Boat、金属 Hanging Sign、独自 BlockEntityType / MenuType は追加しない。
+- Sapling の植栽判定以外は `Wood.BlockType.create(wood)` を使う。
+  `BlockEntityTypeAddBlocksEvent` で TFC の Chest、Trapped Chest、Crate、Barrel、Loom、Sluice、
+  Tool Rack、Bookshelf、Sign（立札・壁札）、Tick Counter（Sapling）、Axle、Bladed Axle、
+  Encased Axle、Clutch、Gear Box、Windmill、Water Wheel、Lectern、Shelf に有効ブロックを追加する。
+  `registerWoodTypes()` で BlockSetType / WoodType を登録し、Sign の描画登録だけを client 側に置く。
+- Sapling は8 TFC日。植栽地は `tfc:tree_grows_on` または TFC 基底の許可する土壌。
+  同 tag に両 Nylium を追加し、樹木 Feature と土壌一覧を共有する。
+  Vanilla の Crimson / Warped Fungus は `BonemealEvent` の cancel だけで巨大化を抑止し、
+  通常の設置・回収は維持する。
+- 採掘・葉の維持は `minecraft:mineable/axe`、`mineable/hoe`、Block の `logs` / `leaves`、
+  建材・設備は Vanilla / TFC / common の対応 tag、Lumber は `tfc:lumber` に接続する。
+  全 BlockType の ExtendedProperties は flammability / spread とも0。
+  Item は `minecraft:non_flammable_wood` に入れる。Item の `logs`、`leaves`、`tfc:fallen_leaves`
+  は TFC の燃料・Log Pile へ推移的に入るため追加しない。
+  `logs_that_burn`、`tfc:firepit_fuel`、`tfc:log_pile_logs` にも追加しない。
+  `tfc/support/nether_support_beams` は両 Horizontal Support を up=2、down=2、horizontal=4 で登録する。
+- `recipe/wood/` は TFC 4.2.12 の `recipe/crafting/wood/` の oak を両木種へ対応付ける。
+  Saw は Log→Lumber 8、Planks→4、Slab→2、Stairs→3、Support は2 Log + Saw→8。
+  工具の remainder は TFC の damage crafting remainder を使う。
+  Vanilla で無効にする ID は各 `crimson_` / `warped_` に
+  `button`、`door`、`fence`、`fence_gate`、`hanging_sign`、`hyphae`、`planks`、`pressure_plate`、
+  `sign`、`slab`、`stairs`、`trapdoor` を付けたもの、および `stripped_crimson_hyphae`、
+  `stripped_warped_hyphae`。すべて `neoforge:false`。本MODからVanilla木材への変換は追加しない。
+- Configured / Placed Feature ID は `tfcoverdims:tree/crimson` と `tfcoverdims:tree/warped`。
+  型は `tfc:random_tree`、構造候補16 / 17、幹高3～5、placement は
+  `minecraft:count_on_every_layer` の8、次に biome filter。
+  `structure/crimson/1..16.nbt`、`warped/1..17.nbt` は Beneath 1.21.x
+  revision `eab10327879400aeb67b3f9b3f7e2fbaf60946d0` の同パスを、形状と BlockState を維持して
+  `beneath:wood/` → `tfcoverdims:wood/` に remap する。
+  `remove_<wood>_fungi` は対応する `minecraft:<wood>_forest` の vegetal_decoration から
+  `minecraft:<wood>_fungi` のみ除外し、`add_<wood>_trees` が本MODの樹木を追加する。
+  M02 の小石以外の既存 Nether Feature は維持する。
+- モデルと木材画像の基準は TFC v4.2.12 の `assets/tfc/{models,textures}/` の oak。
+  木色の変換は HSV の H を Crimson=0.94、Warped=0.49 に置き換え、S・V・alpha を保持し、
+  RGB を255倍して整数化する。パレット生成モデルは元の atlas の oak 色展開後に同じ変換を行う。
+  TFC renderer が固定参照する Chest、Planks、Water Wheel は `assets/tfc/textures/` に配置する。
+  その他は `assets/tfcoverdims/`、Scribing Table の共通 `scribing_paraphernalia` は TFC を参照する。
+  Sapling、Potted Sapling、Bare Leaves、Door、Trapdoor は cutout、その他の Leaves は cutout_mipped。
+  名称は en_us / ja_jp。Size / Weight は TFC oak の同種と一致させ、既存 tag の定義が適用される品は
+  それを使い、残りだけ個別 item_size を置いて適用数を1件にする。
+- GameTest は既存 climate batch / `run/gametest-results.xml`。
+  `tests/acceptance.json` は F008-001=`woodregistry` / `woodstorage` / `woodharvest` / `rockresources`、
+  F008-002=`nethertrees`、F008-003=`saplingandfungus`、
+  F008-004=`woodprocessing` / `woodstorage` / `woodfuel` / `woodsupportsandmachines`、
+  F008-005=`vanillawoodrecipes`。
+  classname は `nethertrees` / `saplingandfungus` が `tfcoverdims:nether_tree`（19×32×19）、
+  `woodsupportsandmachines` が `tfcoverdims:collapse`、他は `tfcoverdims:empty`。
+  全 BlockType と BlockEntity の有効性、収納保存・再読込、oak と同形の全加工レシピ・工具消耗、
+  Axe 採掘と葉の維持、Support 保護、Motor→Axle→Gear Box→Clutch→Axle の回転、
+  火炎・Fuel lookup・Firepit / Log Pile 拒否、8日成長、実際の骨粉使用と Fungus 回収、
+  読み込み済み Feature / Biome と構造ブロック、モデル参照を検証する。
+- E2E `tests/e2e/nether-wood.mjs` を F008-001 に対応させる。
+  両木種の建材、植物・透明部分・文字入りSign、収納・作業設備、全機械部品を並べ、
+  Lumber / Support / Sign の両木種のアイテムを hotbar に表示して撮影する。
 
 ## Harness runtime
 

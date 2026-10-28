@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"L":{"item":"tfcoverdims:wood/lumber/warped"},"S":{"item":"tfcoverdims:wood/stripped_log/warped"}},"pattern":["SLS","L L","SLS"],"result":{"count":1,"id":"tfcoverdims:wood/crate/warped"}}

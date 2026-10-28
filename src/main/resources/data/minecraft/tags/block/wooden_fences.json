@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:wood/fence/crimson",
+    "tfcoverdims:wood/fence/warped",
+    "tfcoverdims:wood/log_fence/crimson",
+    "tfcoverdims:wood/log_fence/warped"
+  ]
+}

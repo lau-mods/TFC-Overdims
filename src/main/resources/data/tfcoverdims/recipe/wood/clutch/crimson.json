@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"A":{"item":"tfcoverdims:wood/axle/crimson"},"L":{"item":"tfcoverdims:wood/lumber/crimson"},"M":{"item":"tfc:brass_mechanisms"},"R":{"tag":"c:dusts/redstone"},"S":{"item":"tfcoverdims:wood/stripped_log/crimson"}},"pattern":["LSL","MAR","LSL"],"result":{"count":2,"id":"tfcoverdims:wood/clutch/crimson"}}

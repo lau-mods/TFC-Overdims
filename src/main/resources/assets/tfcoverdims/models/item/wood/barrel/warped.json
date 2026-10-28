@@ -1,0 +1,1 @@
+{"parent":"tfcoverdims:block/wood/barrel/warped","overrides":[{"predicate":{"tfc:sealed":1.0},"model":"tfcoverdims:block/wood/barrel_sealed/warped"}]}

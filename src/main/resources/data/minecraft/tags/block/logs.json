@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:wood/log/crimson",
+    "tfcoverdims:wood/wood/crimson",
+    "tfcoverdims:wood/stripped_log/crimson",
+    "tfcoverdims:wood/stripped_wood/crimson",
+    "tfcoverdims:wood/log/warped",
+    "tfcoverdims:wood/wood/warped",
+    "tfcoverdims:wood/stripped_log/warped",
+    "tfcoverdims:wood/stripped_wood/warped"
+  ]
+}

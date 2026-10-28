@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:wood/leaves/crimson",
+    "tfcoverdims:wood/leaves/warped",
+    "tfcoverdims:wood/fallen_leaves/crimson",
+    "tfcoverdims:wood/fallen_leaves/warped",
+    "tfcoverdims:wood/sapling/crimson",
+    "tfcoverdims:wood/sapling/warped"
+  ]
+}

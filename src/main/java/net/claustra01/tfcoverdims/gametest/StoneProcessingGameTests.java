@@ -210,7 +210,8 @@ public final class StoneProcessingGameTests {
 
     private static void assertKnapping(GameTestHelper helper, String rock, String category) {
         helper.assertTrue(BuiltInRegistries.ITEM.keySet().stream()
-            .filter(id -> id.getNamespace().equals(TFCOverdims.MOD_ID)).map(ResourceLocation::getPath).collect(Collectors.toSet())
+            .filter(id -> id.getNamespace().equals(TFCOverdims.MOD_ID)).map(ResourceLocation::getPath)
+            .filter(name -> !name.startsWith("wood/")).collect(Collectors.toSet())
             .equals(Set.of("loose_netherrack", "loose_blackstone", "loose_end_stone", "blackstone_brick", "end_stone_brick")),
             "Only the five M02 items may be registered; stone tools and heads must use TFC items");
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);

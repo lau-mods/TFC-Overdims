@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"A":{"item":"tfcoverdims:wood/axle/warped"},"L":{"item":"tfcoverdims:wood/lumber/warped"},"P":{"item":"tfcoverdims:wood/planks/warped"}},"pattern":["LPL","PAP","LPL"],"result":{"count":1,"id":"tfcoverdims:wood/water_wheel/warped"}}

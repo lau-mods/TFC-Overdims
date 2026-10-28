@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"A":{"item":"tfcoverdims:wood/axle/crimson"},"L":{"item":"tfcoverdims:wood/lumber/crimson"},"S":{"item":"tfcoverdims:wood/stripped_log/crimson"}},"pattern":[" S ","LAL"," S "],"result":{"count":4,"id":"tfcoverdims:wood/encased_axle/crimson"}}

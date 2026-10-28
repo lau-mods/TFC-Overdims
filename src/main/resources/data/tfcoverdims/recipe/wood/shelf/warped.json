@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","key":{"L":{"item":"tfcoverdims:wood/lumber/warped"},"P":{"item":"tfcoverdims:wood/planks/warped"},"S":{"tag":"c:rods/wooden"}},"pattern":["PPP","L L","S S"],"result":{"count":2,"id":"tfcoverdims:wood/shelf/warped"}}
