@@ -233,6 +233,30 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:collapse",
       "name": "woodsupportsandmachines"
+    },
+    {
+      "acId": "AC-F009-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "wartcalendar"
+    },
+    {
+      "acId": "AC-F009-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:nether_tree",
+      "name": "choruscalendar"
+    },
+    {
+      "acId": "AC-F009-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "growthpersistence"
+    },
+    {
+      "acId": "AC-F009-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "growthpersistence"
     }
   ],
   "e2e": [

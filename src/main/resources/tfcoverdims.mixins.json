@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.claustra01.tfcoverdims.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "NetherWartBlockMixin",
+    "ChorusFlowerBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

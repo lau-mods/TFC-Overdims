@@ -372,6 +372,7 @@ public final class WoodGameTests {
     @GameTest(template = "nether_tree", batch = "climate")
     public static void saplingAndFungus(GameTestHelper helper) {
         helper.getLevel().setDayTime(6000);
+        helper.getLevel().updateSkyBrightness();
         for (OverdimsWood wood : OverdimsWood.values()) {
             var sapling = (TFCSaplingBlock) OverdimsWoodBlocks.WOODS.get(wood).get(Wood.BlockType.SAPLING).get();
             helper.assertTrue(sapling.getTicksToGrow() == 8L * ICalendar.CALENDAR_TICKS_IN_DAY,

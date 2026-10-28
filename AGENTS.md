@@ -3,7 +3,8 @@
 製品要求と Acceptance Criteria の正本は `PROJECT.md`。計画は
 `.harness-state/plan.json`、進捗は `.harness-state/progress.json` に保存する。
 現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
-M03 の崩落と Basalt 名称、M04 の Nether 木材、および GameTest / E2E シナリオを実装している。
+M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
+および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
@@ -191,6 +192,28 @@ M03 の崩落と Basalt 名称、M04 の Nether 木材、および GameTest / E2
 - E2E `tests/e2e/nether-wood.mjs` を F008-001 に対応させる。
   両木種の建材、植物・透明部分・文字入りSign、収納・作業設備、全機械部品を並べ、
   Lumber / Support / Sign の両木種のアイテムを hotbar に表示して撮影する。
+
+## M05 Nether Wart / Chorus の Calendar 成長
+
+- common 側の `NetherWartBlockMixin` / `ChorusFlowerBlockMixin` が Vanilla の
+  `randomTick` を TFC Calendar の経過時間へ接続する。`onPlace` で時刻を記録し、
+  `onRemove` で成熟（Wart age 3 / Flower age 5）または別ブロックへの置換・除去時に削除する。
+  `tfcoverdims.mixins.json` は mod metadata の `[[mixins]]` で有効化する。
+- `tfcoverdims:plant_growth` は保存可能な chunk data attachment。
+  BlockPos の packed long を文字列キーとし、各位置の最終更新 Calendar tick を保持する。
+  既存植物に記録がない場合は最初の random tick 時点から計測する。
+- `CalendarGrowth.interval(ICalendar)` は Vanilla の平均 random tick 間隔に相当する
+  1366 game ticks を Calendar ticks に変換し、最小値を1とする。
+  経過した間隔ごとに Vanilla の成長処理を呼び、Chorus の新しい Flower にも残り時間を適用する。
+  1回の random tick の再生上限は4096回。未処理時間と端数は次回へ保持する。
+- Soul Sand / End Stone の土台条件、Vanilla の age・形状・分岐・成熟・採取 loot は変更しない。
+  新規農地、栄養素、作物、成長段階は追加しない。
+- GameTest は既存の climate batch / `run/gametest-results.xml` を使用する。
+  `tests/acceptance.json` の F009-001 は `wartcalendar` と `growthpersistence`、
+  F009-002 は `choruscalendar` と `growthpersistence` に対応する。
+  classname は `choruscalendar` が `tfcoverdims:nether_tree`、残りは `tfcoverdims:empty`。
+  Calendar 経過・端数・成長上限・採取・土台条件、Chorus 分岐、attachment の保存・再読込と
+  植え直し時の時刻リセットを検証する。表示要件がないため M05 の E2E は登録しない。
 
 ## Harness runtime
 

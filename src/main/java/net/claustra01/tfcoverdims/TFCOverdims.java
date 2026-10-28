@@ -6,6 +6,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 import net.claustra01.tfcoverdims.climate.OverdimsClimateModels;
 import net.claustra01.tfcoverdims.common.blocks.OverdimsBlocks;
+import net.claustra01.tfcoverdims.common.growth.CalendarGrowth;
 import net.claustra01.tfcoverdims.common.items.OverdimsItems;
 import net.claustra01.tfcoverdims.common.wood.OverdimsWoodBlocks;
 import net.claustra01.tfcoverdims.common.wood.OverdimsWood;
@@ -16,6 +17,7 @@ public final class TFCOverdims {
     public static final String MOD_ID = "tfcoverdims";
 
     public TFCOverdims(IEventBus modBus) {
+        CalendarGrowth.ATTACHMENTS.register(modBus);
         OverdimsWood.registerWoodTypes();
         OverdimsWoodBlocks.register(modBus);
         OverdimsBlocks.BLOCKS.register(modBus);
