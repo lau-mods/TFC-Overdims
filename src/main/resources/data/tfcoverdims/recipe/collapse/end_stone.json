@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "minecraft:end_stone"
+  ],
+  "result": "minecraft:end_stone"
+}

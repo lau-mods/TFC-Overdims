@@ -3,5 +3,8 @@
   "block.tfcoverdims.loose_blackstone": "Loose Blackstone",
   "block.tfcoverdims.loose_end_stone": "Loose End Stone",
   "item.tfcoverdims.blackstone_brick": "Blackstone Brick",
-  "item.tfcoverdims.end_stone_brick": "End Stone Brick"
+  "item.tfcoverdims.end_stone_brick": "End Stone Brick",
+  "block.minecraft.basalt": "Nether Basalt",
+  "block.minecraft.polished_basalt": "Polished Nether Basalt",
+  "block.minecraft.smooth_basalt": "Smooth Nether Basalt"
 }

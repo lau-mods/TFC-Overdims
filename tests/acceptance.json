@@ -119,6 +119,54 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "endstoneknapping"
+    },
+    {
+      "acId": "AC-F006-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "blackstonecollapse"
+    },
+    {
+      "acId": "AC-F006-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "endstonecollapse"
+    },
+    {
+      "acId": "AC-F006-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "supportbeams"
+    },
+    {
+      "acId": "AC-F006-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "collapseexclusions"
+    },
+    {
+      "acId": "AC-F006-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "tfcbasaltcollapse"
+    },
+    {
+      "acId": "AC-F007-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "basaltidentities"
+    },
+    {
+      "acId": "AC-F007-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "basaltgeology"
+    },
+    {
+      "acId": "AC-F007-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "tfcbasaltcollapse"
     }
   ],
   "e2e": [
@@ -129,6 +177,10 @@
     {
       "acId": "AC-F005-001",
       "scenario": "tests/e2e/loose-rocks.mjs"
+    },
+    {
+      "acId": "AC-F007-001",
+      "scenario": "tests/e2e/basalt-names.mjs"
     }
   ]
 }

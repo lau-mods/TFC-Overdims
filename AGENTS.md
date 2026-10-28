@@ -2,8 +2,9 @@
 
 製品要求と Acceptance Criteria の正本は `PROJECT.md`。計画は
 `.harness-state/plan.json`、進捗は `.harness-state/progress.json` に保存する。
-現在のコードは M01 の Nether / End 気候モデルと M02 の岩石加工、地表小石、
-GameTest / E2E シナリオを実装している。他の milestone の製品機能は実装済みとは扱わない。
+現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
+M03 の崩落と Basalt 名称、および GameTest / E2E シナリオを実装している。
+他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
 
@@ -92,6 +93,36 @@ GameTest / E2E シナリオを実装している。他の milestone の製品機
   既存派生材・石器、登録アイテム集合、Size / Weight、JSON・モデル・タグ参照を検証する。
   E2E は `tests/e2e/loose-rocks.mjs` を F002-003 / F005-001 に対応させ、
   自然生成地点と各 COUNT の描画を撮影する。
+
+## M03 崩落と Basalt 名称
+
+- `tfc:can_collapse`、`tfc:can_start_collapse`、`tfc:can_trigger_collapse` の
+  Block Tag に本 MOD が追加するのは `minecraft:blackstone` と `minecraft:end_stone` のみ。
+  `tfcoverdims:collapse/blackstone` と `tfcoverdims:collapse/end_stone` は
+  `tfc:collapse` recipe で、それぞれ元と同じ既存ブロックを落下結果にする。
+  新規 Cobble は追加せず、Support Beam の保護は TFC 既存処理を使い Java は追加しない。
+  Netherrack、Nether Bricks、End Stone Bricks、Vanilla Basalt、鉱石の崩落規則は変更しない。
+- 表示名のみを en_us / ja_jp で上書きする。
+
+  | Vanilla ID | en_us | ja_jp |
+  | --- | --- | --- |
+  | `minecraft:basalt` | Nether Basalt | ネザー玄武岩 |
+  | `minecraft:polished_basalt` | Polished Nether Basalt | 磨かれたネザー玄武岩 |
+  | `minecraft:smooth_basalt` | Smooth Nether Basalt | 滑らかなネザー玄武岩 |
+
+  TFC の翻訳キーと Registry ID は変更しない。Vanilla Basalt のモデル、テクスチャ、
+  loot、recipe、worldgen、rock tag も変更しない。
+- GameTest は M01 と同じ batch / report を使う。`collapse` template の
+  classname は `tfcoverdims:collapse`。`basaltidentities` は `empty` template を使い、
+  classname は `tfcoverdims:empty`。
+  `tests/acceptance.json` の対応は F006-001=`blackstonecollapse` / `endstonecollapse`、
+  F006-002=`supportbeams` / `collapseexclusions` / `tfcbasaltcollapse`、
+  F007-001=`basaltidentities`、F007-002=`basaltgeology` / `tfcbasaltcollapse`。
+  採掘からの落下と着地、Beam 保護、対象外ブロックの採掘、既存 TFC Basalt の崩落・採掘、
+  Vanilla Basalt の地表小石・岩石 item tag・knapping recipe・鉱石母岩からの分離を検証する。
+  英語名はゲームの言語解決と ItemStack の表示名で検証する。
+- `tests/e2e/basalt-names.mjs` を F007-001 に対応させ、英語・日本語それぞれで
+  Vanilla 3種と TFC Basalt のブロック、表示名、Registry ID、アイテムの tooltip を撮影する。
 
 ## Harness runtime
 

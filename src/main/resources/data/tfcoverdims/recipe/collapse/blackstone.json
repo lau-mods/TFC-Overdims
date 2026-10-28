@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "minecraft:blackstone"
+  ],
+  "result": "minecraft:blackstone"
+}
