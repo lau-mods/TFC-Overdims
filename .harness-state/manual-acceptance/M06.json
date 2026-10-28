@@ -1,0 +1,538 @@
+{
+  "milestone": "M06",
+  "decision": "accepted_on_user_manual_confirmation",
+  "at": "2026-10-28T16:55:32.106Z",
+  "userInstruction": "もう実際にできていることを確認したので、harnessを無理やり進めて",
+  "reason": "User explicitly confirmed that the behavior works in the real Minecraft client and requested advancing the harness. Accept the remaining M06 visual verification on that manual confirmation. The automated E2E run remains failed; this is a one-time manual acceptance for M06, not an automated pass or a change to later milestone gates.",
+  "acceptedIssues": [
+    "ER-004"
+  ],
+  "automatedE2EStatus": "failed; preserved in original run records",
+  "evidenceRuns": {
+    "previousSuccessfulE2E": ".harness-state/runs/2026-10-28T16-27-06-692Z-027-M06-e2e",
+    "latestFailedE2E": ".harness-state/runs/2026-10-28T16-49-01-353Z-047-M06-e2e",
+    "successfulGameTest": ".harness-state/runs/2026-10-28T16-48-27-066Z-046-M06-gametest"
+  },
+  "codeReview": {
+    "kind": "code",
+    "issues": [
+      {
+        "target": "AGENTS.md:1-8 (intro) and missing M06 section",
+        "acId": null,
+        "problem": "AGENTS.md was not updated for M06. The intro still lists only M01–M05. There is no section recording the Hoglin loot override (Pork 2–4, Bone 3–6, no leather or Cursed Hide), the Chorus Fruit food definition values (hunger 4, saturation 0.5, water 5, fruit 1.0, decay_modifier 2.0), the Mixin that skips TFC's Nether portal veto (which disables TFC's `enableNetherPortals` server config), the GameTest names, classnames and acceptance mapping (hoglinfood, chorusfood, netherwater, dimensionequipment, vanillaportals), or the E2E scenario `tests/e2e/dimension-survival.mjs`.",
+        "reason": "The project rules require AGENTS.md to be updated in the same change whenever user-visible behaviour, IDs, data rules, Mixins or verification steps change. AGENTS.md is in the M06 scope, and the repository otherwise treats only M01–M05 as implemented.",
+        "fix": "Add M06 to the intro sentence. Add an `## M06 Nether / End の生存と設備` section that records: the hoglin.json pools and counts; the Chorus food file path and every value in it; that placed water evaporation and TFC containers, thirst, Firepit, Barrel and Anvil need no Java; and that NetherPortalCompatibilityMixin skips `ForgeEventHandler.onCreateNetherPortal`, so Vanilla Obsidian portals work whatever `enableNetherPortals` is set to. Also record the GameTest names, classnames and acceptance.json mapping, and the E2E scenario and its ACs.",
+        "id": "CR-001",
+        "status": "resolved",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: AGENTS.mdにM06のデータ値、Mixinの設定への影響、GameTest対応とE2Eを追記しました。",
+            "at": "2026-10-28T16:19:01.614Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "AGENTS.md now names M06 in the intro and has an `## M06 Nether / End の生存と設備` section. It records the hoglin.json pools and counts with Looting, the Chorus food path and all its values, that no Java is added for water, thirst or equipment, that the Mixin skips enableNetherPortals, the GameTest names, classnames and acceptance mapping, and the E2E scenario with its ACs.",
+            "at": "2026-10-28T16:19:52.619Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The diff only touches the E2E script, and AGENTS.md still contains the M06 intro mention and the full `## M06 Nether / End の生存と設備` section.",
+            "at": "2026-10-28T16:21:08.858Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The diff only changes tests/e2e/dimension-survival.mjs. AGENTS.md still names M06 in the intro and keeps the full `## M06 Nether / End の生存と設備` section.",
+            "at": "2026-10-28T16:26:27.550Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The diff only changes tests/e2e/dimension-survival.mjs and adds tests/e2e/HoldShift.java. AGENTS.md still names M06 in the intro and keeps the full `## M06 Nether / End の生存と設備` section.",
+            "at": "2026-10-28T16:33:18.633Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The diff only changes tests/e2e/dimension-survival.mjs. AGENTS.md still names M06 in the intro and keeps the full `## M06 Nether / End の生存と設備` section.",
+            "at": "2026-10-28T16:39:05.487Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The diff does not touch AGENTS.md. It changes only CollapseGameTests, HoldShift.java and dimension-survival.mjs. AGENTS.md still names M06 in the intro and keeps the full `## M06 Nether / End の生存と設備` section.",
+            "at": "2026-10-28T16:43:23.776Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The diff changes only tests/e2e/HoldShift.java. AGENTS.md still names M06 in the intro and keeps the full `## M06 Nether / End の生存と設備` section.",
+            "at": "2026-10-28T16:48:27.064Z"
+          }
+        ]
+      },
+      {
+        "target": "src/main/resources/data/minecraft/loot_table/entities/hoglin.json:9-19",
+        "acId": "AC-F010-001",
+        "problem": "The Pork entry has only `set_count` 2–4 and no Looting function. Vanilla's hoglin porkchop entry has `minecraft:enchanted_count_increase` (looting, 0–1), and this override removes it, so Looting no longer affects the meat drop.",
+        "reason": "The AC fixes the counts only for the case without Looting (\"Lootingなしの場合\"), which implies Looting keeps its Vanilla effect. Removing it is a behaviour change that no criterion asks for.",
+        "fix": "Add `{\"function\": \"minecraft:enchanted_count_increase\", \"enchantment\": \"minecraft:looting\", \"count\": {\"type\": \"minecraft:uniform\", \"min\": 0.0, \"max\": 1.0}}` to the `tfc:food/pork` entry after `set_count`, as in the Vanilla porkchop entry. Add an assertion to the GameTest with a Looting tool if needed.",
+        "id": "CR-002",
+        "status": "resolved",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: PorkにVanillaと同じLooting増加関数を追加しました。",
+            "at": "2026-10-28T16:19:01.614Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "In hoglin.json, the tfc:food/pork entry now has `minecraft:enchanted_count_increase` (looting, uniform 0–1) after set_count, matching the Vanilla porkchop entry.",
+            "at": "2026-10-28T16:19:52.619Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "hoglin.json is not in the diff, so the Looting `enchanted_count_increase` on the Pork entry is still there.",
+            "at": "2026-10-28T16:21:08.858Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "hoglin.json is not in the diff, so the Looting `minecraft:enchanted_count_increase` on the tfc:food/pork entry is still there.",
+            "at": "2026-10-28T16:26:27.550Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "hoglin.json is not in the diff, so the Looting `minecraft:enchanted_count_increase` on the tfc:food/pork entry is still there.",
+            "at": "2026-10-28T16:33:18.633Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "hoglin.json is not in the diff, so the Looting `minecraft:enchanted_count_increase` on the tfc:food/pork entry is still there.",
+            "at": "2026-10-28T16:39:05.487Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "hoglin.json is not in the diff, so the Looting `minecraft:enchanted_count_increase` on the tfc:food/pork entry is still there.",
+            "at": "2026-10-28T16:43:23.776Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "hoglin.json is not in the diff. The tfc:food/pork entry still has the Looting `minecraft:enchanted_count_increase` function.",
+            "at": "2026-10-28T16:48:27.064Z"
+          }
+        ]
+      },
+      {
+        "target": "src/main/java/net/claustra01/tfcoverdims/mixin/NetherPortalCompatibilityMixin.java:16-20",
+        "acId": "AC-F015-001",
+        "problem": "The injection first checks `event.getLevel() instanceof Level` and that the dimension is the Overworld or the Nether. Vanilla fires PortalSpawnEvent only from portal-shape search in portal dimensions (BaseFireBlock.inPortalDimension), so this check never filters anything. The comment also says it skips \"TFC's default portal veto\", but it skips the veto unconditionally, which disables the `enableNetherPortals` server config.",
+        "reason": "The code style says to validate only states the game can produce, and comments must describe the current behaviour accurately. As written, the comment hides the fact that a TFC config option no longer has any effect.",
+        "fix": "Remove the instanceof and dimension condition and call `ci.cancel()` directly. Reword the comment to say that TFC's `enableNetherPortals` veto is skipped so that the Vanilla portal rules apply.",
+        "id": "CR-003",
+        "status": "resolved",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: 冗長なDimension判定を削除し、enableNetherPortalsの拒否処理をスキップすることを明記しました。",
+            "at": "2026-10-28T16:19:01.614Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The instanceof and dimension check has been removed, so the method now just calls `ci.cancel()`. The comment now says TFC's enableNetherPortals veto is skipped so that the Vanilla portal rules apply.",
+            "at": "2026-10-28T16:19:52.619Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "NetherPortalCompatibilityMixin is not in the diff, so it still cancels unconditionally and keeps the corrected comment.",
+            "at": "2026-10-28T16:21:08.858Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "NetherPortalCompatibilityMixin is not in the diff. It still calls ci.cancel() unconditionally and keeps the corrected enableNetherPortals comment.",
+            "at": "2026-10-28T16:26:27.550Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "NetherPortalCompatibilityMixin is not in the diff. It still calls ci.cancel() unconditionally and keeps the corrected enableNetherPortals comment.",
+            "at": "2026-10-28T16:33:18.633Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "NetherPortalCompatibilityMixin is not in the diff. It still calls ci.cancel() unconditionally and keeps the corrected enableNetherPortals comment.",
+            "at": "2026-10-28T16:39:05.487Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "NetherPortalCompatibilityMixin is not in the diff. It still calls ci.cancel() unconditionally and keeps the corrected enableNetherPortals comment.",
+            "at": "2026-10-28T16:43:23.776Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "NetherPortalCompatibilityMixin is not in the diff. It still calls ci.cancel() unconditionally and keeps the corrected enableNetherPortals comment.",
+            "at": "2026-10-28T16:48:27.064Z"
+          }
+        ]
+      },
+      {
+        "target": "src/main/java/net/claustra01/tfcoverdims/gametest/SurvivalGameTests.java:83-111",
+        "acId": "AC-F010-001",
+        "problem": "After the Hoglin is killed, the test checks only the Pork count. Bone 3–6 and the absence of Cursed Hide or other items are not checked on the actual kill drops. The cooking and decay checks (HeatingRecipe, assertFoodPersistence) run on a new `FoodCapability.setCreatedNow(item(\"tfc:food/pork\"))` stack, not on the Pork the Hoglin dropped.",
+        "reason": "The Expected Result says the Pork obtained from the Hoglin follows TFC's decay and cooking rules, and the milestone approach requires confirming that the TFC food component is initialised on the dropped item. A freshly constructed stack does not show that the loot path sets up the food component correctly.",
+        "fix": "Take the Pork ItemStack from `killedDrops` and use it for `HeatingRecipe.getRecipe(...)`, `assembleItem` and `assertFoodPersistence`. On the kill drops, also assert that Bone totals 3–6 and that every drop is either `tfc:food/pork` or `minecraft:bone`.",
+        "id": "CR-004",
+        "status": "resolved",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: 実際の討伐ドロップで骨の個数と品種を検証し、落ちたPorkで調理・保存・腐敗を確認するよう修正しました。",
+            "at": "2026-10-28T16:19:01.614Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The kill drops are now checked for 3–6 Bone and for containing only Pork and Bone. The Pork used for HeatingRecipe, assembleItem and assertFoodPersistence is taken from killedDrops, and the test asserts that it has the TFC food component.",
+            "at": "2026-10-28T16:19:52.619Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "SurvivalGameTests is not in the diff, so the kill-drop checks for Bone count and allowed items, and the use of the dropped Pork for cooking and decay, are unchanged.",
+            "at": "2026-10-28T16:21:08.858Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "SurvivalGameTests is not in the diff, so the kill-drop checks for Bone count and allowed items, and the use of the dropped Pork for cooking and decay, are unchanged.",
+            "at": "2026-10-28T16:26:27.550Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "SurvivalGameTests is not in the diff, so the kill-drop checks for Bone count and allowed items, and the use of the dropped Pork for cooking and decay, are unchanged.",
+            "at": "2026-10-28T16:33:18.633Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "SurvivalGameTests is not in the diff, so the kill-drop checks for Bone count and allowed items, and the use of the dropped Pork for cooking and decay, are unchanged.",
+            "at": "2026-10-28T16:39:05.487Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "SurvivalGameTests is not in the diff, so the kill-drop checks for Bone count and allowed items, and the use of the dropped Pork for cooking and decay, are unchanged. The only GameTest change is in CollapseGameTests (runAfterDelay → succeedWhen), which has nothing to do with this issue.",
+            "at": "2026-10-28T16:43:23.776Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "SurvivalGameTests is not in the diff, so the kill-drop checks for Bone count and allowed items are unchanged. The cooking and decay checks still use the Pork the Hoglin dropped.",
+            "at": "2026-10-28T16:48:27.064Z"
+          }
+        ]
+      },
+      {
+        "target": "tests/e2e/dimension-survival.mjs:27-38",
+        "acId": "AC-F015-001",
+        "problem": "Before inserting the Eyes of Ender, the player is teleported to 12.5 102 0.5, the centre of the 3×3 frame interior, and falls to y=101. When the 12th eye is inserted, the End Portal forms at the player's feet, and a creative player is transferred to the End at once. The 'end-frame-opened-with-eyes' screenshot is then taken in the End and does not show the frame. The later `tp @s 12.5 101 0.5` runs in the End, so `waitFor(the_end)` passes without testing travel through the portal.",
+        "reason": "The E2E is meant to show that the Vanilla End Portal opens with Eyes of Ender and that walking into it moves the player to the End. As written, the screenshot and the travel step do not show what they are labelled as.",
+        "fix": "Insert the eyes from a position outside the ring, e.g. `execute in minecraft:overworld run tp @s 12.5 101 -4`, within reach of every frame. Take the opened-frame screenshot from there, then `tp @s 12.5 101 0.5` into the portal and wait for `minecraft:the_end`.",
+        "id": "CR-005",
+        "status": "resolved",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Eye挿入時のプレイヤーを枠外へ移し、開通撮影後にPortalへ入る手順に修正しました。",
+            "at": "2026-10-28T16:19:01.614Z"
+          },
+          {
+            "status": "open",
+            "by": "claude",
+            "note": "The player is now outside the ring at 12.5 101 -4 (eye at y≈102.62), but this spot cannot reach every frame. The three north frames at z=2 have their nearest face at z=2, so they are at least √(6²+0.62²) ≈ 6.03 blocks from the eye. The 1.21.1 server only accepts a block use when `canInteractWithBlock(pos, 1.0)` holds, which means less than 5.0 creative range + 1.0 = 6.0. The eyes for those frames are therefore rejected, the portal does not open, and both the 'end-frame-opened-with-eyes' screenshot and the later `tp @s 12.5 101 0.5` / waitFor(the_end) step fail. Insert the eyes from a spot within reach of all 12 frames, or move between frame groups, before taking the screenshot from outside the ring.",
+            "at": "2026-10-28T16:19:52.619Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Eye 挿入位置を枠外の z=-3 に変更。全12枠への最大距離は約5.063ブロックで操作範囲内です。開通時の即時転送を防ぎ、枠の撮影後に Portal 内へ移動する手順を維持しました。",
+            "at": "2026-10-28T16:20:45.962Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The eyes are now inserted from 12.5 101 -3, with the eye at about y=102.62. The farthest frames are the north corners (11,101,2) and (13,101,2). Their nearest full-block face is about 5.063 blocks away (√(0.5²+5²+0.62²)), which is under the 6.0 limit from `canInteractWithBlock(pos, 1.0)` (5.0 creative range + 1.0). The east and west frames are about 4.3 blocks away and the south frames about 1.2, so all 12 frames are in reach. The ray to the north frame tops passes above the south frames. The player stands outside the 3×3 interior, so opening the portal does not transfer them, and the opened-frame screenshot is taken in the Overworld. After that, `tp @s 12.5 101 0.5` walks into the portal and waitFor(the_end) checks the actual portal travel.",
+            "at": "2026-10-28T16:21:08.858Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The eye insertion setup is unchanged: the player stands at 12.5 101 -3, outside the ring and within reach of all 12 frames (lines 37-47). The opened-frame screenshot is still taken in the Overworld (lines 48-49), and the player then teleports to 12.5 101 0.5 and waitFor(the_end) checks the portal travel (lines 50-52). The new captureArrival helper only waits for the loading screen to close and re-aims the camera before the screenshot. It does not change the travel check.",
+            "at": "2026-10-28T16:26:27.550Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The End portal steps are unchanged. The player inserts the eyes from 12.5 101 -3, outside the ring and within reach of all 12 frames (lines 42-52). The opened-frame screenshot is taken in the Overworld (lines 53-54). Then `tp @s 12.5 101 0.5` and waitFor(the_end) check the actual portal travel (lines 55-57). The new changes are a barrier fill followed by an air fill, a longer camera timeout, and native Shift input for the tooltip. None of them affect the eye insertion or the travel check.",
+            "at": "2026-10-28T16:33:18.633Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The eyes are still inserted from 12.5 101 -3, outside the ring and within reach of all 12 frames (lines 42-52). The only change in this part is the screenshot camera, which moved from z=-4 to z=-5 and got a longer timeout. That spot is still outside the 3×3 interior in the Overworld, so the opened frame is captured before any transfer. Then `tp @s 12.5 101 0.5` and waitFor(the_end) still check the actual portal travel (lines 55-57). Moving the food scene to x≈1024 and the extra Shift mouse-move both happen after the player arrives in the End and do not affect this issue.",
+            "at": "2026-10-28T16:39:05.487Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "The End portal steps are unchanged. The player inserts the eyes from 12.5 101 -3, outside the ring and within reach of all 12 frames (lines 43-53). The opened-frame screenshot is taken in the Overworld from z=-5 (lines 54-55). Then `tp @s 12.5 101 0.5` and waitFor(the_end) check the actual portal travel (lines 56-58). The new changes are a `recipe give` for popped chorus fruit and passing the client PID to HoldShift for macOS focus, and neither affects the portal flow.",
+            "at": "2026-10-28T16:43:23.776Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "dimension-survival.mjs is not in the diff, so the End portal steps are unchanged: eyes inserted from outside the ring at z=-3, the screenshot taken in the Overworld, then the tp into the portal and waitFor(the_end). The only change switches the macOS focus step in HoldShift from System Events osascript to AppKit via swift, which does not affect the portal flow.",
+            "at": "2026-10-28T16:48:27.064Z"
+          }
+        ]
+      },
+      {
+        "target": "src/main/java/net/claustra01/tfcoverdims/gametest/PortalGameTests.java:41",
+        "acId": null,
+        "problem": "`net.minecraft.world.level.portal.PortalShape` is written as a fully qualified name inline, while every other type in the file and the existing GameTests is imported.",
+        "reason": "The code style asks new code to match the surrounding idiom.",
+        "fix": "Add `import net.minecraft.world.level.portal.PortalShape;` and call `PortalShape.findEmptyPortalShape(...)`.",
+        "id": "CR-006",
+        "status": "resolved",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: PortalShapeをimportし、インラインの完全修飾名を削除しました。",
+            "at": "2026-10-28T16:19:01.614Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "`net.minecraft.world.level.portal.PortalShape` is now imported and called as `PortalShape.findEmptyPortalShape(...)`.",
+            "at": "2026-10-28T16:19:52.619Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "PortalGameTests.java is not in the diff, so the PortalShape import and the unqualified call are unchanged.",
+            "at": "2026-10-28T16:21:08.858Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "PortalGameTests.java is not in the diff, so the PortalShape import and the unqualified call are unchanged.",
+            "at": "2026-10-28T16:26:27.550Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "PortalGameTests.java is not in the diff, so the PortalShape import and the unqualified call are unchanged.",
+            "at": "2026-10-28T16:33:18.633Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "PortalGameTests.java is not in the diff, so the PortalShape import and the unqualified call are unchanged.",
+            "at": "2026-10-28T16:39:05.487Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "PortalGameTests.java is not in the diff, so the PortalShape import and the unqualified call are unchanged.",
+            "at": "2026-10-28T16:43:23.776Z"
+          },
+          {
+            "status": "resolved",
+            "by": "claude",
+            "note": "PortalGameTests.java is not in the diff, so the PortalShape import and the unqualified call are unchanged.",
+            "at": "2026-10-28T16:48:27.064Z"
+          }
+        ]
+      }
+    ]
+  },
+  "e2eReview": {
+    "kind": "e2e",
+    "issues": [
+      {
+        "target": ".harness-state/runs/2026-10-28T16-27-06-692Z-027-M06-e2e/scenarios/tests-e2e-dimension-survival.mjs/screenshots/AC-F015-001-obsidian-frame-lit-with-flint-and-steel.png",
+        "acId": "AC-F015-001",
+        "problem": "The 'chat messages cannot be verified' system toast (无法验证聊天消息…) covers the top-right of the screen, including the top-right corner and right column of the lit Obsidian frame.",
+        "reason": "The AC requires the screenshot to show that the portal shape is unchanged from Vanilla. With part of the 4x5 frame hidden, the full frame cannot be checked. The toast appears on join because the server does not enforce secure chat, and the scenario takes the screenshot before the toast goes away.",
+        "fix": "In tests/e2e/dimension-survival.mjs, wait until the join toast has finished (about 5 s or more after login) before the first screenshot, for example with a waitFor/delay before line 31. The other option is a server/client setting that stops the unsecure-server toast from showing. Make sure the whole Obsidian frame is visible with no overlay.",
+        "id": "ER-001",
+        "status": "accepted",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Added a 12-second settling period before capturing the lit portal.",
+            "at": "2026-10-28T16:33:03.651Z"
+          },
+          {
+            "status": "accepted",
+            "by": "codex",
+            "note": "accepted: 既存の12秒待機を維持。最新の添付画像では通知が消え、Obsidian枠全体を確認できます。",
+            "at": "2026-10-28T16:38:51.028Z"
+          }
+        ]
+      },
+      {
+        "target": ".harness-state/runs/2026-10-28T16-27-06-692Z-027-M06-e2e/scenarios/tests-e2e-dimension-survival.mjs/screenshots/AC-F015-001-obsidian-frame-lit-with-flint-and-steel.png",
+        "acId": "AC-F015-001",
+        "problem": "A red chat error '没有方块被填充' (No blocks were filled) appears at the lower left, overlapping the bottom-left of the scene next to the Obsidian frame. The same leftover error is still visible, dimmed, behind the chest GUI in AC-F010-002-chorus-tfc-food-tooltip.png.",
+        "reason": "`gamerule sendCommandFeedback false` hides success messages but not command failures. Some setup commands fill areas that are already air with air: `fill -10 101 -10 25 108 12 minecraft:air` (line 20) and `fill -12 101 -12 12 110 12 minecraft:air` (line 56). Each one fails and prints an error into the HUD that ends up in the screenshot.",
+        "fix": "Make the clearing fills always change blocks so they never fail. For example, fill the region with minecraft:barrier (or another block) first and then with minecraft:air, or only clear volumes that are known to contain blocks. Another option is to clear the chat (F3+D) before each screenshot. Make sure no chat error text is visible in any M06 screenshot.",
+        "id": "ER-002",
+        "status": "accepted",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Clearing fills now replace temporary barriers, preventing empty-fill errors.",
+            "at": "2026-10-28T16:33:03.651Z"
+          },
+          {
+            "status": "accepted",
+            "by": "codex",
+            "note": "accepted: 既存のbarrier→air処理で空fillエラーを回避済み。移設先でも同じ処理を維持しています。",
+            "at": "2026-10-28T16:38:51.028Z"
+          }
+        ]
+      },
+      {
+        "target": ".harness-state/runs/2026-10-28T16-27-06-692Z-027-M06-e2e/scenarios/tests-e2e-dimension-survival.mjs/screenshots/AC-F015-001-end-arrival.png",
+        "acId": "AC-F015-001",
+        "problem": "The 'advancement made' toast (进度已达成 / 结束了？) is cut off at the right edge of the screen. The title text is truncated and the toast covers the top-right of the End view.",
+        "reason": "The screenshot was taken while the toast was still sliding in, so the text is clipped and the GUI looks broken. `announceAdvancements false` only stops the chat broadcast. It does not stop the client toast.",
+        "fix": "Before travelling, grant the arrival advancements (for example minecraft:story/enter_the_nether, minecraft:story/enter_the_end, minecraft:end/root, minecraft:nether/root) and wait for their toasts to finish. Or, in captureArrival, wait for the toast animation to end (about 5 s or more) before taking the screenshot. Make sure no toast is drawn or clipped at the screen edge.",
+        "id": "ER-003",
+        "status": "accepted",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Arrival captures now wait 12 seconds for advancement toasts to disappear.",
+            "at": "2026-10-28T16:33:03.651Z"
+          },
+          {
+            "status": "accepted",
+            "by": "codex",
+            "note": "accepted: 既存の到着後12秒待機を維持。最新のEnd到着画像には通知の重なりがありません。",
+            "at": "2026-10-28T16:38:51.028Z"
+          }
+        ]
+      },
+      {
+        "target": ".harness-state/runs/2026-10-28T16-27-06-692Z-027-M06-e2e/scenarios/tests-e2e-dimension-survival.mjs/screenshots/AC-F010-002-chorus-tfc-food-tooltip.png",
+        "acId": "AC-F010-002",
+        "problem": "The Chorus Fruit tooltip shows only the name, size/weight and expiry date, plus the prompt '按住（Shift）查看营养信息' (hold Shift for nutrition). The TFC nutrition section (hunger, saturation, water, Fruit 1.0) is not shown, even though the scenario presses Shift.",
+        "reason": "Expected Result requires the screenshot to show that TFC Food/Decay/Nutrition are applied. Only Decay is visible. The synthetic `mct input key down shift` is not reaching Screen.hasShiftDown() (which polls the GLFW left/right shift state), or the screenshot is taken before the tooltip redraws, so the nutrition values from data/tfcoverdims/tfc/food/chorus_fruit.json are never shown.",
+        "fix": "In tests/e2e/dimension-survival.mjs, send a key that Minecraft sees as held for hasShiftDown, such as the left-shift key name the MC Pilot CLI uses (for example key.keyboard.left.shift). Then wait at least a frame, or waitFor the tooltip to change, before taking the screenshot. Make sure the tooltip shows the nutrition lines (Fruit, water 5, saturation) and no longer shows the 'hold Shift' prompt.",
+        "id": "ER-004",
+        "status": "accepted",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Added an E2E-only native Shift helper and redraw delay because MC Pilot's synthetic input does not update GLFW modifier state. Live verification remains pending.",
+            "at": "2026-10-28T16:33:03.651Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Shift補助プロセスのフォーカス対策と、押下後の再ホバーを追加。栄養情報の実機表示確認は未実施です。",
+            "at": "2026-10-28T16:38:51.028Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: MC Pilotから取得したクライアントPIDでMinecraftを前面化してからネイティブShiftを保持し、再ホバー・描画待機後に撮影するよう修正。実画面確認は未実施です。",
+            "at": "2026-10-28T16:43:10.485Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: 実行ログのSystem Events権限エラーを解消するため、Minecraftの前面化をAppKit APIへ変更。既存のShift保持・再ホバー・描画待機を維持しました。栄養表示の実画面確認は未完了です。",
+            "at": "2026-10-28T16:48:17.882Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: MC Pilotが返すNode起動プロセスのPIDではなく、子のMinecraft JavaプロセスのPIDで前面化するよう修正しました。ネイティブShift保持後の再ホバーと描画待機は維持しています。",
+            "at": "2026-10-28T16:53:57.017Z"
+          },
+          {
+            "status": "accepted",
+            "by": "codex",
+            "note": "accepted: User explicitly confirmed that the behavior works in the real Minecraft client and requested advancing the harness. Accept the remaining M06 visual verification on that manual confirmation. The automated E2E run remains failed; this is a one-time manual acceptance for M06, not an automated pass or a change to later milestone gates.",
+            "at": "2026-10-28T16:55:32.109Z"
+          }
+        ]
+      },
+      {
+        "target": ".harness-state/runs/2026-10-28T16-27-06-692Z-027-M06-e2e/scenarios/tests-e2e-dimension-survival.mjs/screenshots/AC-F010-002-before-eating-on-purple-marker.png",
+        "acId": "AC-F010-002",
+        "problem": "The 'new recipe unlocked' toast (新配方已解锁！) sits over the top-right of the screen and hides the right part of the Ender Dragon boss bar.",
+        "reason": "Giving the player Chorus Fruit unlocks the Popped Chorus Fruit recipe, and the screenshot is taken right away while the toast is still showing. The HUD elements overlap, so the before-eating state is not shown cleanly.",
+        "fix": "Run `recipe give @s *` (or grant the matching recipe) early in setup, before the Chorus Fruit is handed out, so the unlock toast does not appear. Or wait for the toast to finish before taking the before-eating screenshot. Make sure the boss bar and HUD are not covered by a toast.",
+        "id": "ER-005",
+        "status": "accepted",
+        "history": [
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: The before-eating capture now waits 12 seconds for recipe notifications to disappear.",
+            "at": "2026-10-28T16:33:03.651Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: 通知待機を維持し、食品シーンをドラゴンの活動域外へ移設。待機中の死亡を防ぐ構成に変更しました。",
+            "at": "2026-10-28T16:38:51.028Z"
+          },
+          {
+            "status": "open",
+            "by": "codex",
+            "note": "fixed: Popped Chorus Fruitのレシピを準備開始時に解放し、食品入手時の通知を防止。撮影前の12秒待機も維持しました。",
+            "at": "2026-10-28T16:43:10.485Z"
+          },
+          {
+            "status": "accepted",
+            "by": "codex",
+            "note": "accepted: 現行シナリオは準備開始時にPopped Chorus Fruitレシピを解放し、食前の撮影前にも12秒待機しています。指摘された通知への対策は既に実装されています。",
+            "at": "2026-10-28T16:48:17.882Z"
+          }
+        ]
+      }
+    ]
+  },
+  "scope": "M06 only; later milestones retain the normal automated gates"
+}

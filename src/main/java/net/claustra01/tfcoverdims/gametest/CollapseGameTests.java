@@ -161,12 +161,11 @@ public final class CollapseGameTests {
             "TFC falling entities must carry the expected existing block");
         List<BlockPos> landings = entities.stream().map(entity -> new BlockPos(entity.blockPosition().getX(),
             helper.absolutePos(new BlockPos(0, 2, 0)).getY(), entity.blockPosition().getZ())).toList();
-        helper.runAfterDelay(60, () -> {
+        helper.succeedWhen(() -> {
             helper.assertTrue(falling(helper).isEmpty(), "Falling blocks must land");
             for (BlockPos landing : landings) {
                 helper.assertTrue(helper.getLevel().getBlockState(landing).is(result), "Collapse must place the existing block on the floor");
             }
-            helper.succeed();
         });
     }
 

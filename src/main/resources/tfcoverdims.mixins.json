@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "NetherWartBlockMixin",
-    "ChorusFlowerBlockMixin"
+    "ChorusFlowerBlockMixin",
+    "NetherPortalCompatibilityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

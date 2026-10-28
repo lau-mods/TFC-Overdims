@@ -4,6 +4,7 @@
 `.harness-state/plan.json`、進捗は `.harness-state/progress.json` に保存する。
 現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
+M06 の Nether / End の生存と設備、
 および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
@@ -214,6 +215,32 @@ M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長
   classname は `choruscalendar` が `tfcoverdims:nether_tree`、残りは `tfcoverdims:empty`。
   Calendar 経過・端数・成長上限・採取・土台条件、Chorus 分岐、attachment の保存・再読込と
   植え直し時の時刻リセットを検証する。表示要件がないため M05 の E2E は登録しない。
+
+## M06 Nether / End の生存と設備
+
+- `data/minecraft/loot_table/entities/hoglin.json` は各1 rollの2 poolで、
+  `tfc:food/pork` を uniform 2～4個、`minecraft:bone` を uniform 3～6個落とす。
+  Pork は Vanilla と同じ Looting の `minecraft:enchanted_count_increase`（uniform 0～1）を維持する。
+  Leather と Cursed Hide は出さず、Pork の食品初期化・調理・腐敗は TFC 既存処理を使う。
+- `data/tfcoverdims/tfc/food/chorus_fruit.json` の ingredient は `minecraft:chorus_fruit`。
+  hunger=4、saturation=0.5、water=5、fruit=1.0、decay_modifier=2.0 とする。
+  保存・腐敗・栄養は TFC、食後のテレポートは Vanilla の `finishUsingItem` に従う。
+- 設置水の Vanilla 蒸発、TFC Jug / Barrel の容器内水、気温に応じた渇き、
+  Firepit・Barrel・Anvil の動作は既存処理で要件を満たし、互換用 Java は追加しない。
+- `NetherPortalCompatibilityMixin` は `ForgeEventHandler.onCreateNetherPortal` をスキップする。
+  TFC の `enableNetherPortals` の設定値にかかわらず Vanilla の Obsidian Portal 規則を適用する。
+  End Portal、Stronghold、Dragon、Elytra は変更せず、独自 Portal item・設備は追加しない。
+- GameTest は既存 climate batch / `run/gametest-results.xml`。
+  `tests/acceptance.json` は F010-001=`hoglinfood`、F010-002=`chorusfood`、
+  F010-003=`netherwater` / `dimensionequipment`、F015-001=`vanillaportals`、
+  F015-002=`dimensionequipment` に対応する。
+  classname は `vanillaportals` が `tfcoverdims:nether_tree`、他は `tfcoverdims:empty`。
+  固定複数シードと実際の Hoglin 討伐の loot、ドロップした Pork の調理・保存・腐敗、
+  Chorus の食品情報・摂食・腐敗、容器の水・設置水蒸発・渇き、両 Dimension の
+  Firepit 加熱・Barrel 保存・Anvil 加工、Vanilla Portal の開通と移動を検証する。
+- E2E `tests/e2e/dimension-survival.mjs` は F010-002 / F015-001 に対応する。
+  Chorus の食品 tooltip と食前・テレポート後、着火した Obsidian Portal と Nether 到着、
+  Eye of Ender で開いた End Portal と End 到着を撮影する。
 
 ## Harness runtime
 
