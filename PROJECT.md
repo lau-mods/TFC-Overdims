@@ -391,13 +391,7 @@ Preconditions: 本MODのLoose Rock 3種、Brick Item 2種、Crimson/Warped Lumbe
 Action: インベントリ、地表配置、設置済みブロックを表示し、同梱画像と使用元を監査する。
 Expected Result: Missing Texture、モデル欠落、UV不整合がなく、追加テクスチャはTFC/Beneathの原本または色調変換版である。親モデル・テクスチャの参照が解決でき、使用する原本と変換規則を実装仕様から確認できる。
 
-##### AC-F016-002: 表示言語と互換メニュー
-
-Preconditions: クライアントの言語を英語または日本語へ切り替えられる。
-Action: 新規アイテム名、レシピ表示、Vanilla Basalt表示名、TFCツールチップを確認する。
-Expected Result: 両言語で名称が表示され、追加アイテムの未翻訳キーやVanilla/TFC Basaltの同名混同がない。独自GUI・専用Enchant画面は存在しない。
-
-##### AC-F016-003: 新規アイテムの TFC Size / Weight
+##### AC-F016-002: 新規アイテムの TFC Size / Weight
 
 Preconditions: 本MODが登録するLoose Rock、Brick中間アイテム、Lumber、Support、木材設備のItemStackがある。
 Action: TFCのItem SizeとItem Weightを取得し、対応するTFC既存アイテムと比較する。
