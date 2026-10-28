@@ -323,6 +323,24 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "portalandendchestloot"
+    },
+    {
+      "acId": "AC-F013-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "lapisenchanting"
+    },
+    {
+      "acId": "AC-F013-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "lapisquickmove"
+    },
+    {
+      "acId": "AC-F013-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "tfcequipmentenchanting"
     }
   ],
   "e2e": [
@@ -349,6 +367,14 @@
     {
       "acId": "AC-F015-001",
       "scenario": "tests/e2e/dimension-survival.mjs"
+    },
+    {
+      "acId": "AC-F013-001",
+      "scenario": "tests/e2e/enchanting-lapis.mjs"
+    },
+    {
+      "acId": "AC-F013-002",
+      "scenario": "tests/e2e/enchanting-lapis.mjs"
     }
   ]
 }

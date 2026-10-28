@@ -5,6 +5,7 @@
 現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
 M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
+M08 のエンチャント台と TFC 装備の互換、
 および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
@@ -280,6 +281,24 @@ M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換
   手渡し・拾得それぞれの交換と非永続化、金装備による敵対抑制、実際の討伐、
   TFC Size / Weight、複数固定シードの候補集合・重み・roll 数・チェスト開封を検証する。
   M07 に表示要件はないため E2E は追加しない。
+
+## M08 エンチャント台のラピス互換
+
+- `#tfcoverdims:enchanting_lapis` は `minecraft:lapis_lazuli` と
+  `tfc:gem/lapis_lazuli` を含む。`EnchantingLapis.accepts` は tag を確認し、
+  tag が利用できない場合も両 Registry ID で判定する。
+- `EnchantmentMenuLapisSlotMixin` は `EnchantmentMenu$3.mayPlace`、
+  `EnchantmentMenuMixin` は `quickMoveStack` のラピス判定だけを変更する。
+  スロット位置・アイコン・消費量・エンチャント選択規則は Vanilla のまま。
+- TFC 4.2.12 の完成 Steel Sword / Pickaxe / Chestplate は既に Vanilla の
+  enchantable tag と component を持つため補完 tag は不要。未完成 Tool Head と
+  Metal Sheet は対象外とし、Forging Bonus component は変更しない。
+- GameTest は既存 climate batch と `run/gametest-results.xml` を使用し、
+  classname は全件 `tfcoverdims:empty`。`tests/acceptance.json` の対応は
+  F013-001=`lapisenchanting`、F013-002=`lapisquickmove`、
+  F013-003=`tfcequipmentenchanting`。通常投入と消費、Shift クリックと tag 不在時の
+  判定、完成装備のエンチャント効果・耐久・Forging Bonus を検証する。
+- E2E `tests/e2e/enchanting-lapis.mjs` は F013-001 と F013-002 の GUI 表示を撮影する。
 
 ## Harness runtime
 

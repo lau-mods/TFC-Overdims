@@ -8,7 +8,9 @@
     "ChorusFlowerBlockMixin",
     "NetherPortalCompatibilityMixin",
     "PiglinAiMixin",
-    "PiglinCurrencyMixin"
+    "PiglinCurrencyMixin",
+    "EnchantmentMenuMixin",
+    "EnchantmentMenuLapisSlotMixin"
   ],
   "injectors": {
     "defaultRequire": 1
