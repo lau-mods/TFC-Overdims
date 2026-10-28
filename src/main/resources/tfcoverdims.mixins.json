@@ -6,7 +6,9 @@
   "mixins": [
     "NetherWartBlockMixin",
     "ChorusFlowerBlockMixin",
-    "NetherPortalCompatibilityMixin"
+    "NetherPortalCompatibilityMixin",
+    "PiglinAiMixin",
+    "PiglinCurrencyMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,197 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 7.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "tfc:gem/diamond",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 4.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "tfc:metal/ingot/wrought_iron",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 7.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "tfc:metal/ingot/gold",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "tfc:gem/emerald",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 10.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:beetroot_seeds",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:saddle",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/horse_armor/copper"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/horse_armor/bismuth_bronze"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/horse_armor/steel"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/sword/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/boots/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/chestplate/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/greaves/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/helmet/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/pickaxe/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/shovel/black_steel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/sword/wrought_iron",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/boots/wrought_iron",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/chestplate/wrought_iron",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/greaves/wrought_iron",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/helmet/wrought_iron",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/pickaxe/wrought_iron",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/shovel/wrought_iron",
+          "weight": 3
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 6.0,
+        "min": 2.0
+      }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 14
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:spire_armor_trim_smithing_template"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "minecraft:chests/end_city_treasure"
+}

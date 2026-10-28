@@ -293,6 +293,36 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "dimensionequipment"
+    },
+    {
+      "acId": "AC-F011-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "piglincurrency"
+    },
+    {
+      "acId": "AC-F011-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "mobdrops"
+    },
+    {
+      "acId": "AC-F011-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "hoglinfood"
+    },
+    {
+      "acId": "AC-F012-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherchestloot"
+    },
+    {
+      "acId": "AC-F012-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "portalandendchestloot"
     }
   ],
   "e2e": [

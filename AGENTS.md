@@ -4,7 +4,7 @@
 `.harness-state/plan.json`、進捗は `.harness-state/progress.json` に保存する。
 現在のコードは M01 の Nether / End 気候モデル、M02 の岩石加工と地表小石、
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
-M06 の Nether / End の生存と設備、
+M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
 および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
@@ -241,6 +241,45 @@ M06 の Nether / End の生存と設備、
 - E2E `tests/e2e/dimension-survival.mjs` は F010-002 / F015-001 に対応する。
   Chorus の食品 tooltip と食前・テレポート後、着火した Obsidian Portal と Nether 到着、
   Eye of Ender で開いた End Portal と End 到着を撮影する。
+
+## M07 Mob と構造物報酬
+
+- `PiglinAiMixin` は `canAdmire`、`wantsToPickup`、`stopHoldingOffHandItem` の
+  `ItemStack.isPiglinCurrency()` を redirect する。`PiglinCurrencyMixin` は
+  `Piglin.holdInOffHand` の同判定を redirect し、受領による永続化を防ぐ。
+  NeoForge の通貨判定に加えて `#tfcoverdims:piglin_currency` を受け付ける。
+  同 tag は `minecraft:gold_ingot` と `tfc:metal/ingot/gold`、
+  `minecraft:piglin_loved` への追加は `tfc:metal/ingot/gold` のみ。
+  `gameplay/piglin_bartering` と Vanilla Gold Armor の敵対抑制は変更しない。
+  新規 Mob、Gold Armor、生物素材は登録しない。
+- Entity loot の追加上書きは `entities/zombified_piglin` の Gold Ingot を
+  `tfc:metal/ingot/gold` に置換するだけ。重み・個数・条件は維持する。
+  Hoglin は M06 を再利用し、Piglin、Enderman、Shulker、Blaze、Ghast の表は変更しない。
+  Gold Nugget、Rotten Flesh、Ender Pearl、Shulker Shell、Blaze Rod、Ghast Tear は維持する。
+- `minecraft:chests/` の次の7表を上書きする。Vanilla の完成金属装備・Ingot・
+  Gem・食品を既存 TFC 品に対応付け、置換装備の random enchant は付けない。
+  Nether の候補と重みは Beneath 1.21.x の同名チェスト定義を基準とする。
+
+  | 表 | 置換内容と重み | pool の rolls（順序通り） |
+  | --- | --- | --- |
+  | `nether_bridge` | Diamond Gem / Wrought Iron Ingot / Gold Ingot / Wrought Iron Sword / Chestplate 各5、Saddle 10、Horse Armor は Bismuth Bronze 8 / Copper 5 / Steel 3 | 2～4、1 |
+  | `bastion_treasure` | Black Steel 防具各6、Sword / Scythe 各7、Diamond / Opal / Ruby 各10、Red Apple 2、副poolの Gold / Pig Iron 各1 | 3、3～4、1、1 |
+  | `bastion_other` | Black Bronze Pickaxe / Shovel 各6、Carrot 12 / Red Apple 9、装備1（Sword は別途2の候補も維持）、Gold 10 / Pig Iron 2、Cooked Pork 1 | 1、2、3～4、1、1 |
+  | `bastion_bridge` | Steel Sword / 防具 / Axe、Gold / Pig Iron 各1 | 1、1～2、2～4、1、1 |
+  | `bastion_hoglin_stable` | Wrought Iron Shovel / Pickaxe 各15、Carrot / Red Apple 各10、Copper Axe / Pork / Cooked Pork 各1 | 1、3～4、1、1 |
+  | `ruined_portal` | Black Bronze 工具・防具各15 / Horse Armor 3、Gold 5、Red Apple 15と1、Carrot 5 | 4～8 |
+  | `end_city_treasure` | Diamond Gem 5 / Emerald Gem 2、Wrought Iron Ingot 10 / Gold 15、Diamond 装備は Black Steel、Iron 装備は Wrought Iron（各3）、Horse Armor は Copper / Bismuth Bronze / Steel 各1 | 2～6、1 |
+
+- Ancient Debris、Netherite Ingot / Scrap、Smithing Template、Obsidian 等の
+  非置換候補は元の entry・重み・個数・条件を保持する。Ender Pearl / Shulker Shell の
+  Mob 報酬と船の Elytra も変更しない。Beneath 専用品・独自進行品は追加しない。
+- GameTest は既存 climate batch、`run/gametest-results.xml`、classname
+  `tfcoverdims:empty`。`tests/acceptance.json` は F011-001=`piglincurrency`、
+  F011-002=`mobdrops` / `hoglinfood`、F012-001=`netherchestloot`、
+  F012-002=`portalandendchestloot` に対応する。
+  手渡し・拾得それぞれの交換と非永続化、金装備による敵対抑制、実際の討伐、
+  TFC Size / Weight、複数固定シードの候補集合・重み・roll 数・チェスト開封を検証する。
+  M07 に表示要件はないため E2E は追加しない。
 
 ## Harness runtime
 
