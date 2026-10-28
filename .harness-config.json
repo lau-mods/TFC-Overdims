@@ -7,19 +7,19 @@
   "agents": {
     "implementation": {
       "command": "codex",
-      "model": null,
-      "effort": null,
-      "fast": false
+      "model": "gpt-5.6-sol",
+      "effort": "medium",
+      "fast": true
     },
     "codeReview": {
       "command": "claude",
-      "model": null,
-      "effort": null
+      "model": "claude-sonnet-5-5",
+      "effort": "medium"
     },
     "e2eReview": {
       "command": "claude",
-      "model": null,
-      "effort": null
+      "model": "claude-sonnet-5-5",
+      "effort": "high"
     }
   },
   "runtime": {
