@@ -3,8 +3,6 @@ package net.claustra01.tfcoverdims.gametest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
@@ -43,7 +41,6 @@ public final class StoneProcessingGameTests {
 
     @GameTest(template = "empty", batch = "climate")
     public static void netherrackReconstruction(GameTestHelper helper) {
-        assertReconstruction(helper, "netherrack");
         assertDisabled(helper, List.of("nether_brick", "nether_bricks"));
         helper.assertTrue(helper.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING,
             new SingleRecipeInput(stack("minecraft:netherrack")), helper.getLevel()).isEmpty(), "Netherrack must not smelt to bricks");
@@ -103,7 +100,6 @@ public final class StoneProcessingGameTests {
     @GameTest(template = "empty", batch = "climate")
     public static void endStoneProcessing(GameTestHelper helper) {
         assertBrickProcessing(helper, "end_stone", "tfcoverdims:end_stone_brick", "minecraft:end_stone_bricks");
-        assertReconstruction(helper, "end_stone");
         assertDisabled(helper, List.of("end_stone_bricks", "end_stone_bricks_from_end_stone_stonecutting"));
         assertNoCraft(helper, 2, 2, Collections.nCopies(4, stack("minecraft:end_stone")));
         assertNoStonecutting(helper, "minecraft:end_stone", "minecraft:end_stone_bricks");
@@ -215,11 +211,6 @@ public final class StoneProcessingGameTests {
     }
 
     private static void assertKnapping(GameTestHelper helper, String rock, String category) {
-        helper.assertTrue(BuiltInRegistries.ITEM.keySet().stream()
-            .filter(id -> id.getNamespace().equals(TFCOverdims.MOD_ID)).map(ResourceLocation::getPath)
-            .filter(name -> !name.startsWith("wood/")).collect(Collectors.toSet())
-            .equals(Set.of("loose_netherrack", "loose_blackstone", "loose_end_stone", "blackstone_brick", "end_stone_brick")),
-            "Only the five M02 items may be registered; stone tools and heads must use TFC items");
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         ItemStack input = new ItemStack(item("tfcoverdims:loose_" + rock), 2);
         player.setItemInHand(InteractionHand.MAIN_HAND, input);

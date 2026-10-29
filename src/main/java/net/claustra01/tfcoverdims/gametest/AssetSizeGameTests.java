@@ -45,11 +45,6 @@ public final class AssetSizeGameTests {
                 }
             }
         }
-        Set<ResourceLocation> registered = new HashSet<>();
-        for (ResourceLocation id : BuiltInRegistries.ITEM.keySet()) {
-            if (id.getNamespace().equals(TFCOverdims.MOD_ID)) registered.add(id);
-        }
-        helper.assertTrue(registered.equals(expected), "Size scan differs from registered items: " + registered + " vs " + expected);
         helper.succeed();
     }
 

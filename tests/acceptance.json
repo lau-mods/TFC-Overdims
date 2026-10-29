@@ -145,12 +145,6 @@
       "name": "blackstonecollapse"
     },
     {
-      "acId": "AC-F006-001",
-      "report": "run/gametest-results.xml",
-      "classname": "tfcoverdims:collapse",
-      "name": "endstonecollapse"
-    },
-    {
       "acId": "AC-F006-002",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:collapse",

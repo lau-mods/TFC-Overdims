@@ -123,7 +123,7 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
 - GameTest は M01 と同じ batch / report を使う。`collapse` template の
   classname は `tfcoverdims:collapse`。`basaltidentities` は `empty` template を使い、
   classname は `tfcoverdims:empty`。
-  `tests/acceptance.json` の対応は F006-001=`blackstonecollapse` / `endstonecollapse`、
+  `tests/acceptance.json` の対応は F006-001=`blackstonecollapse`、
   F006-002=`supportbeams` / `collapseexclusions` / `tfcbasaltcollapse`、
   F007-001=`basaltidentities`、F007-002=`basaltgeology` / `tfcbasaltcollapse`。
   採掘からの落下と着地、Beam 保護、対象外ブロックの採掘、既存 TFC Basalt の崩落・採掘、

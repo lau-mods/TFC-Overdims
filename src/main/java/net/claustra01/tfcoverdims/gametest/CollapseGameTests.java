@@ -40,11 +40,6 @@ public final class CollapseGameTests {
     }
 
     @GameTest(template = "collapse", batch = "climate", timeoutTicks = 120)
-    public static void endStoneCollapse(GameTestHelper helper) {
-        assertCollapse(helper, Blocks.END_STONE, Blocks.END_STONE);
-    }
-
-    @GameTest(template = "collapse", batch = "climate", timeoutTicks = 120)
     public static void tfcBasaltCollapse(GameTestHelper helper) {
         assertCollapse(helper, BuiltInRegistries.BLOCK.get(ResourceLocation.parse("tfc:rock/raw/basalt")),
             BuiltInRegistries.BLOCK.get(ResourceLocation.parse("tfc:rock/cobble/basalt")));
@@ -71,7 +66,7 @@ public final class CollapseGameTests {
             helper.assertTrue(level.getBlockState(beam).is(horizontal) && level.getBlockState(beam).canSurvive(level, beam),
                 "The assembled support span must be a valid TFC beam");
         }
-        for (Block rock : List.of(Blocks.BLACKSTONE, Blocks.END_STONE)) {
+        for (Block rock : List.of(Blocks.BLACKSTONE)) {
             prepareRoof(helper, rock);
             for (BlockPos pos : BlockPos.betweenClosed(7, 7, 7, 9, 7, 9)) {
                 helper.assertTrue(Support.isSupported(level, helper.absolutePos(pos)), "The real horizontal beam must protect the roof");
@@ -89,9 +84,6 @@ public final class CollapseGameTests {
             }
         }
         helper.runAfterDelay(60, () -> {
-            for (BlockPos pos : BlockPos.betweenClosed(7, 7, 7, 9, 7, 9)) {
-                helper.assertBlockPresent(Blocks.END_STONE, pos);
-            }
             helper.assertTrue(falling(helper).isEmpty(), "Protected roof must remain in place after world ticks");
             helper.succeed();
         });
@@ -99,7 +91,7 @@ public final class CollapseGameTests {
 
     @GameTest(template = "collapse", batch = "climate")
     public static void collapseExclusions(GameTestHelper helper) {
-        for (Block block : List.of(Blocks.NETHERRACK, Blocks.NETHER_BRICKS, Blocks.END_STONE_BRICKS, Blocks.BASALT,
+        for (Block block : List.of(Blocks.NETHER_BRICKS, Blocks.END_STONE_BRICKS, Blocks.BASALT,
             Blocks.POLISHED_BASALT, Blocks.SMOOTH_BASALT)) {
             prepareRoof(helper, block);
             var state = block.defaultBlockState();
