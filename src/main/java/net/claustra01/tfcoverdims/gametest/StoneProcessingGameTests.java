@@ -53,6 +53,12 @@ public final class StoneProcessingGameTests {
     }
 
     @GameTest(template = "empty", batch = "climate")
+    public static void netherrackKnapping(GameTestHelper helper) {
+        assertKnapping(helper, "netherrack", "igneous_extrusive");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "climate")
     public static void blackstoneReconstruction(GameTestHelper helper) {
         assertReconstruction(helper, "blackstone");
         helper.succeed();
@@ -134,11 +140,11 @@ public final class StoneProcessingGameTests {
 
     private static void assertBrickProcessing(GameTestHelper helper, String rock, String brick, String bricks) {
         List<ItemStack> made = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             made.add(assertToolCraft(helper, List.of("tfcoverdims:loose_" + rock), "chisel", brick));
         }
         ItemStack mortar = stack("tfc:mortar");
-        craft(helper, List.of(made.get(0), mortar.copy(), made.get(1), mortar.copy(), ItemStack.EMPTY,
+        craft(helper, List.of(made.get(0), mortar.copy(), made.get(1), mortar.copy(), made.get(4),
             mortar.copy(), made.get(2), mortar.copy(), made.get(3)), bricks, 4);
         assertNoCraft(helper, 2, 2, Collections.nCopies(4, stack(brick)));
     }

@@ -69,27 +69,27 @@ Expected Result: Netherrack 面には Loose Netherrack、Blackstone 面には Lo
 
 #### Description
 
-Beneath の Loose Netherrack → Vanilla Nether Brick の Chisel 加工、および4個の Brick と4個の TFC Mortar から4個の Nether Bricks を作る TFC 式加工を導入する。Cobblerack は追加せず、Loose Netherrack 4個から Vanilla Netherrack 1個を再構成し、Netherrack 1個をLoose Netherrack 4個へ戻せるようにする。Vanilla の Netherrack 製錬レシピと Nether Bricks のMortarを使わない製法は無効にする。既存の Nether Brick 系階段・ハーフブロック・塀などの Vanilla block / item ID は保持する。
+Beneath の Loose Netherrack → Vanilla Nether Brick の Chisel 加工、および5個の Brick と4個の TFC Mortar から4個の Nether Bricks を作る TFC 式加工を導入する。Cobblerack は追加せず、Loose Netherrack 4個から Vanilla Netherrack 1個を再構成し、Netherrack 1個をLoose Netherrack 4個へ戻せるようにする。Vanilla の Netherrack 製錬レシピと Nether Bricks のMortarを使わない製法は無効にする。既存の Nether Brick 系階段・ハーフブロック・塀などの Vanilla block / item ID は保持する。
 
 #### Acceptance Criteria
 
 ##### AC-F003-001: Chisel と Mortar の加工
 
 Preconditions: Loose Netherrack、TFC Chisel、`tfc:mortar` が用意されている。
-Action: Loose Netherrack 1個とChiselで製作し、`N M N / M N M / N M N`（N=Nether Brick、M=Mortar）の3×3クラフトを行う。
+Action: Loose Netherrack 5個をChiselで加工し、`N M N / M N M / N M N`（N=Nether Brick、M=Mortar）の3×3クラフトを行う。
 Expected Result: ChiselはTFCの通常の製作時耐久減少を受け、`minecraft:nether_brick` 1個を取得する。次の製作で `minecraft:nether_bricks` 4個が得られ、各材料は規定数を消費する。
 
 ##### AC-F003-002: Netherrack の再構成と旧レシピ無効化
 
 Preconditions: Loose Netherrack と Furnace 等が用意されている。
-Action: Loose Netherrack 4個を2×2に並べる。生成したNetherrackを逆向きにクラフトし、別途 Vanilla の Netherrack 製錬およびMortarなしの Nether Bricks 製作を試す。
-Expected Result: 2×2から Netherrack が1個、逆向きのクラフトからLoose Netherrackが4個得られる。旧製錬と旧Nether Bricksクラフトでは加工結果が得られない。他の Vanilla Nether Brick 派生ブロックは使用できる。
+Action: Loose Netherrack 4個を2×2に並べる。生成したNetherrackを逆向きにクラフトし、別途 Vanilla の Netherrack 製錬およびMortarなしの Nether Bricks 製作を試す。Loose Netherrack から TFC の Rock Knapping を行う。
+Expected Result: 2×2から Netherrack が1個、逆向きのクラフトからLoose Netherrackが4個得られる。旧製錬と旧Nether Bricksクラフトでは加工結果が得られない。他の Vanilla Nether Brick 派生ブロックは使用できる。Knapping では既存の igneous extrusive 石器の Tool Head を得られる。
 
 ### F-004: Blackstone の TFC 加工
 
 #### Description
 
-Beneath の既存レシピを基準として Loose Blackstone 4個から `minecraft:blackstone` 1個を製作可能にし、Blackstone 1個を Loose Blackstone 4個へ解体可能にする。Loose Blackstone 1個とChiselから `tfcoverdims:blackstone_brick` 1個を製作する。Blackstone Brick 4個と TFC Mortar 4個のチェッカー配置から `minecraft:polished_blackstone_bricks` 4個を製作する。Polished Blackstone、Button、Pressure Plate、Cracked variant などは Vanilla の既存 ID を用いる。新しい独自石材familyは作らない。Loose BlackstoneをTFCのmetamorphic Stone Knapping素材として認識させる。
+Beneath の既存レシピを基準として Loose Blackstone 4個から `minecraft:blackstone` 1個を製作可能にし、Blackstone 1個を Loose Blackstone 4個へ解体可能にする。Loose Blackstone 1個とChiselから `tfcoverdims:blackstone_brick` 1個を製作する。Blackstone Brick 5個と TFC Mortar 4個のチェッカー配置から `minecraft:polished_blackstone_bricks` 4個を製作する。Polished Blackstone、Button、Pressure Plate、Cracked variant などは Vanilla の既存 ID を用いる。新しい独自石材familyは作らない。Loose BlackstoneをTFCのmetamorphic Stone Knapping素材として認識させる。
 
 #### Acceptance Criteria
 
@@ -102,8 +102,8 @@ Expected Result: 4個の Loose Blackstone から Blackstone 1個、Blackstone 1�
 ##### AC-F004-002: Blackstone Brick の加工
 
 Preconditions: Loose Blackstone、TFC Chisel、TFC Mortar がある。
-Action: ChiselでBlackstone Brickを4個作り、Nether Bricksと同じ交互配置レシピを使用する。
-Expected Result: `tfcoverdims:blackstone_brick` が1回につき1個作られ、4 Brick + 4 Mortarから `minecraft:polished_blackstone_bricks` 4個を取得する。Chiselは耐久を消費する。
+Action: ChiselでBlackstone Brickを5個作り、Nether Bricksと同じ交互配置レシピを使用する。
+Expected Result: `tfcoverdims:blackstone_brick` が1回につき1個作られ、5 Brick + 4 Mortarから `minecraft:polished_blackstone_bricks` 4個を取得する。Chiselは耐久を消費する。
 
 ##### AC-F004-003: Vanilla 派生素材との互換
 
@@ -134,14 +134,14 @@ Expected Result: 非孤立でLoose End Stoneが2～4個、孤立時にはEnd Sto
 ##### AC-F005-002: End Stone のレンガ加工
 
 Preconditions: Loose End Stone、TFC Chisel、TFC Mortarが用意されている。
-Action: Loose End Stone 1個をChisel加工し、生成物4個とMortar4個を交互配置でクラフトする。別途Loose End Stone 4個を2×2で製作し、得られたEnd Stoneを逆変換する。
+Action: Loose End Stone 5個をChisel加工し、生成物5個とMortar4個を中央にもBrickを置く交互配置でクラフトする。別途Loose End Stone 4個を2×2で製作し、得られたEnd Stoneを逆変換する。
 Expected Result: `tfcoverdims:end_stone_brick` 1個、`minecraft:end_stone_bricks` 4個、`minecraft:end_stone` 1個、およびEnd Stone 1個からLoose End Stone 4個をそれぞれ取得する。工具耐久とMortar消費が適用され、既存のEnd Stone Bricks派生材も機能する。
 
 ##### AC-F005-003: End Stone の石器加工
 
 Preconditions: Loose End StoneとTFCのKnapping操作が利用できる。
 Action: Loose End Stoneから既存のTFC stone tool headをKnappingで製作する。
-Expected Result: TFCのsedimentary stone tool headが得られ、既存Stone Age工具へ加工できる。新規Tool Tier、独自石器モデルは追加されない。
+Expected Result: TFCのsedimentary stone tool headが得られ、既存Stone Age工具へ加工できる。Knapping GUIではEnd Stoneの画像が表示される。新規Tool Tier、独自石器モデルは追加されない。
 
 ### F-006: 崩落と採掘支保
 
@@ -381,15 +381,15 @@ Expected Result: TFCと同じレシピ・耐久・温度・容器規則で処理
 
 #### Description
 
-新規アイテム・地表小石・TFC木材設備のモデルとテクスチャは、TFC 4.2.12またはBeneath 1.21.xの既存資産を再使用する。色調変更が必要な場合も、それらの既存資産を変換した派生物だけを同梱し、新規の手描き・生成画像を作らない。Vanillaの既存blockはVanillaのテクスチャ参照を維持する。クライアント表示は日本語・英語に対応する。
+新規アイテム・地表小石・TFC木材設備のモデルとテクスチャは、Beneath 1.21.xに同用途の画像がある場合はその原本を使用し、ない場合はTFC 4.2.12の既存資産を再使用する。色調変更が必要な場合も、それらの既存資産を変換した派生物だけを同梱し、新規の手描き・生成画像を作らない。Vanillaの既存blockはVanillaのテクスチャ参照を維持する。TFCのKnapping GUIが固定パスを要求するEnd Stone画像だけはMinecraft 1.21.1原本を同梱する。クライアント表示は日本語・英語に対応する。
 
 #### Acceptance Criteria
 
 ##### AC-F016-001: 追加資産の表示と参照整合性
 
 Preconditions: 本MODのLoose Rock 3種、Brick Item 2種、Crimson/Warped Lumber・Support等がクライアントにある。
-Action: インベントリ、地表配置、設置済みブロックを表示し、同梱画像と使用元を監査する。
-Expected Result: Missing Texture、モデル欠落、UV不整合がなく、追加テクスチャはTFC/Beneathの原本または色調変換版である。親モデル・テクスチャの参照が解決でき、使用する原本と変換規則を実装仕様から確認できる。
+Action: Creative Tab、インベントリ、地表配置、設置済みブロックを表示し、同梱画像と使用元を監査する。
+Expected Result: 本MODの全登録アイテムが Creative Tab に表示され、Missing Texture、モデル欠落、UV不整合がない。Beneathに同用途の画像があるものはその原本、ないものはTFC原本または色調変換版である。親モデル・テクスチャの参照が解決でき、使用する原本のリビジョンと変換規則を実装仕様から確認できる。
 
 ##### AC-F016-002: 新規アイテムの TFC Size / Weight
 
@@ -406,7 +406,7 @@ Expected Result: すべての新規アイテムに有効なSize/Weightが1通り
 - Recipe・Block Tag・Loot Table・Biome Modifierで表現できる設定はJSON/Data Packを基本とし、Javaでは既存APIとの接続と不足処理だけを実装する。Worldgen変更はF-002/F-005の地表小石に限る。
 - 全Featureの各ACにはGameTestまたはE2Eを対応させる。ロジックはGameTest、表示はE2Eで検証し、両方を要求するACには両方の証跡を残す。Dedicated Serverとクライアントの両方で起動する。
 - 変更したLoot Tableでは複数の固定乱数シードで生成結果をテストする。抽選確率の数値は参照したBeneath/TFCのデータを優先し、非対象のVanilla報酬は維持する。
-- 新規登録したすべてのアイテムにはTFC既存の類似品を基準とするItem Size/Weightを割り当て、未分類と重複を許さない。新規テクスチャは制作しない。TFC/Beneathの既存ファイルをコピーまたは色調変換して使用し、変換内容・元ファイルパス・取得リビジョンをソース管理で確認できるようにする。Vanillaリソースは新規同梱せず、既存テクスチャを参照する。
+- 新規登録したすべてのアイテムにはTFC既存の類似品を基準とするItem Size/Weightを割り当て、未分類と重複を許さない。新規テクスチャは制作しない。TFC/Beneathの既存ファイルをコピーまたは色調変換して使用し、利用する原本のリポジトリ・取得リビジョンと変換規則をソース管理で確認できるようにする。Vanillaリソースは既存テクスチャを参照する。ただしTFCの固定パスを使うEnd Stone Knapping GUI画像だけはMinecraft 1.21.1原本を同梱する。
 - 参照実装：TFC `https://github.com/TerraFirmaCraft/TerraFirmaCraft` の `v4.2.12`、Beneath `https://github.com/eerussianguy/Beneath` の `1.21.x`、Harness `https://github.com/lau-mods/modding-harness/tree/rebuild2`。Beneathについては岩石・木材・気候・Lootの該当部分だけを参照する。
 
 ## Constraints

@@ -61,6 +61,12 @@
       "name": "netherrackreconstruction"
     },
     {
+      "acId": "AC-F003-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherrackknapping"
+    },
+    {
       "acId": "AC-F004-001",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
@@ -359,6 +365,12 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "assetreferences"
+    },
+    {
+      "acId": "AC-F016-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "creativetab"
     },
     {
       "acId": "AC-F016-001",

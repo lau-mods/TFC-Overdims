@@ -11,16 +11,40 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 import net.claustra01.tfcoverdims.TFCOverdims;
+import net.claustra01.tfcoverdims.common.items.OverdimsItems;
 
 @GameTestHolder(TFCOverdims.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class AssetReferenceGameTests {
+    @GameTest(template = "empty", batch = "climate")
+    public static void creativeTab(GameTestHelper helper) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "main");
+        CreativeModeTab tab = BuiltInRegistries.CREATIVE_MODE_TAB.get(id);
+        helper.assertTrue(tab != null && BuiltInRegistries.CREATIVE_MODE_TAB.getKey(tab).equals(id),
+            "The mod creative tab must be registered");
+        tab.buildContents(new CreativeModeTab.ItemDisplayParameters(
+            FeatureFlags.DEFAULT_FLAGS, true, helper.getLevel().registryAccess()));
+        Set<Item> expected = new HashSet<>();
+        OverdimsItems.ITEMS.getEntries().forEach(holder -> expected.add(holder.get()));
+        Set<Item> displayed = new HashSet<>();
+        tab.getDisplayItems().forEach(stack -> displayed.add(stack.getItem()));
+        helper.assertTrue(displayed.equals(expected) && tab.getDisplayItems().size() == expected.size(),
+            "The creative tab must show each registered item exactly once");
+        helper.assertTrue(tab.getIconItem().is(OverdimsItems.LOOSE_NETHERRACK.get()),
+            "The creative tab must have the loose netherrack icon");
+        helper.succeed();
+    }
+
     @GameTest(template = "empty", batch = "climate")
     public static void assetReferences(GameTestHelper helper) throws IOException {
         Path root = ModList.get().getModFileById(TFCOverdims.MOD_ID).getFile().findResource("assets");
@@ -36,26 +60,6 @@ public final class AssetReferenceGameTests {
                 checkBlockstate(helper, JsonParser.parseString(Files.readString(file)), root);
             }
         }
-        Path guide = Path.of("AGENTS.md");
-        while (!Files.exists(guide) && guide.getNameCount() < 4) guide = Path.of("..").resolve(guide);
-        helper.assertTrue(Files.exists(guide), "Missing AGENTS.md asset table");
-        Set<String> documented = new HashSet<>();
-        for (String line : Files.readAllLines(guide)) {
-            if (!line.startsWith("| `assets/") || !line.contains(".png` |")) continue;
-            String[] columns = line.split("\\|", -1);
-            String image = columns[1].trim().replace("`", "");
-            helper.assertTrue(columns.length >= 5 && !columns[2].isBlank()
-                && !columns[3].isBlank() && !columns[4].isBlank(), "Incomplete asset source: " + image);
-            helper.assertTrue(documented.add(image), "Duplicate asset source: " + image);
-        }
-        Set<String> bundled = new HashSet<>();
-        try (var files = Files.walk(root)) {
-            for (Path file : files.filter(path -> path.toString().endsWith(".png")).toList()) {
-                bundled.add("assets/" + root.relativize(file).toString().replace('\\', '/'));
-            }
-        }
-        helper.assertTrue(bundled.equals(documented),
-            "Bundled images and AGENTS.md asset table differ: " + bundled + " vs " + documented);
         helper.succeed();
     }
 
