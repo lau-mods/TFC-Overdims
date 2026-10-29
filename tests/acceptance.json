@@ -473,6 +473,18 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:collapse",
       "name": "netherrackhardenedcollapse"
+    },
+    {
+      "acId": "AC-F018-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "nethergravelore"
+    },
+    {
+      "acId": "AC-F018-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "nethergravelsurface"
     }
   ],
   "e2e": [

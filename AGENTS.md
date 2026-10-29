@@ -6,7 +6,8 @@
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
 M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
 M08 のエンチャント台と TFC 装備の互換、M09 の Shulker Box 収納規則、
-M10 の追加資産と表示の統合、M11 の Cobble / Hardened 岩石と Nether 天井、および GameTest / E2E シナリオを実装している。
+M10 の追加資産と表示の統合、M11 の Cobble / Hardened 岩石と Nether 天井、
+M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
@@ -361,6 +362,27 @@ M10 の追加資産と表示の統合、M11 の Cobble / Hardened 岩石と Neth
   F017-003 / F019-003=`rockcollapserules`、F017-002 / F017-003=`hardenedloot`、F019-001 / F019-002=
   `netherceilingselection` / `netherceilingdimension`。F019-003 の
   `netherrackhardenedcollapse` は `tfcoverdims:collapse`、他は `tfcoverdims:empty`。
+
+## M12 Nether Gravel
+
+- Minecraft 1.21.1 の `worldgen/configured_feature/ore_gravel_nether.json` は
+  `minecraft:ore_gravel_nether` の size=33 と Netherrack 対象判定を維持し、
+  出力 state だけを `tfc:rock/gravel/basalt` にする。Vanilla の placed feature は
+  count=2、Y=5～41、in_square、biome filter のまま使う。
+- Minecraft 1.21.1 の `worldgen/noise_settings/nether.json` は原本の
+  `surface_rule` 内にある4箇所の `minecraft:gravel` state だけを
+  `tfc:rock/gravel/basalt` に変更する。noise router、条件、順序、他の state は維持する。
+  noise settings は data pack の完全上書きなので、他 MOD が同じ設定を上書きして衝突する場合に限り
+  gravel state だけを変更する狭い代替手段を検討する。
+- `minecraft:gravel` ブロック、Overworld の Gravel 生成、Vanilla の `minecraft:basalt` と
+  Basalt Feature の生成は変更しない。
+- GameTest は resource stack の Vanilla 原本と上書き JSON を比較し、configured / placed feature の
+  大きさ・配置回数・高度・条件、および Surface Rule の厚み・分布条件を検査する。
+  固定乱数で Nether の placed feature を Vanilla 出力と比較する。
+  新規チャンクから Nether Wastes、Soul Sand Valley、Basalt Deltas を各1つ選び、
+  溶岩海岸高度の露出した Gravel と Vanilla Gravel の不在を確認する。
+- GameTest は F018-001=`nethergravelore`、F018-002=`nethergravelsurface`。
+  classname はどちらも `tfcoverdims:empty`。
 
 ## Harness runtime
 
