@@ -1,0 +1,8 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "minecraft:end_stone",
+    "tfcoverdims:hardened_end_stone"
+  ],
+  "result": "tfcoverdims:cobble_end_stone"
+}

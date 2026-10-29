@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "tfcoverdims:cobble_netherrack",
+    "tfcoverdims:cobble_end_stone"
+  ]
+}

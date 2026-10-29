@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XYX",
+    "YXY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:netherrack"
+    },
+    "Y": {
+      "item": "tfc:mortar"
+    }
+  },
+  "result": {
+    "id": "tfcoverdims:hardened_netherrack",
+    "count": 2
+  }
+}

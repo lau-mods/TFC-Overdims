@@ -99,5 +99,9 @@
   "block.tfcoverdims.wood.potted_sapling.crimson": "Potted Crimson Sapling",
   "block.tfcoverdims.wood.wall_sign.crimson": "Crimson Wall Sign",
   "block.tfcoverdims.wood.potted_sapling.warped": "Potted Warped Sapling",
-  "block.tfcoverdims.wood.wall_sign.warped": "Warped Wall Sign"
+  "block.tfcoverdims.wood.wall_sign.warped": "Warped Wall Sign",
+  "block.tfcoverdims.cobble_netherrack": "Cobbled Netherrack",
+  "block.tfcoverdims.hardened_netherrack": "Hardened Netherrack",
+  "block.tfcoverdims.cobble_end_stone": "Cobbled End Stone",
+  "block.tfcoverdims.hardened_end_stone": "Hardened End Stone"
 }

@@ -6,7 +6,7 @@
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
 M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
 M08 のエンチャント台と TFC 装備の互換、M09 の Shulker Box 収納規則、
-M10 の追加資産と表示の統合、および GameTest / E2E シナリオを実装している。
+M10 の追加資産と表示の統合、M11 の Cobble / Hardened 岩石と Nether 天井、および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
 ## M01 気候と構成
@@ -342,6 +342,25 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   Knapping GUI の Netherrack / Blackstone は Beneath の Nether / Blackstone Pebble 画像、
   End Stone は Minecraft 1.21.1 の End Stone 画像を TFC の固定パスへコピーする。
   Vanilla 岩石のブロックモデルは Vanilla テクスチャを参照する。
+
+## M11 Cobble / Hardened と Nether 天井
+
+- `tfcoverdims:cobble_netherrack` / `hardened_netherrack` と
+  `cobble_end_stone` / `hardened_end_stone` は TFC の Cobble / Hardened
+  BlockType を使う。Loose 4個の2×2→Cobble 1個、Cobble 1個→Loose 4個、
+  Raw 5個と Mortar 4個の `XYX/YXY/XYX`→Hardened 2個とする。
+- Raw は TFC の `can_start_collapse`、`can_collapse`、`can_trigger_collapse`、
+  Hardened は `can_collapse` と `can_trigger_collapse`、Cobble は
+  `can_landslide` に入れる。Raw と Hardened の collapse recipe は
+  対応する Cobble を返す。Hardened の採掘 loot は TFC と同じく
+  孤立時 Raw、その他は Loose 1～4個とする。
+- `tfcoverdims:harden_nether_ceiling` は Nether の `top_layer_modification` に
+  1回置き、チャンク内の全高度で Air / Cave Air の直上にある Netherrack のみを
+  Hardened に置き換える。構造物の bounding box 内は除外する。
+- GameTest は F017-001=`cobblecraft`、F017-002=`hardenedcraft`、
+  F017-003 / F019-003=`rockcollapserules`、F017-002 / F017-003=`hardenedloot`、F019-001 / F019-002=
+  `netherceilingselection` / `netherceilingdimension`。F019-003 の
+  `netherrackhardenedcollapse` は `tfcoverdims:collapse`、他は `tfcoverdims:empty`。
 
 ## Harness runtime
 

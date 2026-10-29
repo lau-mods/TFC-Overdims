@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "minecraft:blackstone"
+    "minecraft:blackstone",
+    "minecraft:netherrack",
+    "minecraft:end_stone",
+    "tfcoverdims:hardened_netherrack",
+    "tfcoverdims:hardened_end_stone"
   ]
 }

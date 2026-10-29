@@ -34,6 +34,10 @@ public final class AssetSizeGameTests {
         for (String brick : List.of("blackstone_brick", "end_stone_brick")) {
             compareSize(helper, expected, brick, "brick/granite");
         }
+        for (String rock : List.of("netherrack", "end_stone")) {
+            compareSize(helper, expected, "cobble_" + rock, "rock/cobble/granite");
+            compareSize(helper, expected, "hardened_" + rock, "rock/hardened/granite");
+        }
         for (OverdimsWood wood : OverdimsWood.values()) {
             String name = wood.getSerializedName();
             compareSize(helper, expected, "wood/lumber/" + name, "wood/lumber/oak");

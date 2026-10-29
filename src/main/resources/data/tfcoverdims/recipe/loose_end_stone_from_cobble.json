@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "tfcoverdims:cobble_end_stone"
+    }
+  ],
+  "result": {
+    "id": "tfcoverdims:loose_end_stone",
+    "count": 4
+  }
+}

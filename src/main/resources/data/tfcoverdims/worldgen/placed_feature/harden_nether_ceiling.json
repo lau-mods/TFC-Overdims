@@ -1,0 +1,8 @@
+{
+  "feature": "tfcoverdims:harden_nether_ceiling",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

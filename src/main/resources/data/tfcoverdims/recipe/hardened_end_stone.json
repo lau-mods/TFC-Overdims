@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XYX",
+    "YXY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:end_stone"
+    },
+    "Y": {
+      "item": "tfc:mortar"
+    }
+  },
+  "result": {
+    "id": "tfcoverdims:hardened_end_stone",
+    "count": 2
+  }
+}

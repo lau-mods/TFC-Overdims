@@ -3,6 +3,10 @@
   "values": [
     "tfcoverdims:loose_netherrack",
     "tfcoverdims:loose_blackstone",
-    "tfcoverdims:loose_end_stone"
+    "tfcoverdims:loose_end_stone",
+    "tfcoverdims:cobble_netherrack",
+    "tfcoverdims:hardened_netherrack",
+    "tfcoverdims:cobble_end_stone",
+    "tfcoverdims:hardened_end_stone"
   ]
 }

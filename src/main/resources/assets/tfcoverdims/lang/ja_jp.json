@@ -99,5 +99,9 @@
   "block.tfcoverdims.wood.potted_sapling.crimson": "真紅の鉢植えの苗木",
   "block.tfcoverdims.wood.wall_sign.crimson": "真紅の壁掛け看板",
   "block.tfcoverdims.wood.potted_sapling.warped": "歪んだの鉢植えの苗木",
-  "block.tfcoverdims.wood.wall_sign.warped": "歪んだの壁掛け看板"
+  "block.tfcoverdims.wood.wall_sign.warped": "歪んだの壁掛け看板",
+  "block.tfcoverdims.cobble_netherrack": "丸石のネザーラック",
+  "block.tfcoverdims.hardened_netherrack": "硬化したネザーラック",
+  "block.tfcoverdims.cobble_end_stone": "丸石のエンドストーン",
+  "block.tfcoverdims.hardened_end_stone": "硬化したエンドストーン"
 }

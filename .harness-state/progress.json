@@ -1,6 +1,6 @@
 {
-  "status": "idle",
-  "phase": "idle",
+  "status": "running",
+  "phase": "checkpoint",
   "current": null,
   "completed": [
     "M01",
@@ -12,8 +12,9 @@
     "M07",
     "M08",
     "M09",
-    "M10"
+    "M10",
+    "M11"
   ],
-  "lastCheckpoint": "782d7688f02e2784d669aa59bfe92745a8b03b09",
+  "lastCheckpoint": "9c1131c6cff211c2e7eec5a35a6f1266e70c774a",
   "fatal": null
 }

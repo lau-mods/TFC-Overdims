@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minecraft:blackstone"
+    "minecraft:blackstone",
+    "minecraft:netherrack",
+    "minecraft:end_stone"
   ]
 }

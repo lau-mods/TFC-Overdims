@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "tfcoverdims:cobble_netherrack"
+    }
+  ],
+  "result": {
+    "id": "tfcoverdims:loose_netherrack",
+    "count": 4
+  }
+}

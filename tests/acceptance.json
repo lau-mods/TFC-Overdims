@@ -407,6 +407,72 @@
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "allitemsizes"
+    },
+    {
+      "acId": "AC-F017-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "cobblecraft"
+    },
+    {
+      "acId": "AC-F017-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "hardenedcraft"
+    },
+    {
+      "acId": "AC-F017-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockcollapserules"
+    },
+    {
+      "acId": "AC-F019-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherceilingselection"
+    },
+    {
+      "acId": "AC-F019-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherceilingselection"
+    },
+    {
+      "acId": "AC-F019-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "rockcollapserules"
+    },
+    {
+      "acId": "AC-F019-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherceilingdimension"
+    },
+    {
+      "acId": "AC-F019-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "netherceilingdimension"
+    },
+    {
+      "acId": "AC-F017-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "hardenedloot"
+    },
+    {
+      "acId": "AC-F017-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "hardenedloot"
+    },
+    {
+      "acId": "AC-F019-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:collapse",
+      "name": "netherrackhardenedcollapse"
     }
   ],
   "e2e": [

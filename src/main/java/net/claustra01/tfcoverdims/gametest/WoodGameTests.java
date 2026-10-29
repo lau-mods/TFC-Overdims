@@ -379,7 +379,8 @@ public final class WoodGameTests {
                 found |= current.contains(treeId);
                 var unchanged = current.stream().filter(id -> !id.equals(treeId)
                     && !id.equals(ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "loose_netherrack_patch"))
-                    && !id.equals(ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "loose_blackstone_patch"))).toList();
+                    && !id.equals(ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "loose_blackstone_patch"))
+                    && !id.equals(ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "harden_nether_ceiling"))).toList();
                 helper.assertTrue(unchanged.equals(baseline), "Other Nether features must remain unchanged at step " + step);
             }
             helper.assertTrue(found, "Modified forest must include its Nether tree");

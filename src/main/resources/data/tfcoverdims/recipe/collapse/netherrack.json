@@ -1,0 +1,8 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "minecraft:netherrack",
+    "tfcoverdims:hardened_netherrack"
+  ],
+  "result": "tfcoverdims:cobble_netherrack"
+}

@@ -46,6 +46,37 @@ public final class CollapseGameTests {
     }
 
     @GameTest(template = "collapse", batch = "climate", timeoutTicks = 120)
+    public static void netherrackHardenedCollapse(GameTestHelper helper) {
+        Block raw = Blocks.NETHERRACK;
+        Block hardened = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("tfcoverdims:hardened_netherrack"));
+        Block cobble = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("tfcoverdims:cobble_netherrack"));
+        prepareRoof(helper, raw);
+        BlockPos hardenedPos = helper.absolutePos(new BlockPos(8, 7, 8));
+        helper.getLevel().setBlock(hardenedPos, hardened.defaultBlockState(), Block.UPDATE_CLIENTS);
+        helper.assertTrue(!CollapseRecipe.canStartCollapse(helper.getLevel(), hardenedPos),
+            "Hardened roof cannot start a collapse alone");
+        helper.assertTrue(CollapseRecipe.getRecipe(hardened.defaultBlockState())
+            .assembleBlock(hardened.defaultBlockState()).is(cobble),
+            "A propagated collapse must convert hardened rock to cobble");
+        helper.assertTrue(CollapseRecipe.canStartCollapse(helper.getLevel(),
+            helper.absolutePos(new BlockPos(7, 7, 8))), "Adjacent raw rock can start a collapse");
+        boolean propagated = false;
+        for (int seed = 0; seed < 256 && !propagated; seed++) {
+            falling(helper).forEach(FallingBlockEntity::discard);
+            prepareRoof(helper, raw);
+            helper.getLevel().setBlock(hardenedPos, hardened.defaultBlockState(), Block.UPDATE_CLIENTS);
+            helper.getLevel().random.setSeed(RandomSource.create(seed).nextLong());
+            minePillar(helper);
+            propagated = falling(helper).stream().anyMatch(entity ->
+                entity.blockPosition().getX() == hardenedPos.getX()
+                    && entity.blockPosition().getZ() == hardenedPos.getZ()
+                    && entity.getBlockState().is(cobble));
+        }
+        helper.assertTrue(propagated, "Raw collapse must propagate to adjacent hardened rock as falling cobble");
+        helper.succeed();
+    }
+
+    @GameTest(template = "collapse", batch = "climate", timeoutTicks = 120)
     public static void supportBeams(GameTestHelper helper) {
         var level = helper.getLevel();
         Block vertical = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("tfc:wood/vertical_support/oak"));
