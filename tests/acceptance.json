@@ -7,10 +7,22 @@
       "name": "netherclimate"
     },
     {
+      "acId": "AC-F001-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "climatedisplaynames"
+    },
+    {
       "acId": "AC-F001-002",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
       "name": "endclimate"
+    },
+    {
+      "acId": "AC-F001-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "climatedisplaynames"
     },
     {
       "acId": "AC-F001-002",
@@ -199,6 +211,12 @@
       "name": "saplingandfungus"
     },
     {
+      "acId": "AC-F008-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "nethersaplinggrowth"
+    },
+    {
       "acId": "AC-F008-004",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
@@ -247,10 +265,22 @@
       "name": "wartcalendar"
     },
     {
+      "acId": "AC-F009-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "dimensionplantgrowth"
+    },
+    {
       "acId": "AC-F009-002",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:nether_tree",
       "name": "choruscalendar"
+    },
+    {
+      "acId": "AC-F009-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "dimensionplantgrowth"
     },
     {
       "acId": "AC-F009-001",

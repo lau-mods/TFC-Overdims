@@ -23,7 +23,7 @@ TFC Overdims は、Vanilla の Nether と End に存在するブロック、植�
 
 #### Description
 
-TFC の `ClimateModel` を両 Dimension に適用する。Nether の基準気温は Beneath 1.21.x の設定値を採用する：Nether Wastes 70 ℃、Basalt Deltas 80 ℃、Crimson Forest 60 ℃、Warped Forest 60 ℃、Soul Sand Valley 55 ℃。高度補正は `-clampedMap(Y, 32, 128, -5, 5)` ℃とし、年間降水量は 0 mm とする。End は年間降水量 0 mm、平均・瞬間気温 20 ℃の固定気候とする。両者とも季節による気温・降水変動を設けない。TFC Calendar は既存のワールド時計を共用する。
+TFC の `ClimateModel` を両 Dimension に適用する。Nether の基準気温は Beneath 1.21.x の設定値を採用する：Nether Wastes 70 ℃、Basalt Deltas 80 ℃、Crimson Forest 60 ℃、Warped Forest 60 ℃、Soul Sand Valley 55 ℃。高度補正は `-clampedMap(Y, 32, 128, -5, 5)` ℃とし、年間降水量は 0 mm とする。End は年間降水量 0 mm、平均・瞬間気温 20 ℃の固定気候とする。両者とも季節による気温・降水変動を設けない。TFC Calendar は既存のワールド時計を共用する。TFC気候GUIでは分類名だけをNether/End固有の名称で表示し、気温・降水量の数値とOverworldの分類を維持する。
 
 #### Acceptance Criteria
 
@@ -37,7 +37,7 @@ Expected Result: Y=80 ではそれぞれ 70、80、60、60、55 ℃と降水量 
 
 Preconditions: End の主要バイオームに検査地点がある。
 Action: 各地点の TFC 平均気温・瞬間気温・平均降水量を調べ、Calendar を複数日進める。
-Expected Result: すべて 20 ℃、20 ℃、0 mm を返し、日付による変動が生じない。Overworld の気候計算は変更されない。
+Expected Result: すべて 20 ℃、20 ℃、0 mm を返し、日付による変動が生じない。
 
 ### F-002: Nether の Loose Rock と採掘
 
@@ -121,7 +121,7 @@ Expected Result: TFCのmetamorphic stone tool headが得られ、既存Stone Age
 
 #### Description
 
-`minecraft:end_stone` と `minecraft:end_stone_bricks` を維持し、`tfcoverdims:loose_end_stone` および `tfcoverdims:end_stone_brick` を追加する。Loose Stone のブロックモデル、採掘量、加工レシピは TFC と Beneath の岩石モデルに合わせる。End専用の新規木材・鉱石・岩石装飾系列は追加しない。Loose End StoneはTFCのsedimentary Stone Knapping素材として扱う。
+`minecraft:end_stone` と `minecraft:end_stone_bricks` を維持し、`tfcoverdims:loose_end_stone` および `tfcoverdims:end_stone_brick` を追加する。Loose Stone のブロックモデル、採掘量、加工レシピは TFC と Beneath の岩石モデルに合わせる。Loose End Stone と End Stone Brick のアイテム画像は TFC 4.2.12 の `textures/item/loose_rock/limestone.png` と `textures/item/brick/limestone.png` を原本とし、形状と alpha を保って End Stone 色へ変換する。変換はグレースケール化、輝度範囲16～84%の正規化、`#969967`～`#f6fabd` の線形パレット適用で行う。End専用の新規木材・鉱石・岩石装飾系列は追加しない。Loose End StoneはTFCのsedimentary Stone Knapping素材として扱う。
 
 #### Acceptance Criteria
 
@@ -189,7 +189,7 @@ Expected Result: Vanilla Basaltに専用Loose Rock、TFC Basalt由来の変換�
 
 Crimson / Warped を `RegistryWood` に基づく独立した TFC 木種として登録する。各樹種について Beneath 1.21.x と同じ `Wood.BlockType` 系統を `tfcoverdims` 名前空間に追加し、Lumber、Log、Hyphae相当のWood、Planks、Sapling、Leaves、Twig、Fallen Leaves、Support、各種建築材、収納・作業設備、機械部品を TFC 本来の動作へ接続する。Vanilla の同種ブロックは削除・置換登録せず、IDの重複を許容する。新規の樹種は追加しない。
 
-自然生成の `minecraft:crimson_fungi` と `minecraft:warped_fungi` を除外し、Beneathの `tfc:random_tree` 型樹木を各対応バイオームへ追加する。樹形は Crimson 16種、Warped 17種、幹高3～5、`count_on_every_layer=8` を基準とし、生成された幹・枝・葉は本MODのTFC木材で構成する。Saplingの成長時間は両種8 TFC日とする。既存のFungusは小型植物として残すが、骨粉によるVanilla巨大菌類生成は無効化する。
+自然生成の `minecraft:crimson_fungi` と `minecraft:warped_fungi` を除外し、Beneathの `tfc:random_tree` 型樹木を各対応バイオームへ追加する。樹形は Crimson 16種、Warped 17種、幹高3～5、`count_on_every_layer=8` を基準とし、生成された幹・枝・葉は本MODのTFC木材で構成する。Saplingの成長時間は両種8 TFC日とする。Netherでは空の明るさに依存せず、他DimensionではTFCの明るさ条件を維持する。既存のFungusは小型植物として残すが、骨粉によるVanilla巨大菌類生成は無効化する。
 
 Vanilla木材に由来する加工レシピは、TFCのSaw・Lumber工程およびTFC木材設備を迂回しないよう無効にする。両樹種の木材と派生物は非可燃とし、燃料・木炭原料に使用しない。
 
@@ -199,7 +199,7 @@ Vanilla木材に由来する加工レシピは、TFCのSaw・Lumber工程およ�
 
 Preconditions: TFC Overdims とTFCを導入している。
 Action: Crimson / Warpedの全`Wood.BlockType`登録、レシピ、表示およびBlockEntityTypeを確認する。
-Expected Result: 両木種のTFC木材系列が`tfcoverdims`名前空間で登録され、Vanillaの各IDは変更されない。Lumber、Support、Chest、Barrel、Crate、Tool Rack、Workbench、機械部品などが対応するTFC機能を持ち、不要な独自設備は追加されない。
+Expected Result: 両木種のTFC木材系列が`tfcoverdims`名前空間で登録され、Vanillaの各IDは変更されない。Lumber、Support、Chest、Barrel、Crate、Tool Rack、Workbench、機械部品などが対応するTFC機能を持つ。ChestとTrapped Chestはアイテム状態でも対応する木種の見た目で描画され、不要な独自設備は追加されない。
 
 ##### AC-F008-002: Nether樹木の自然生成
 
@@ -210,8 +210,8 @@ Expected Result: `minecraft:crimson_fungi`・`minecraft:warped_fungi` の自然�
 ##### AC-F008-003: Saplingと巨大菌類の迂回防止
 
 Preconditions: 両樹種のSapling、対応する植栽地、VanillaのCrimson/Warped Fungusと骨粉がある。
-Action: TFC Calendarを8日以上進めてSaplingの成長を確認し、Vanilla Fungusへ骨粉を使用する。
-Expected Result: SaplingがTFC式の樹木へ成長し、対応木種のLog・Leaves等を生成する。Vanilla FungusからVanillaの巨大菌類は生成されない。既存Fungusの小型植物としての配置・回収は維持される。
+Action: TFC Calendarを8日以上進めてSaplingの成長を確認し、Netherの暗所でも両樹種を育てる。Vanilla Fungusへ骨粉を使用する。
+Expected Result: Netherの暗所でもSaplingがTFC式の樹木へ成長し、対応木種のLog・Leaves等を生成する。8日未満では成長しない。Vanilla FungusからVanillaの巨大菌類は生成されない。既存Fungusの小型植物としての配置・回収は維持される。
 
 ##### AC-F008-004: 木材加工・収納・非可燃性
 
@@ -235,13 +235,13 @@ Nether WartとChorus PlantはVanillaの成長土台、形状、成熟・採取�
 
 ##### AC-F009-001: Nether Wart
 
-Preconditions: Soul Sand上にage 0のNether Wartがある。
+Preconditions: NetherのSoul Sand上にage 0のNether Wartがある。
 Action: TFC Calendarの経過を反映させて成長を試験する。
 Expected Result: Vanillaと同じage 0～3の範囲で段階が進み、最終的にNether Wartを採取できる。TFC専用農地・追加栄養素を要求しない。
 
 ##### AC-F009-002: Chorus
 
-Preconditions: End Stone上にVanilla Chorus Flowerがあり、TFC Calendarを進められる。
+Preconditions: EndのEnd Stone上にVanilla Chorus Flowerがあり、TFC Calendarを進められる。
 Action: Calendarを進行させ、Chorusの成長・分岐・採取を確認する。
 Expected Result: Vanilla Chorusの形状・分岐・Flowerの成長上限・Chorus Fruitの採取結果を保持し、Calendarの経過に応じて成長更新される。
 

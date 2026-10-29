@@ -13,6 +13,7 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GlobalTestReporter;
 import net.minecraft.gametest.framework.JUnitLikeTestReporter;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -28,10 +29,12 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateModelType;
 import net.dries007.tfc.util.climate.ClimateModels;
+import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 
 import net.claustra01.tfcoverdims.TFCOverdims;
 import net.claustra01.tfcoverdims.climate.EndClimateModel;
+import net.claustra01.tfcoverdims.climate.ClimateDisplayName;
 import net.claustra01.tfcoverdims.climate.NetherClimateModel;
 import net.claustra01.tfcoverdims.climate.OverdimsClimateModels;
 
@@ -39,6 +42,21 @@ import net.claustra01.tfcoverdims.climate.OverdimsClimateModels;
 @PrefixGameTestTemplate(false)
 public final class ClimateGameTests {
     private static boolean reportConfigured;
+
+    @GameTest(template = "empty", batch = "climate")
+    public static void climateDisplayNames(GameTestHelper helper) {
+        for (var dimension : List.of(Level.NETHER, Level.END)) {
+            var title = ClimateDisplayName.forDimension(dimension, KoppenClimateClassification.BWH);
+            String expected = dimension == Level.NETHER ? "tfcoverdims.climate.nether" : "tfcoverdims.climate.end";
+            helper.assertTrue(title.getContents() instanceof TranslatableContents contents && contents.getKey().equals(expected),
+                "The dimension must have its own climate title: " + dimension.location());
+        }
+        var overworld = ClimateDisplayName.forDimension(Level.OVERWORLD, KoppenClimateClassification.BWH);
+        helper.assertTrue(overworld.getContents() instanceof TranslatableContents contents
+            && contents.getKey().equals("tfc.enum.koppenclimateclassification.bwh"),
+            "Overworld must keep TFC's climate classification");
+        helper.succeed();
+    }
 
     @BeforeBatch(batch = "climate")
     public static void configureReport(ServerLevel level) throws ParserConfigurationException {

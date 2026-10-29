@@ -31,6 +31,9 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   `Mth.clampedMap(Y, 32, 128, -5, 5)` ℃を引く。平均・瞬間降水量は 0 mm。
   End は全バイオーム・高度で平均 20 ℃、瞬間 20 ℃、降水量 0 mm。
   両モデルとも季節変動はなく、TFC の既存 Calendar を全 Dimension で共用する。
+- クライアントの TFC ClimateScreen は分類名のみを Dimension に応じて
+  `The Nether` / `The End`（日本語はネザーの気候 / エンドの気候）へ置き換える。
+  気温・降水量の数値と Overworld の Köppen 分類は変更しない。
 - TFC 4.2.12 は Modrinth Maven から `compileOnly` と `localRuntime` で参照する。
   mod metadata では `tfc` を required、`[4.2.12,4.3)`、ordering AFTER とする。
   Patchouli 1.21.1-93-neoforge は TFC の必須依存として `localRuntime` に置き、
@@ -40,9 +43,9 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   `JUnitLikeTestReporter` が `run/gametest-results.xml` を出力する。
   `tests/acceptance.json` は両 AC を対応付ける。
   `@PrefixGameTestTemplate(false)` により testcase の classname は `tfcoverdims:empty`、
-  name は `netherclimate`、`endclimate`、`overworldunchanged` となる。
+  name は `netherclimate`、`endclimate`、`overworldunchanged`、`climatedisplaynames` となる。
   Nether 5 バイオーム・高度補正、End 5 バイオーム、Calendar 進行後の不変性、
-  Overworld 不変性とモデル型の通信 codec を検証する。M01 に表示要件はない。
+  Overworld 不変性とモデル型の通信 codec、Dimension ごとの気候表示名を検証する。
 
 ## M02 岩石と加工
 
@@ -50,6 +53,8 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   `tfcoverdims:loose_end_stone` を Block / BlockItem として登録する。
   Item のみの追加は `tfcoverdims:blackstone_brick` と `tfcoverdims:end_stone_brick`。
   Vanilla の岩石・加工ブロック ID を維持し、独自の石器・tool head は登録しない。
+  Loose End Stone と End Stone Brick のアイテム画像は TFC 4.2.12 の
+  limestone 小石・Brick を原本に、形状と alpha を保って End Stone 色へ変換する。
 - `tfcoverdims:main` Creative Tab に本 MOD の登録アイテムをすべて表示する。
   Tab 名は en_us / ja_jp に定義し、Loose Netherrack をアイコンにする。
 - `.common.blocks.LooseRockBlock` は TFC の `GroundcoverBlock` を継承する。
@@ -149,8 +154,11 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   `BlockEntityTypeAddBlocksEvent` で TFC の Chest、Trapped Chest、Crate、Barrel、Loom、Sluice、
   Tool Rack、Bookshelf、Sign（立札・壁札）、Tick Counter（Sapling）、Axle、Bladed Axle、
   Encased Axle、Clutch、Gear Box、Windmill、Water Wheel、Lectern、Shelf に有効ブロックを追加する。
-  `registerWoodTypes()` で BlockSetType / WoodType を登録し、Sign の描画登録だけを client 側に置く。
+  `registerWoodTypes()` で BlockSetType / WoodType を登録し、Sign と
+  Chest / Trapped Chest のアイテム描画登録を client 側に置く。
 - Sapling は8 TFC日。植栽地は `tfc:tree_grows_on` または TFC 基底の許可する土壌。
+  本 MOD の Sapling は Nether 内に限り TFC の明るさ9以上の成長条件を外す。
+  成長確率・Calendar の経過時間・土壌判定・他 Dimension の明るさ条件は維持する。
   同 tag に両 Nylium を追加し、樹木 Feature と土壌一覧を共有する。
   Vanilla の Crimson / Warped Fungus は `BonemealEvent` の cancel だけで巨大化を抑止し、
   通常の設置・回収は維持する。
@@ -188,7 +196,7 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   それを使い、残りだけ個別 item_size を置いて適用数を1件にする。
 - GameTest は既存 climate batch / `run/gametest-results.xml`。
   `tests/acceptance.json` は F008-001=`woodregistry` / `woodstorage` / `woodharvest` / `rockresources`、
-  F008-002=`nethertrees`、F008-003=`saplingandfungus`、
+  F008-002=`nethertrees`、F008-003=`saplingandfungus` / `nethersaplinggrowth`、
   F008-004=`woodprocessing` / `woodstorage` / `woodfuel` / `woodsupportsandmachines`、
   F008-005=`vanillawoodrecipes`。
   classname は `nethertrees` / `saplingandfungus` が `tfcoverdims:nether_tree`（19×32×19）、
@@ -196,7 +204,7 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   全 BlockType と BlockEntity の有効性、収納保存・再読込、oak と同形の全加工レシピ・工具消耗、
   Axe 採掘と葉の維持、Support 保護、Motor→Axle→Gear Box→Clutch→Axle の回転、
   火炎・Fuel lookup・Firepit / Log Pile 拒否、8日成長、実際の骨粉使用と Fungus 回収、
-  読み込み済み Feature / Biome と構造ブロック、モデル参照を検証する。
+  読み込み済み Feature / Biome と構造ブロック、モデル参照、実際の Nether 暗所での成長を検証する。
 - E2E `tests/e2e/nether-wood.mjs` を F008-001 に対応させる。
   両木種の建材、植物・透明部分・文字入りSign、収納・作業設備、全機械部品を並べ、
   Lumber / Support / Sign の両木種のアイテムを hotbar に表示して撮影する。
@@ -217,11 +225,12 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
 - Soul Sand / End Stone の土台条件、Vanilla の age・形状・分岐・成熟・採取 loot は変更しない。
   新規農地、栄養素、作物、成長段階は追加しない。
 - GameTest は既存の climate batch / `run/gametest-results.xml` を使用する。
-  `tests/acceptance.json` の F009-001 は `wartcalendar` と `growthpersistence`、
-  F009-002 は `choruscalendar` と `growthpersistence` に対応する。
+  `tests/acceptance.json` の F009-001 は `wartcalendar` / `dimensionplantgrowth` / `growthpersistence`、
+  F009-002 は `choruscalendar` / `dimensionplantgrowth` / `growthpersistence` に対応する。
   classname は `choruscalendar` が `tfcoverdims:nether_tree`、残りは `tfcoverdims:empty`。
   Calendar 経過・端数・成長上限・採取・土台条件、Chorus 分岐、attachment の保存・再読込と
-  植え直し時の時刻リセットを検証する。表示要件がないため M05 の E2E は登録しない。
+  植え直し時の時刻リセットと実際の Nether / End での成長を検証する。
+  表示要件がないため M05 の E2E は登録しない。
 
 ## M06 Nether / End の生存と設備
 

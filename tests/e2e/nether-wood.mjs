@@ -107,4 +107,15 @@ await scenario(async ({ clients }) => {
     if (item.item?.type !== expected) throw new Error(`Expected hotbar item: ${expected}`);
   }
   await capture({ x: 10.5, y: 108, z: -11.5, yaw: 0, pitch: 22 }, 'lumber-support-sign-items');
+
+  command(client, 'clear @s');
+  const chestItems = ['chest/crimson', 'trapped_chest/crimson', 'chest/warped', 'trapped_chest/warped'];
+  for (const [slot, path] of chestItems.entries()) {
+    const expected = `tfcoverdims:wood/${path}`;
+    command(client, `item replace entity @s hotbar.${slot} with ${expected}`);
+    const item = await waitFor(() => mct(client, 'inventory', 'slot', String(slot)),
+      data => data.item?.type === expected);
+    if (item.item?.type !== expected) throw new Error(`Expected chest item: ${expected}`);
+  }
+  await capture({ x: 10.5, y: 108, z: -11.5, yaw: 0, pitch: 22 }, 'chest-items');
 });

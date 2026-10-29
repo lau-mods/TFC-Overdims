@@ -4,9 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChorusFlowerBlock;
 import net.minecraft.world.level.block.NetherWartBlock;
@@ -16,13 +18,57 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
 
 import net.claustra01.tfcoverdims.TFCOverdims;
 import net.claustra01.tfcoverdims.common.growth.CalendarGrowth;
+import net.claustra01.tfcoverdims.climate.NetherClimateModel;
+import net.claustra01.tfcoverdims.climate.EndClimateModel;
 
 @GameTestHolder(TFCOverdims.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class GrowthGameTests {
+    @GameTest(template = "empty", batch = "climate")
+    public static void dimensionPlantGrowth(GameTestHelper helper) {
+        ServerLevel nether = helper.getLevel().getServer().getLevel(Level.NETHER);
+        ServerLevel end = helper.getLevel().getServer().getLevel(Level.END);
+        helper.assertTrue(nether != null && end != null, "Nether and End must be loaded");
+        BlockPos wart = new BlockPos(264, 80, 264);
+        BlockPos flower = new BlockPos(264, 80, 264);
+        nether.setBlockAndUpdate(wart.below(), Blocks.SOUL_SAND.defaultBlockState());
+        nether.setBlockAndUpdate(wart, Blocks.NETHER_WART.defaultBlockState());
+        for (BlockPos pos : BlockPos.betweenClosed(flower.offset(-8, 0, -8), flower.offset(8, 27, 8))) {
+            end.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+        }
+        end.setBlockAndUpdate(flower.below(), Blocks.END_STONE.defaultBlockState());
+        end.setBlockAndUpdate(flower, Blocks.CHORUS_FLOWER.defaultBlockState());
+        helper.assertTrue(Climate.get(nether) == NetherClimateModel.INSTANCE
+            && nether.getBlockState(wart).canSurvive(nether, wart), "Wart needs Nether climate and Soul Sand");
+        helper.assertTrue(Climate.get(end) == EndClimateModel.INSTANCE
+            && end.getBlockState(flower).canSurvive(end, flower), "Chorus needs End climate and End Stone");
+        Calendars.SERVER.skipForwardBy(CalendarGrowth.interval(Calendars.SERVER));
+        nether.getBlockState(wart).randomTick(nether, wart, RandomSource.create(0));
+        end.getBlockState(flower).randomTick(end, flower, RandomSource.create(0));
+        helper.assertTrue(nether.getBlockState(wart).getValue(NetherWartBlock.AGE) == 1,
+            "Wart must advance in the Nether after Calendar time");
+        helper.assertTrue(end.getBlockState(flower).is(Blocks.CHORUS_PLANT)
+            && end.getBlockState(flower.above()).is(Blocks.CHORUS_FLOWER),
+            "Chorus must form a stem and new flower in the End");
+        Calendars.SERVER.skipForwardBy(20L * ICalendar.CALENDAR_TICKS_IN_DAY);
+        nether.getBlockState(wart).randomTick(nether, wart, RandomSource.create(0));
+        end.getBlockState(flower.above()).randomTick(end, flower.above(), RandomSource.create(0));
+        helper.assertTrue(nether.getBlockState(wart).getValue(NetherWartBlock.AGE) == 3,
+            "Wart must mature in the Nether");
+        int stems = 0;
+        int flowers = 0;
+        for (BlockPos pos : BlockPos.betweenClosed(flower.offset(-8, 0, -8), flower.offset(8, 27, 8))) {
+            if (end.getBlockState(pos).is(Blocks.CHORUS_PLANT)) stems++;
+            if (end.getBlockState(pos).is(Blocks.CHORUS_FLOWER)) flowers++;
+        }
+        helper.assertTrue(stems > 1 && flowers > 0, "Chorus must keep growing in the End");
+        helper.succeed();
+    }
+
     @GameTest(template = "empty", batch = "climate")
     public static void wartCalendar(GameTestHelper helper) {
         var level = helper.getLevel();

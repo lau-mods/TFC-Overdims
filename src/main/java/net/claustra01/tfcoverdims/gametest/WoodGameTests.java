@@ -19,6 +19,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
@@ -68,17 +70,61 @@ import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.data.Fuel;
 import net.dries007.tfc.util.data.Support;
 import net.dries007.tfc.world.feature.tree.RandomTreeConfig;
 
 import net.claustra01.tfcoverdims.TFCOverdims;
+import net.claustra01.tfcoverdims.climate.NetherClimateModel;
 import net.claustra01.tfcoverdims.common.wood.OverdimsWood;
 import net.claustra01.tfcoverdims.common.wood.OverdimsWoodBlocks;
 
 @GameTestHolder(TFCOverdims.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class WoodGameTests {
+    @GameTest(template = "empty", batch = "climate", timeoutTicks = 200)
+    public static void netherSaplingGrowth(GameTestHelper helper) {
+        ServerLevel nether = helper.getLevel().getServer().getLevel(Level.NETHER);
+        helper.assertTrue(nether != null && Climate.get(nether) == NetherClimateModel.INSTANCE,
+            "Nether saplings must use the Nether climate model");
+        for (OverdimsWood wood : OverdimsWood.values()) {
+            BlockPos pos = new BlockPos(264 + 64 * wood.ordinal(), 80, 264);
+            for (BlockPos scan : BlockPos.betweenClosed(pos.offset(-8, 0, -8), pos.offset(8, 29, 8))) {
+                nether.setBlock(scan, Blocks.AIR.defaultBlockState(), 2);
+            }
+            nether.setBlockAndUpdate(pos.below(),
+                (wood == OverdimsWood.CRIMSON ? Blocks.CRIMSON_NYLIUM : Blocks.WARPED_NYLIUM).defaultBlockState());
+            TFCSaplingBlock sapling = (TFCSaplingBlock) OverdimsWoodBlocks.WOODS.get(wood).get(Wood.BlockType.SAPLING).get();
+            nether.setBlockAndUpdate(pos, sapling.defaultBlockState());
+            helper.assertTrue(nether.getBlockState(pos).canSurvive(nether, pos)
+                && nether.getMaxLocalRawBrightness(pos.above()) < 9,
+                "Nether sapling must survive on nylium in low light: " + wood);
+            var counter = (TickCounterBlockEntity) nether.getBlockEntity(pos);
+            helper.assertTrue(counter != null, "Nether sapling needs a Calendar counter: " + wood);
+            counter.setLastUpdateTick(Calendars.SERVER.getTicks() - 7L * ICalendar.CALENDAR_TICKS_IN_DAY);
+            for (int attempt = 0; attempt < 50; attempt++) {
+                nether.getBlockState(pos).randomTick(nether, pos, RandomSource.create(attempt));
+            }
+            helper.assertTrue(nether.getBlockState(pos).is(sapling)
+                && nether.getBlockState(pos).getValue(TFCSaplingBlock.STAGE) == 0,
+                "Sapling must wait for eight TFC days in the Nether: " + wood);
+            counter.setLastUpdateTick(Calendars.SERVER.getTicks() - 9L * ICalendar.CALENDAR_TICKS_IN_DAY);
+            for (int attempt = 0; attempt < 100 && nether.getBlockState(pos).is(sapling); attempt++) {
+                nether.getBlockState(pos).randomTick(nether, pos, RandomSource.create(attempt));
+            }
+            int logs = 0;
+            int leaves = 0;
+            for (BlockPos scan : BlockPos.betweenClosed(pos.offset(-8, 0, -8), pos.offset(8, 29, 8))) {
+                Block block = nether.getBlockState(scan).getBlock();
+                if (block == OverdimsWoodBlocks.WOODS.get(wood).get(Wood.BlockType.LOG).get()) logs++;
+                if (block == OverdimsWoodBlocks.WOODS.get(wood).get(Wood.BlockType.LEAVES).get()) leaves++;
+            }
+            helper.assertTrue(logs >= 3 && leaves > 0, "Dark Nether sapling must grow into a tree: " + wood);
+        }
+        helper.succeed();
+    }
+
     @GameTest(template = "empty", batch = "climate")
     public static void woodRegistry(GameTestHelper helper) {
         Set<ResourceLocation> expectedItems = new HashSet<>();

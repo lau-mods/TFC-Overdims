@@ -15,6 +15,9 @@
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxComponentsMixin"
   ],
+  "client": [
+    "ClimateScreenMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

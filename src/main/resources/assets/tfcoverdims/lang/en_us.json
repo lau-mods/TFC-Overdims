@@ -1,5 +1,7 @@
 {
   "itemGroup.tfcoverdims": "TFC Overdims",
+  "tfcoverdims.climate.nether": "The Nether",
+  "tfcoverdims.climate.end": "The End",
   "block.tfcoverdims.loose_netherrack": "Loose Netherrack",
   "block.tfcoverdims.loose_blackstone": "Loose Blackstone",
   "block.tfcoverdims.loose_end_stone": "Loose End Stone",
