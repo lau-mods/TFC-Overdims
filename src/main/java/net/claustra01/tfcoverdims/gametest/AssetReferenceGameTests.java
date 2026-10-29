@@ -60,7 +60,20 @@ public final class AssetReferenceGameTests {
                 checkBlockstate(helper, JsonParser.parseString(Files.readString(file)), root);
             }
         }
+        assertDedicatedCobbleTexture(helper, modAssets, "cobble_netherrack", "minecraft:block/netherrack");
+        assertDedicatedCobbleTexture(helper, modAssets, "cobble_end_stone", "minecraft:block/end_stone");
         helper.succeed();
+    }
+
+    private static void assertDedicatedCobbleTexture(GameTestHelper helper, Path modAssets, String name, String rawTexture)
+        throws IOException {
+        Path modelPath = modAssets.resolve("models/block/" + name + ".json");
+        JsonObject model = JsonParser.parseString(Files.readString(modelPath)).getAsJsonObject();
+        String texture = model.getAsJsonObject("textures").get("all").getAsString();
+        helper.assertTrue(texture.equals("tfcoverdims:block/" + name),
+            name + " must use its dedicated cobble texture instead of " + rawTexture);
+        helper.assertTrue(Files.isRegularFile(modAssets.resolve("textures/block/" + name + ".png")),
+            "Missing dedicated cobble texture: " + name);
     }
 
     private static void checkModel(GameTestHelper helper, JsonElement element, Path root, Set<String> textures) {

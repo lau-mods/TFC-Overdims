@@ -34,6 +34,10 @@ await scenario(async ({ clients }) => {
   command(client, 'setblock 0 101 -2 minecraft:nether_bricks');
   command(client, 'setblock 1 101 -2 minecraft:polished_blackstone_bricks');
   command(client, 'setblock 2 101 -2 minecraft:end_stone_bricks');
+  command(client, 'setblock 4 101 -2 tfcoverdims:cobble_netherrack');
+  command(client, 'setblock 5 101 -2 tfcoverdims:hardened_netherrack');
+  command(client, 'setblock 6 101 -2 tfcoverdims:cobble_end_stone');
+  command(client, 'setblock 7 101 -2 tfcoverdims:hardened_end_stone');
   command(client, 'setblock 5 101 -1 minecraft:chest');
   const items = ['loose_netherrack', 'loose_blackstone', 'loose_end_stone', 'blackstone_brick', 'end_stone_brick',
     'wood/lumber/crimson', 'wood/support/crimson', 'wood/lumber/warped', 'wood/support/warped'];

@@ -350,6 +350,11 @@ M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装し
   `cobble_end_stone` / `hardened_end_stone` は TFC の Cobble / Hardened
   BlockType を使う。Loose 4個の2×2→Cobble 1個、Cobble 1個→Loose 4個、
   Raw 5個と Mortar 4個の `XYX/YXY/XYX`→Hardened 2個とする。
+- Cobble は専用画像を `assets/tfcoverdims/textures/block/` に置く。
+  Cobble Netherrack は Beneath revision `eab10327879400aeb67b3f9b3f7e2fbaf60946d0` の
+  `textures/block/cobblerack.png` を使用する。Cobble End Stone は TFC v4.2.12 の
+  `textures/block/rock/cobble/limestone.png` の画素配置を維持し、グレースケール正規化後に
+  `#8f9162`～`#f6fabd` の線形パレットを適用する。Raw の Vanilla テクスチャは参照しない。
 - Raw は TFC の `can_start_collapse`、`can_collapse`、`can_trigger_collapse`、
   Hardened は `can_collapse` と `can_trigger_collapse`、Cobble は
   `can_landslide` に入れる。Raw と Hardened の collapse recipe は
