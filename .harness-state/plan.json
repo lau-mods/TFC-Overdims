@@ -245,6 +245,59 @@
         "AGENTS.md",
         "README.md"
       ]
+    },
+    {
+      "id": "M11",
+      "features": [
+        "F-017",
+        "F-019"
+      ],
+      "dependsOn": [
+        "M02",
+        "M03"
+      ],
+      "approach": "Cobble と Hardened の4ブロックを共通 helper で追加し、その上で Nether 天井の Hardened 化を実装する。着手前に TFC 4.2.12 の jar/data で `rock/cobble`・`rock/hardened`（Block properties、hardness、loot table、mineable tag、item_size、can_collapse / can_start_collapse / can_trigger_collapse / can_landslide / rock tag、collapse recipe）の実値を確認する。Hardened の loot は TFC 実物に合わせ、自己ドロップを前提にしない。(1) 登録: `OverdimsBlocks` / `OverdimsItems` に `cobble_netherrack`・`hardened_netherrack`・`cobble_end_stone`・`hardened_end_stone` を Block / BlockItem で追加する。Cobble は TFC の Cobble 相当、Hardened は TFC の Hardened 相当の Block 実装（地すべり・崩落関連クラス）と硬度・採掘工具を使う。Creative Tab、en_us / ja_jp 名称、blockstate / model / item model、TFC rock/cobble・rock/hardened の同種 Size / Weight（item_size は1件ずつ）を追加し、Netherrack / End Stone 双方に同じ規則を適用する。テクスチャは Vanilla Netherrack / End Stone を参照するか、既存資産の変換派生に限る。新規手描きはしない。(2) Tag と崩落: pickaxe 採掘、TFC の can_collapse / can_trigger_collapse / can_landslide、Hardened は can_collapse のみで can_start_collapse には入れず、Cobble を地すべり対象に追加する。Raw Netherrack を崩落の開始・伝播対象に追加し（F-019 AC-003 のため）、End Stone は既存 tag を維持する。`recipe/collapse/` は `netherrack`→`cobble_netherrack`、`end_stone`→`cobble_end_stone`、`hardened_*`→対応 Cobble とし、既存の blackstone 崩落は変更しない。Raw / Hardened の loot は TFC 実装の挙動に合わせる。(3) Recipe: Loose Rock 4（2×2）→ Cobble 1、Cobble 1 → Loose Rock 4 を追加する。Raw 5 + `tfc:mortar` 4 の `XYX/YXY/XYX` → Hardened 2 を追加する。Loose→Raw の直接製作は作らない。Netherrack / End Stone ともに既に削除済みの旧変換 recipe を再導入しない。(4) 天井 Hardened 化: biome modifier による worldgen で実装する。NeoForge 21.1.264 の `neoforge:add_features` を、Nether の `#minecraft:is_nether` を対象とする `top_layer_modification`（または後段の最終 decoration step）の placed feature で追加する。鉱石・構造物・Loose Rock 等の後に一度だけ走り、既存チャンクとプレイヤー建築物を巻き込まない。Feature の実装は、直下が Air/Cave Air の `minecraft:netherrack` の下面1層のみを `hardened_netherrack` に置換する Java の Feature（`Feature<NoneFeatureConfiguration>`、chunk 範囲内のみ走査、全高度帯適用）にする。Bedrock、Blackstone、Basalt、Soul Sand/Soil、鉱石、溶岩、構造物は対象判定が Netherrack の blockstate 一致のみなので変更しない。Overworld / End には適用しない。(5) 検証: GameTest で Cobble↔Loose 往復、Hardened の消費と取得数、旧直接製作の不在、tag・recipe・item_size・loot・硬度の TFC との一致、Raw→Cobble / Hardened→Cobble の崩落、Hardened 単独では崩落が始まらないこと、Raw から始まった崩落が Hardened に伝播して Cobble になること、Cobble の地すべりを検証する。天井置換は人工 Nether 地形の region で Feature を実行し、天井下面、床・壁・地中、Bedrock、Blackstone、Basalt、Soul Sand、鉱石、溶岩の BlockState を前後比較する。`tests/acceptance.json` に F017-001..003 と F019-001..003 を追加し、AGENTS.md に ID・recipe・tag・Feature の仕様を追記する。表示は M10 の assetreferences / allitemnames / allitemsizes / creativetab が新規4ブロックを含めて通ることで確認する。JSON の構文解析と参照整合性を検査する。",
+      "scope": [
+        "src/main/java/net/claustra01/tfcoverdims/common/blocks/OverdimsBlocks.java",
+        "src/main/java/net/claustra01/tfcoverdims/common/items/OverdimsItems.java",
+        "src/main/java/net/claustra01/tfcoverdims/common/items/OverdimsCreativeTabs.java",
+        "src/main/java/net/claustra01/tfcoverdims/TFCOverdims.java",
+        "src/main/java/net/claustra01/tfcoverdims/worldgen/ (天井 Hardened 化 Feature と登録)",
+        "src/main/resources/assets/tfcoverdims/blockstates/",
+        "src/main/resources/assets/tfcoverdims/models/",
+        "src/main/resources/assets/tfcoverdims/lang/",
+        "src/main/resources/data/tfcoverdims/loot_table/blocks/",
+        "src/main/resources/data/tfcoverdims/recipe/",
+        "src/main/resources/data/tfcoverdims/recipe/collapse/",
+        "src/main/resources/data/tfcoverdims/tfc/item_size/",
+        "src/main/resources/data/tfc/tags/block/",
+        "src/main/resources/data/minecraft/tags/block/mineable/",
+        "src/main/resources/data/tfcoverdims/worldgen/configured_feature/",
+        "src/main/resources/data/tfcoverdims/worldgen/placed_feature/",
+        "src/main/resources/data/tfcoverdims/neoforge/biome_modifier/",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "M12",
+      "features": [
+        "F-018"
+      ],
+      "dependsOn": [
+        "M01"
+      ],
+      "approach": "Nether の `minecraft:gravel` 生成を `tfc:rock/gravel/basalt` に置換する。Vanilla 1.21.1 の `ore_gravel_nether`（configured / placed feature）と Nether の Surface Rule（`minecraft:nether` noise settings）の実データを NeoForge 21.1.264 / Minecraft 1.21.1 の jar で確認し、サイズ、count、高度、バイオーム、形状、厚みと分布をそのまま維持する。地下塊は、同名 placed feature `minecraft:ore_gravel_nether` を biome modifier で除去し、同じ placement を持つ本MODの placed feature（`tfc:rock/gravel/basalt` を対象とする ore config）を同じ decoration step に追加する。Surface Rule は `minecraft:nether` noise settings の `surface_rule` で gravel を置く箇所の state を `tfc:rock/gravel/basalt` に置換する。noise settings は data pack の完全上書きになるため、1.21.1 の原本を元に gravel の block state 部分だけを変更し、他は一切変えない。TFC Basalt Gravel を使い、新規 Gravel は登録しない。`minecraft:gravel`、Overworld、`minecraft:basalt` は変更しない。Java は原則不要で、JSON と data pack で表現する。noise settings の上書きが他 Mod と衝突する場合に限り、狭い代替手段を検討する。GameTest は、読み込み済みの feature / noise settings 設定を Vanilla の原本と比較して差分が gravel の state のみであることを確認する。さらに、固定シードで Nether chunk を生成し、`minecraft:gravel` が出現しないことと、地下塊・溶岩海岸 / 表層に `tfc:rock/gravel/basalt` が出現することを確認する。Overworld の gravel と Vanilla Basalt が不変であることも検証する。`tests/acceptance.json` に F018-001 / F018-002 を追加し、AGENTS.md に置換方針と元データの対応を追記する。",
+      "scope": [
+        "src/main/resources/data/tfcoverdims/worldgen/placed_feature/",
+        "src/main/resources/data/tfcoverdims/worldgen/configured_feature/",
+        "src/main/resources/data/tfcoverdims/neoforge/biome_modifier/",
+        "src/main/resources/data/minecraft/worldgen/noise_settings/nether.json",
+        "src/main/java/net/claustra01/tfcoverdims/gametest/",
+        "tests/acceptance.json",
+        "AGENTS.md"
+      ]
     }
   ]
 }
