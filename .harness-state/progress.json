@@ -1,6 +1,6 @@
 {
-  "status": "complete",
-  "phase": "complete",
+  "status": "idle",
+  "phase": "idle",
   "current": null,
   "completed": [
     "M01",
