@@ -65,8 +65,7 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   `tfc:is_isolated` なら元ブロック1個、それ以外は対応する Loose Rock を uniform 2～4個。
   3種を `tfc:breaks_when_isolated` に追加して TFC の孤立検出を使う。
   Nether Gold Ore、Nether Quartz Ore、Ancient Debris、Gilded Blackstone は変更しない。
-- 各 Loose Rock 4個の2×2から元ブロック1個、元ブロック1個から Loose Rock 4個。
-  Loose Rock 1個 + `#c:tools/chisel` から対応する Brick 1個
+- Loose Rock 1個 + `#c:tools/chisel` から対応する Brick 1個
   （Netherrack は `minecraft:nether_brick`）を作る。
   Brick 5個 + `tfc:mortar` 4個の `BMB / MBM / BMB` から対応する
   Nether Bricks / Polished Blackstone Bricks / End Stone Bricks を4個作る。
@@ -86,7 +85,7 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   placed patch は rarity=3、count_on_every_layer が Netherrack=5、Blackstone=2、
   End Stone=5、biome filter の順。`neoforge:add_features` の vegetal_decoration で
   Nether 2種は `#minecraft:is_nether`、End Stone は `#minecraft:is_end` を対象とする。
-  地形・鉱脈 feature は変更しない。
+  鉱脈 feature は変更しない。
 - Loose Netherrack を `tfc:stones/loose/igneous_extrusive`、Loose Blackstone を
   `tfc:stones/loose/metamorphic`、Loose End Stone を `tfc:stones/loose/sedimentary` に追加する。
   3種を `tfc:rock_knapping` に追加して既存石器レシピを使う。
@@ -109,12 +108,8 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
 
 ## M03 崩落と Basalt 名称
 
-- `tfc:can_collapse`、`tfc:can_start_collapse`、`tfc:can_trigger_collapse` の
-  Block Tag に本 MOD が追加するのは `minecraft:blackstone` と `minecraft:end_stone` のみ。
-  `tfcoverdims:collapse/blackstone` と `tfcoverdims:collapse/end_stone` は
-  `tfc:collapse` recipe で、それぞれ元と同じ既存ブロックを落下結果にする。
-  新規 Cobble は追加せず、Support Beam の保護は TFC 既存処理を使い Java は追加しない。
-  Netherrack、Nether Bricks、End Stone Bricks、Vanilla Basalt、鉱石の崩落規則は変更しない。
+- Support Beam の保護は TFC 既存処理を使い Java は追加しない。
+  Nether Bricks、End Stone Bricks、Vanilla Basalt、鉱石の崩落規則は変更しない。
 - 表示名のみを en_us / ja_jp で上書きする。
 
   | Vanilla ID | en_us | ja_jp |
@@ -184,7 +179,6 @@ M10 の追加資産と表示の統合、および GameTest / E2E シナリオを
   `beneath:wood/` → `tfcoverdims:wood/` に remap する。
   `remove_<wood>_fungi` は対応する `minecraft:<wood>_forest` の vegetal_decoration から
   `minecraft:<wood>_fungi` のみ除外し、`add_<wood>_trees` が本MODの樹木を追加する。
-  M02 の小石以外の既存 Nether Feature は維持する。
 - モデルの基準は TFC v4.2.12 の `assets/tfc/models/` の oak。
   木材画像は Beneath 1.21.x に同用途の完成画像があればその原本を使い、ない場合は TFC oak を基準とする。
   Beneath に完成画像がない場合の木色の変換は HSV の H を Crimson=0.94、Warped=0.49 に置き換え、S・V・alpha を保持し、

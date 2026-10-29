@@ -69,7 +69,7 @@ Expected Result: Netherrack 面には Loose Netherrack、Blackstone 面には Lo
 
 #### Description
 
-Beneath の Loose Netherrack → Vanilla Nether Brick の Chisel 加工、および5個の Brick と4個の TFC Mortar から4個の Nether Bricks を作る TFC 式加工を導入する。Cobblerack は追加せず、Loose Netherrack 4個から Vanilla Netherrack 1個を再構成し、Netherrack 1個をLoose Netherrack 4個へ戻せるようにする。Vanilla の Netherrack 製錬レシピと Nether Bricks のMortarを使わない製法は無効にする。既存の Nether Brick 系階段・ハーフブロック・塀などの Vanilla block / item ID は保持する。
+Beneath の Loose Netherrack → Vanilla Nether Brick の Chisel 加工、および5個の Brick と4個の TFC Mortar から4個の Nether Bricks を作る TFC 式加工を導入する。Vanilla の Netherrack 製錬レシピと Nether Bricks のMortarを使わない製法は無効にする。既存の Nether Brick 系階段・ハーフブロック・塀などの Vanilla block / item ID は保持する。
 
 #### Acceptance Criteria
 
@@ -79,11 +79,11 @@ Preconditions: Loose Netherrack、TFC Chisel、`tfc:mortar` が用意されて�
 Action: Loose Netherrack 5個をChiselで加工し、`N M N / M N M / N M N`（N=Nether Brick、M=Mortar）の3×3クラフトを行う。
 Expected Result: ChiselはTFCの通常の製作時耐久減少を受け、`minecraft:nether_brick` 1個を取得する。次の製作で `minecraft:nether_bricks` 4個が得られ、各材料は規定数を消費する。
 
-##### AC-F003-002: Netherrack の再構成と旧レシピ無効化
+##### AC-F003-002: 旧レシピ無効化
 
 Preconditions: Loose Netherrack と Furnace 等が用意されている。
-Action: Loose Netherrack 4個を2×2に並べる。生成したNetherrackを逆向きにクラフトし、別途 Vanilla の Netherrack 製錬およびMortarなしの Nether Bricks 製作を試す。Loose Netherrack から TFC の Rock Knapping を行う。
-Expected Result: 2×2から Netherrack が1個、逆向きのクラフトからLoose Netherrackが4個得られる。旧製錬と旧Nether Bricksクラフトでは加工結果が得られない。他の Vanilla Nether Brick 派生ブロックは使用できる。Knapping では既存の igneous extrusive 石器の Tool Head を得られる。
+Action: Vanilla の Netherrack 製錬およびMortarなしの Nether Bricks 製作を試す。Loose Netherrack から TFC の Rock Knapping を行う。
+Expected Result: 旧製錬と旧Nether Bricksクラフトでは加工結果が得られない。他の Vanilla Nether Brick 派生ブロックは使用できる。Knapping では既存の igneous extrusive 石器の Tool Head を得られる。
 
 ### F-004: Blackstone の TFC 加工
 
@@ -134,8 +134,8 @@ Expected Result: 非孤立でLoose End Stoneが2～4個、孤立時にはEnd Sto
 ##### AC-F005-002: End Stone のレンガ加工
 
 Preconditions: Loose End Stone、TFC Chisel、TFC Mortarが用意されている。
-Action: Loose End Stone 5個をChisel加工し、生成物5個とMortar4個を中央にもBrickを置く交互配置でクラフトする。別途Loose End Stone 4個を2×2で製作し、得られたEnd Stoneを逆変換する。
-Expected Result: `tfcoverdims:end_stone_brick` 1個、`minecraft:end_stone_bricks` 4個、`minecraft:end_stone` 1個、およびEnd Stone 1個からLoose End Stone 4個をそれぞれ取得する。工具耐久とMortar消費が適用され、既存のEnd Stone Bricks派生材も機能する。
+Action: Loose End Stone 5個をChisel加工し、生成物5個とMortar4個を中央にもBrickを置く交互配置でクラフトする。
+Expected Result: `tfcoverdims:end_stone_brick` 1個、`minecraft:end_stone_bricks` 4個をそれぞれ取得する。工具耐久とMortar消費が適用され、既存のEnd Stone Bricks派生材も機能する。
 
 ##### AC-F005-003: End Stone の石器加工
 
@@ -147,7 +147,7 @@ Expected Result: TFCのsedimentary stone tool headが得られ、既存Stone Age
 
 #### Description
 
-TFC既存のcollapse recipeとBlock Tagを用い、BlackstoneおよびEnd Stoneの採掘に崩落判定とSupport Beamによる防止を接続する。追加のCobbleブロックを作らず、崩落後も対応する既存ブロックとする。Netherrack、加工済みBrick、Vanilla Basaltおよび鉱石の崩落規則は変更しない。
+TFC既存のcollapse recipeとBlock Tagを用い、BlackstoneおよびEnd Stoneの採掘に崩落判定とSupport Beamによる防止を接続する。加工済みBrick、Vanilla Basaltおよび鉱石の崩落規則は変更しない。
 
 #### Acceptance Criteria
 
@@ -155,11 +155,11 @@ TFC既存のcollapse recipeとBlock Tagを用い、BlackstoneおよびEnd Stone�
 
 Preconditions: TFCで崩落判定が起きるよう配置されたBlackstoneおよびEnd Stoneの試験構造がある。
 Action: TFCの採掘・崩落処理を開始する。
-Expected Result: BlackstoneとEnd StoneはTFCの崩落対象になり、対応する既存ブロックとして落下する。新規Cobbleブロックを要求しない。
+Expected Result: BlackstoneとEnd StoneはTFCの崩落対象になり、落下する。
 
 ##### AC-F006-002: Support Beam と対象外ブロック
 
-Preconditions: 同じ試験構造にTFC Support Beamを設置した状態と、Netherrack、Nether Bricks、End Stone Bricks、`minecraft:basalt`を設置した状態がある。
+Preconditions: 同じ試験構造にTFC Support Beamを設置した状態と、Nether Bricks、End Stone Bricks、`minecraft:basalt`を設置した状態がある。
 Action: 採掘と崩落判定を実行する。
 Expected Result: Beamの保護範囲のBlackstone/End Stoneは崩落せず、列挙した対象外ブロックには本MOD由来の崩落処理が追加されない。TFCの`rock/raw/basalt`の動作は維持される。
 
@@ -205,7 +205,7 @@ Expected Result: 両木種のTFC木材系列が`tfcoverdims`名前空間で登�
 
 Preconditions: 新規のCrimson ForestとWarped Forestのチャンクを生成する。
 Action: 自然生成Featureと生成された樹木の構成ブロックを検査する。
-Expected Result: `minecraft:crimson_fungi`・`minecraft:warped_fungi` の自然生成Featureは使われず、Crimson Forestには本MODのCrimson樹木、Warped ForestにはWarped樹木が生成される。樹形候補数は16・17、幹高は3～5、各Featureのevery-layer countは8である。幹・枝・葉にVanilla Stem/Hyphae/Wart Blockを生成しない。他のNether地形や鉱石生成は変更されない。
+Expected Result: `minecraft:crimson_fungi`・`minecraft:warped_fungi` の自然生成Featureは使われず、Crimson Forestには本MODのCrimson樹木、Warped ForestにはWarped樹木が生成される。樹形候補数は16・17、幹高は3～5、各Featureのevery-layer countは8である。幹・枝・葉にVanilla Stem/Hyphae/Wart Blockを生成しない。他の鉱石生成は変更されない。
 
 ##### AC-F008-003: Saplingと巨大菌類の迂回防止
 
@@ -397,13 +397,85 @@ Preconditions: 本MODが登録するLoose Rock、Brick中間アイテム、Lumbe
 Action: TFCのItem SizeとItem Weightを取得し、対応するTFC既存アイテムと比較する。
 Expected Result: すべての新規アイテムに有効なSize/Weightが1通りだけ設定され、同等のTFC Loose Rock、Brick、Lumber、Support、設備と同じ分類になる。未分類の追加アイテムはない。
 
+### F-017: Netherrack / End Stone のCobbleとHardened
+
+#### Description
+
+`tfcoverdims:cobble_netherrack`、`tfcoverdims:hardened_netherrack`、`tfcoverdims:cobble_end_stone`、`tfcoverdims:hardened_end_stone`を追加する。CobbleはTFCの`rock/cobble`、Hardenedは`rock/hardened`に準じた硬度・採掘工具・表示・収納分類を持つ。CobbleはRaw Rockの崩落結果となり、Loose Rock 4個の2×2クラフトから1個作成する。Cobble 1個からLoose Rock 4個へ戻せる。HardenedはRaw Rock 5個とTFC Mortar 4個を`XYX/YXY/XYX`（X=Raw、Y=Mortar）に配置して2個作る。Raw RockはF-002/F-005の孤立採掘で入手する。Netherrack / End Stone双方に同じ規則を適用する。
+
+#### Acceptance Criteria
+
+##### AC-F017-001: Cobbleの製作と解体
+
+Preconditions: Loose Netherrack、Loose End Stone、対応するCobbleがある。
+Action: 各Loose Rockを2×2に並べ、作成したCobbleを単体クラフトに使用する。
+Expected Result: どちらの岩石もLoose 4個→対応Cobble 1個→Loose 4個で変換される。Loose 4個からRaw Rockへの直接製作は存在しない。
+
+##### AC-F017-002: Hardenedの製作と入手
+
+Preconditions: 孤立採掘で入手したRaw Netherrack 5個、Raw End Stone 5個、Mortar各4個がある。
+Action: 各Raw RockとMortarを`XYX/YXY/XYX`に配置してクラフトする。
+Expected Result: 対応するHardened Rockを各2個取得し、Mortar4個を消費する。Raw Rockは孤立採掘から入手できる。F-019を除き、Hardenedは自然生成しない。
+
+##### AC-F017-003: 採掘・崩落への接続
+
+Preconditions: Raw、Cobble、Hardenedの2系統のブロックがある。
+Action: 採掘工具、TFCの石材・崩落・地すべり関連タグ、collapse recipeを検査する。
+Expected Result: Cobble/Hardenedは同等のTFC Rockと同じ工具区分・Size/Weight・基本挙動を持つ。Raw/Hardenedの崩落出力はそれぞれ対応するCobbleになり、CobbleはTFC標準の地すべり対象として動作する。
+
+### F-018: NetherのGravel生成置換
+
+#### Description
+
+新規Netherチャンクに自然生成する`minecraft:gravel`を、既存の`minecraft:ore_gravel_nether`配置FeatureおよびNetherのSurface Ruleの両方で`tfc:rock/gravel/basalt`へ置換する。塊の大きさ、生成回数、高度、バイオーム、形状はVanilla 1.21.1の設定を維持する。`minecraft:gravel`ブロック自体、OverworldのGravel生成、`minecraft:basalt`には変更を加えない。TFC Basalt Gravelを使用し、新規Gravelを登録しない。
+
+#### Acceptance Criteria
+
+##### AC-F018-001: 地下のGravel塊
+
+Preconditions: 新規NetherチャンクとVanillaの`ore_gravel_nether`配置設定がある。
+Action: 地下のGravel塊の生成結果と配置条件を検査する。
+Expected Result: Vanillaと同じ位置・塊サイズ・回数の生成物が`tfc:rock/gravel/basalt`に置き換わり、この経路から`minecraft:gravel`は生成されない。
+
+##### AC-F018-002: 海岸・表層のGravel
+
+Preconditions: Nether Wastes、Soul Sand Valley、Basalt Deltas等の新規チャンクがある。
+Action: Surface Ruleによる溶岩海岸・表層のGravel配置を調べる。
+Expected Result: Surface RuleがGravelを置く位置には`tfc:rock/gravel/basalt`が生成され、厚みと分布はVanillaと一致する。OverworldとVanilla Basaltの生成は変わらない。
+
+### F-019: Netherの天然天井をHardened化
+
+#### Description
+
+新規Netherチャンクの天然空洞で、直下がAir/Cave Airである`minecraft:netherrack`の露出下面1層だけを`tfcoverdims:hardened_netherrack`へ置換する。下に空洞のない地中・床・壁は置換しない。Bedrock、Blackstone、Vanilla Basalt、Soul Sand/Soil、鉱石、溶岩、構造物は変更しない。処理は自然地形生成後、構造物・鉱石やプレイヤーの建築物を巻き込まない生成段階で一度だけ実行する。HardenedはF-006に従い、崩落の開始点にはならないが伝播による落下は防止しない。
+
+#### Acceptance Criteria
+
+##### AC-F019-001: 天井下面のみの置換
+
+Preconditions: Netherの新規チャンクに、空洞に面したNetherrack天井、Netherrackの床・壁・地中がある。
+Action: 生成後の各位置のBlockStateを検査する。
+Expected Result: Air/Cave Airの真上にあるNetherrackの最下面1層だけがHardened Netherrackへ置換され、床・壁・地中のRaw Netherrackは維持される。全高度帯に同じ判定を適用する。
+
+##### AC-F019-002: 対象外の保護
+
+Preconditions: NetherのBedrock天井、Blackstone、Vanilla Basalt、Soul Sand/Soil、溶岩、鉱石、構造物がある。
+Action: 天井置換処理前後のBlockStateを比較する。
+Expected Result: 列挙したブロックは変更されず、Bedrockは維持される。Overworld/Endおよび既存チャンクには生成時置換を行わない。
+
+##### AC-F019-003: 天井と崩落の整合
+
+Preconditions: 天然Hardened Netherrack天井と、隣接するRaw Netherrackがある。
+Action: TFCの崩落開始判定と、Raw Netherrackから始まった崩落の伝播を確認する。
+Expected Result: Hardened Netherrack単独では崩落が開始せず、隣接Rawから始まった崩落はTFC標準の確率・伝播規則に従いHardenedへ波及し得る。波及したHardenedはCobbled Netherrackへ変化する。
+
 ## Global Requirements
 
 - Git管理ファイルと配布JARには環境固有の絶対パス、利用者名、端末名、メールアドレス、認証情報、アセット別のライセンス・帰属・クレジット記載を追加しない。ローカル設定・検証証跡はGit管理外に置き、LICENSE / LICENCEを含む名前の既存ファイルは変更しない。
 - 実行時に直接必須とするMODは **TerraFirmaCraft 1.21.1-4.2.12 以上の、Minecraft 1.21.1に対応する4.2.x版**のみとする。TFCが自身のメタデータで要求する必須依存はTFC側に従い、本MODが別途必要としない依存を追加しない。Beneathは参照元であり、実行時依存にしない。
 - Minecraft/NeoForgeの環境は上記Platformの固定バージョンでビルド・試験する。NeoForge 21.1.262は現行の1.21.1対応リリースとして採用し、Minecraft 1.21.1とJava 21の範囲を変更しない。
 - TFCが既に提供するAPI、Data Component、Recipe、Tag、Loot Condition、Climate Model、Calendarを優先し、同等機能を二重実装しない。TFC 4.2.12で要件を既に満たす機能には不要な上書きを行わない。
-- Recipe・Block Tag・Loot Table・Biome Modifierで表現できる設定はJSON/Data Packを基本とし、Javaでは既存APIとの接続と不足処理だけを実装する。Worldgen変更はF-002/F-005の地表小石に限る。
+- Recipe・Block Tag・Loot Table・Biome Modifierで表現できる設定はJSON/Data Packを基本とし、Javaでは既存APIとの接続と不足処理だけを実装する。
 - 全Featureの各ACにはGameTestまたはE2Eを対応させる。ロジックはGameTest、表示はE2Eで検証し、両方を要求するACには両方の証跡を残す。Dedicated Serverとクライアントの両方で起動する。
 - 変更したLoot Tableでは複数の固定乱数シードで生成結果をテストする。抽選確率の数値は参照したBeneath/TFCのデータを優先し、非対象のVanilla報酬は維持する。
 - 新規登録したすべてのアイテムにはTFC既存の類似品を基準とするItem Size/Weightを割り当て、未分類と重複を許さない。新規テクスチャは制作しない。TFC/Beneathの既存ファイルをコピーまたは色調変換して使用し、利用する原本のリポジトリ・取得リビジョンと変換規則をソース管理で確認できるようにする。Vanillaリソースは既存テクスチャを参照する。ただしTFCの固定パスを使うEnd Stone Knapping GUI画像だけはMinecraft 1.21.1原本を同梱する。
@@ -412,12 +484,12 @@ Expected Result: すべての新規アイテムに有効なSize/Weightが1通り
 ## Constraints
 
 - ベースJava packageは `net.claustra01.tfcoverdims`、Mod IDは `tfcoverdims` とする。既存の `minecraft:*`、`tfc:*` のRegistry IDは置換しない。
-- 新規登録を許可する岩石関連の最小資源は `loose_netherrack`、`loose_blackstone`、`loose_end_stone`、`blackstone_brick`、`end_stone_brick` および必要な配置・木材互換アイテムに限る。`minecraft:nether_brick`は再利用する。Cobblerack、独自鉱石、Hellbricks等は追加しない。
+- `minecraft:nether_brick`は再利用する。独自鉱石、Hellbricks等は追加しない。
 - `minecraft:basalt`・`minecraft:polished_basalt`・`minecraft:smooth_basalt`は表示名のみ変更する。`tfc:rock/*/basalt`と同一視しない。Loose Basalt、Basalt専用Brick、地質Tag、生成処理、採掘規則を追加しない。
 - 鉱脈生成、鉱石品位、Prospector's Pickの追加鉱石対応、Nether Gold/Quartz Ore、Ancient Debris、Netherite素材・装備・製錬・Upgradeは本MODの対象外とする。これらを担当する別MODの有無を必須条件としない。
 - 新規Dimension、独自Portal、Ancient Altar、Lost Page、Tome、Hellforge、Burpflower、Unposter、Juicer、Red Elk、独自栄養素・植物・作物・魔術・エンチャントは実装しない。
 - TFCの既存工具・完成装備の性能を再設計せず、Enchantmentの適用互換だけを扱う。未完成部品にEnchant適性を追加しない。
-- Vanilla Nether/Endの地形、既存構造物、Boss、Elytra、Shulker、Chorus、Piglin AI、既存Dimension固有報酬を保持する。
+- Vanilla Nether/Endの既存構造物、Boss、Elytra、Shulker、Chorus、Piglin AI、既存Dimension固有報酬を保持する。
 - 上記Featuresの達成に不要な任意MOD統合、互換アドオン、独自コンフィグ画面、追加アニメーション・独自グラフィック・新規Beneath依存を実装しない。
 
 ## Open Questions
