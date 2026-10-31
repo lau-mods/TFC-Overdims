@@ -401,7 +401,7 @@ Expected Result: すべての新規アイテムに有効なSize/Weightが1通り
 
 #### Description
 
-`tfcoverdims:cobble_netherrack`、`tfcoverdims:hardened_netherrack`、`tfcoverdims:cobble_end_stone`、`tfcoverdims:hardened_end_stone`を追加する。CobbleはTFCの`rock/cobble`、Hardenedは`rock/hardened`に準じた硬度・採掘工具・表示・収納分類を持つ。CobbleはRaw Rockの崩落結果となり、Loose Rock 4個の2×2クラフトから1個作成する。Cobble 1個からLoose Rock 4個へ戻せる。HardenedはRaw Rock 5個とTFC Mortar 4個を`XYX/YXY/XYX`（X=Raw、Y=Mortar）に配置して2個作る。Raw RockはF-002/F-005の孤立採掘で入手する。Netherrack / End Stone双方に同じ規則を適用する。
+`tfcoverdims:cobble_netherrack`、`tfcoverdims:hardened_netherrack`、`tfcoverdims:cobble_end_stone`、`tfcoverdims:hardened_end_stone`を追加する。CobbleはTFCの`rock/cobble`、Hardenedは`rock/hardened`に準じた硬度・採掘工具・表示・収納分類を持つ。CobbleはRaw Rockの崩落結果となり、Loose Rock 4個の2×2クラフトから1個作成する。Cobble 1個からLoose Rock 4個へ戻せる。HardenedはRaw Rock 5個とTFC Mortar 4個を`XYX/YXY/XYX`（X=Raw、Y=Mortar）に配置して2個作る。Raw RockはF-002/F-005の孤立採掘で入手する。Netherrack / End Stone双方に同じ規則を適用する。`minecraft:soul_sand`と`minecraft:soul_soil`はTFC Sandと同じ`tfc:can_landslide`の地すべり対象とする。
 
 #### Acceptance Criteria
 
@@ -419,9 +419,9 @@ Expected Result: 対応するHardened Rockを各2個取得し、Mortar4個を消
 
 ##### AC-F017-003: 採掘・崩落への接続
 
-Preconditions: Raw、Cobble、Hardenedの2系統のブロックがある。
+Preconditions: Raw、Cobble、Hardenedの2系統のブロックと、下が空いたSoul Sand / Soul Soilがある。
 Action: 採掘工具、TFCの石材・崩落・地すべり関連タグ、collapse recipeを検査する。
-Expected Result: Cobble/Hardenedは同等のTFC Rockと同じ工具区分・Size/Weight・基本挙動を持つ。Raw/Hardenedの崩落出力はそれぞれ対応するCobbleになり、CobbleはTFC標準の地すべり対象として動作する。
+Expected Result: Cobble/Hardenedは同等のTFC Rockと同じ工具区分・Size/Weight・基本挙動を持つ。Raw/Hardenedの崩落出力はそれぞれ対応するCobbleになり、CobbleとSoul Sand / Soul SoilはTFC標準の地すべり対象として動作し、Soul Sand / Soul Soilは崩落対象にならず同じブロックとして落下する。
 
 ### F-018: NetherのGravel生成置換
 
@@ -443,25 +443,25 @@ Preconditions: Nether Wastes、Soul Sand Valley、Basalt Deltas等の新規チ�
 Action: Surface Ruleによる溶岩海岸・表層のGravel配置を調べる。
 Expected Result: Surface RuleがGravelを置く位置には`tfc:rock/gravel/basalt`が生成され、厚みと分布はVanillaと一致する。OverworldとVanilla Basaltの生成は変わらない。
 
-### F-019: Netherの天然天井をHardened化
+### F-019: Nether / Endの天然下面をHardened化
 
 #### Description
 
-新規Netherチャンクの天然空洞で、直下がAir/Cave Airである`minecraft:netherrack`の露出下面1層だけを`tfcoverdims:hardened_netherrack`へ置換する。下に空洞のない地中・床・壁は置換しない。Bedrock、Blackstone、Vanilla Basalt、Soul Sand/Soil、鉱石、溶岩、構造物は変更しない。処理は自然地形生成後、構造物・鉱石やプレイヤーの建築物を巻き込まない生成段階で一度だけ実行する。HardenedはF-006に従い、崩落の開始点にはならないが伝播による落下は防止しない。
+新規Netherチャンクの天然空洞で、直下がAir/Cave Airである`minecraft:netherrack`の露出下面1層だけを`tfcoverdims:hardened_netherrack`へ置換する。新規Endチャンクの島で、直下がAir/Cave Airである`minecraft:end_stone`の露出下面1層も同じ規則で`tfcoverdims:hardened_end_stone`へ置換する。下に空洞のない地中・床・壁は置換しない。Bedrock、Blackstone、Vanilla Basalt、Soul Sand/Soil、鉱石、溶岩、Obsidian、構造物は変更しない。処理は自然地形生成後、構造物・鉱石やプレイヤーの建築物を巻き込まない生成段階で一度だけ実行する。HardenedはF-006に従い、崩落の開始点にはならないが伝播による落下は防止しない。
 
 #### Acceptance Criteria
 
 ##### AC-F019-001: 天井下面のみの置換
 
-Preconditions: Netherの新規チャンクに、空洞に面したNetherrack天井、Netherrackの床・壁・地中がある。
+Preconditions: Nether / Endの新規チャンクに、空洞に面したNetherrack天井またはEnd Stone下面、対応する岩石の床・壁・地中がある。
 Action: 生成後の各位置のBlockStateを検査する。
-Expected Result: Air/Cave Airの真上にあるNetherrackの最下面1層だけがHardened Netherrackへ置換され、床・壁・地中のRaw Netherrackは維持される。全高度帯に同じ判定を適用する。
+Expected Result: Air/Cave Airの真上にあるNetherrack / End Stoneの最下面1層だけが対応するHardenedへ置換され、床・壁・地中のRaw Rockは維持される。全高度帯に同じ判定を適用する。
 
 ##### AC-F019-002: 対象外の保護
 
-Preconditions: NetherのBedrock天井、Blackstone、Vanilla Basalt、Soul Sand/Soil、溶岩、鉱石、構造物がある。
+Preconditions: NetherのBedrock天井、Blackstone、Vanilla Basalt、Soul Sand/Soil、溶岩、鉱石、構造物と、EndのBedrock、Obsidian、構造物がある。
 Action: 天井置換処理前後のBlockStateを比較する。
-Expected Result: 列挙したブロックは変更されず、Bedrockは維持される。Overworld/Endおよび既存チャンクには生成時置換を行わない。
+Expected Result: 列挙したブロックは変更されず、Bedrockは維持される。Overworldおよび既存チャンクには生成時置換を行わない。
 
 ##### AC-F019-003: 天井と崩落の整合
 

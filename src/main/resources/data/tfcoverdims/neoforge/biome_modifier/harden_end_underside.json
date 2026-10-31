@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_end",
+  "features": [
+    "tfcoverdims:harden_end_underside"
+  ],
+  "step": "top_layer_modification"
+}

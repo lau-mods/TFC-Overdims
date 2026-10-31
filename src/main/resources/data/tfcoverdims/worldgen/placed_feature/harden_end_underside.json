@@ -1,0 +1,8 @@
+{
+  "feature": "tfcoverdims:harden_end_underside",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
 M03 の崩落と Basalt 名称、M04 の Nether 木材、M05 の Calendar 成長、
 M06 の Nether / End の生存と設備、M07 の Mob / 構造物報酬の互換、
 M08 のエンチャント台と TFC 装備の互換、M09 の Shulker Box 収納規則、
-M10 の追加資産と表示の統合、M11 の Cobble / Hardened 岩石と Nether 天井、
+M10 の追加資産と表示の統合、M11 の Cobble / Hardened 岩石、Soul Sand, Soil の地すべりと Nether / End の下面、
 M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装している。
 他の milestone の製品機能は実装済みとは扱わない。
 
@@ -344,7 +344,7 @@ M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装し
   End Stone は Minecraft 1.21.1 の End Stone 画像を TFC の固定パスへコピーする。
   Vanilla 岩石のブロックモデルは Vanilla テクスチャを参照する。
 
-## M11 Cobble / Hardened と Nether 天井
+## M11 Cobble / Hardened、Soul Sand, Soil と Nether / End の下面
 
 - `tfcoverdims:cobble_netherrack` / `hardened_netherrack` と
   `cobble_end_stone` / `hardened_end_stone` は TFC の Cobble / Hardened
@@ -357,15 +357,20 @@ M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装し
   `#8f9162`～`#f6fabd` の線形パレットを適用する。Raw の Vanilla テクスチャは参照しない。
 - Raw は TFC の `can_start_collapse`、`can_collapse`、`can_trigger_collapse`、
   Hardened は `can_collapse` と `can_trigger_collapse`、Cobble は
-  `can_landslide` に入れる。Raw と Hardened の collapse recipe は
+  `can_landslide` に入れる。`minecraft:soul_sand` と `minecraft:soul_soil` も TFC Sand と同じく同 tag に入れ、
+  TFC の既定 recipe で同じブロックのまま落下させ、collapse tag には入れない。
+  Raw と Hardened の collapse recipe は
   対応する Cobble を返す。Hardened の採掘 loot は TFC と同じく
   孤立時 Raw、その他は Loose 1～4個とする。
-- `tfcoverdims:harden_nether_ceiling` は Nether の `top_layer_modification` に
-  1回置き、チャンク内の全高度で Air / Cave Air の直上にある Netherrack のみを
-  Hardened に置き換える。構造物の bounding box 内は除外する。
+- `HardenUndersideFeature` を共用する `tfcoverdims:harden_nether_ceiling`（Netherrack）と
+  `tfcoverdims:harden_end_underside`（End Stone）を Nether / End の
+  `top_layer_modification` に1回置き、チャンク内の全高度で Air / Cave Air の直上にある
+  対象岩石のみを対応する Hardened に置き換える。構造物の bounding box 内は除外する。
 - GameTest は F017-001=`cobblecraft`、F017-002=`hardenedcraft`、
-  F017-003 / F019-003=`rockcollapserules`、F017-002 / F017-003=`hardenedloot`、F019-001 / F019-002=
-  `netherceilingselection` / `netherceilingdimension`。F019-003 の
+  F017-003 / F019-003=`rockcollapserules`、F017-003=`soulblocklandslide`、
+  F017-002 / F017-003=`hardenedloot`、F019-001 / F019-002=
+  `netherceilingselection` / `netherceilingdimension` /
+  `endundersideselection` / `endundersidedimension`。F019-003 の
   `netherrackhardenedcollapse` は `tfcoverdims:collapse`、他は `tfcoverdims:empty`。
 
 ## M12 Nether Gravel

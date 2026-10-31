@@ -457,6 +457,36 @@
       "name": "netherceilingdimension"
     },
     {
+      "acId": "AC-F017-003",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "soulblocklandslide"
+    },
+    {
+      "acId": "AC-F019-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endundersideselection"
+    },
+    {
+      "acId": "AC-F019-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endundersideselection"
+    },
+    {
+      "acId": "AC-F019-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endundersidedimension"
+    },
+    {
+      "acId": "AC-F019-002",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:empty",
+      "name": "endundersidedimension"
+    },
+    {
       "acId": "AC-F017-002",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",

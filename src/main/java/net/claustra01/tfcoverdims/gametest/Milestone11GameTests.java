@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.inventory.ResultContainer;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -47,7 +49,7 @@ import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.util.loot.TFCLoot;
 
 import net.claustra01.tfcoverdims.TFCOverdims;
-import net.claustra01.tfcoverdims.worldgen.HardenNetherCeilingFeature;
+import net.claustra01.tfcoverdims.worldgen.HardenUndersideFeature;
 
 @GameTestHolder(TFCOverdims.MOD_ID)
 @PrefixGameTestTemplate(false)
@@ -172,8 +174,57 @@ public final class Milestone11GameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "empty", batch = "climate", timeoutTicks = 120)
+    public static void soulBlockLandslide(GameTestHelper helper) {
+        List<Block> blocks = List.of(Blocks.SOUL_SAND, Blocks.SOUL_SOIL);
+        for (int i = 0; i < blocks.size(); i++) {
+            Block block = blocks.get(i);
+            helper.assertTrue(block.defaultBlockState().is(TFCTags.Blocks.CAN_LANDSLIDE)
+                && LandslideRecipe.getRecipe(block.defaultBlockState())
+                .assembleBlock(block.defaultBlockState()).is(block)
+                && !block.defaultBlockState().is(TFCTags.Blocks.CAN_COLLAPSE),
+                "Soul blocks must landslide into themselves without collapse tags");
+            helper.setBlock(new BlockPos(1 + i * 3, 1, 2), Blocks.STONE);
+            helper.setBlock(new BlockPos(1 + i * 3, 5, 2), block);
+            helper.setBlock(new BlockPos(2 + i * 3, 5, 2), Blocks.STONE);
+        }
+        helper.succeedWhen(() -> {
+            for (int i = 0; i < blocks.size(); i++) {
+                helper.assertBlockPresent(blocks.get(i), new BlockPos(1 + i * 3, 2, 2));
+                helper.assertBlockNotPresent(blocks.get(i), new BlockPos(1 + i * 3, 5, 2));
+            }
+        });
+    }
+
     @GameTest(template = "empty", batch = "climate")
     public static void netherCeilingSelection(GameTestHelper helper) {
+        checkUndersideSelection(helper, "harden_nether_ceiling", Blocks.NETHERRACK,
+            block("tfcoverdims:hardened_netherrack"), List.of(Blocks.BEDROCK, Blocks.BLACKSTONE, Blocks.BASALT,
+                Blocks.SOUL_SAND, Blocks.SOUL_SOIL, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE,
+                Blocks.ANCIENT_DEBRIS, Blocks.LAVA));
+    }
+
+    @GameTest(template = "empty", batch = "climate")
+    public static void endUndersideSelection(GameTestHelper helper) {
+        checkUndersideSelection(helper, "harden_end_underside", Blocks.END_STONE,
+            block("tfcoverdims:hardened_end_stone"), List.of(Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.END_STONE_BRICKS,
+                Blocks.PURPUR_BLOCK, Blocks.CHORUS_PLANT));
+    }
+
+    @GameTest(template = "empty", batch = "climate", timeoutTicks = 120)
+    public static void netherCeilingDimension(GameTestHelper helper) {
+        checkUndersideDimension(helper, "harden_nether_ceiling", BiomeTags.IS_NETHER, Level.NETHER,
+            block("tfcoverdims:hardened_netherrack"));
+    }
+
+    @GameTest(template = "empty", batch = "climate", timeoutTicks = 120)
+    public static void endUndersideDimension(GameTestHelper helper) {
+        checkUndersideDimension(helper, "harden_end_underside", BiomeTags.IS_END, Level.END,
+            block("tfcoverdims:hardened_end_stone"));
+    }
+
+    private static void checkUndersideSelection(GameTestHelper helper, String featureId, Block raw, Block hardened,
+        List<Block> excluded) {
         var level = helper.getLevel();
         ChunkPos chunk = new ChunkPos(helper.absolutePos(new BlockPos(2, 4, 2)));
         BlockPos ceiling = new BlockPos(chunk.getMinBlockX() + 2,
@@ -182,23 +233,20 @@ public final class Milestone11GameTests {
         BlockPos buried = ceiling.above();
         BlockPos floor = cave.below();
         BlockPos protectedRock = ceiling.east();
-        level.setBlock(ceiling, Blocks.NETHERRACK.defaultBlockState(), 2);
+        level.setBlock(ceiling, raw.defaultBlockState(), 2);
         level.setBlock(cave, Blocks.CAVE_AIR.defaultBlockState(), 2);
-        level.setBlock(buried, Blocks.NETHERRACK.defaultBlockState(), 2);
-        level.setBlock(floor, Blocks.NETHERRACK.defaultBlockState(), 2);
+        level.setBlock(buried, raw.defaultBlockState(), 2);
+        level.setBlock(floor, raw.defaultBlockState(), 2);
         level.setBlock(floor.below(), Blocks.BEDROCK.defaultBlockState(), 2);
-        level.setBlock(protectedRock, Blocks.NETHERRACK.defaultBlockState(), 2);
+        level.setBlock(protectedRock, raw.defaultBlockState(), 2);
         level.setBlock(protectedRock.below(), Blocks.AIR.defaultBlockState(), 2);
-        List<Block> excluded = List.of(Blocks.BEDROCK, Blocks.BLACKSTONE, Blocks.BASALT, Blocks.SOUL_SAND,
-            Blocks.SOUL_SOIL, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE, Blocks.ANCIENT_DEBRIS,
-            Blocks.LAVA);
         for (int i = 0; i < excluded.size(); i++) {
             BlockPos pos = new BlockPos(chunk.getMinBlockX() + i, ceiling.getY(), chunk.getMinBlockZ() + 4);
             level.setBlock(pos, excluded.get(i).defaultBlockState(), 2);
             level.setBlock(pos.below(), Blocks.AIR.defaultBlockState(), 2);
         }
         BlockPos untouched = new BlockPos(chunk.getMaxBlockX() + 2, ceiling.getY(), chunk.getMinBlockZ() + 2);
-        level.setBlock(untouched, Blocks.NETHERRACK.defaultBlockState(), 2);
+        level.setBlock(untouched, raw.defaultBlockState(), 2);
         level.setBlock(untouched.below(), Blocks.AIR.defaultBlockState(), 2);
         var structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE)
             .get(ResourceLocation.withDefaultNamespace("fortress"));
@@ -210,63 +258,65 @@ public final class Milestone11GameTests {
         chunkAccess.addReferenceForStructure(structure, chunk.toLong());
         helper.assertTrue(level.structureManager().startsForStructure(chunk, candidate -> candidate == structure)
             .contains(start), "Structure lookup must find the protected ceiling");
-        var feature = (HardenNetherCeilingFeature) BuiltInRegistries.FEATURE.get(
-            ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "harden_nether_ceiling"));
+        var feature = (HardenUndersideFeature) BuiltInRegistries.FEATURE.get(
+            ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, featureId));
         feature.place(NoneFeatureConfiguration.INSTANCE, level, level.getChunkSource().getGenerator(),
             RandomSource.create(17), ceiling);
-        helper.assertTrue(level.getBlockState(ceiling).is(block("tfcoverdims:hardened_netherrack")),
-            "Exposed underside must harden");
-        helper.assertTrue(level.getBlockState(buried).is(Blocks.NETHERRACK)
-            && level.getBlockState(floor).is(Blocks.NETHERRACK)
-            && level.getBlockState(protectedRock).is(Blocks.NETHERRACK)
-            && level.getBlockState(untouched).is(Blocks.NETHERRACK),
+        helper.assertTrue(level.getBlockState(ceiling).is(hardened), "Exposed underside must harden");
+        helper.assertTrue(level.getBlockState(buried).is(raw)
+            && level.getBlockState(floor).is(raw)
+            && level.getBlockState(protectedRock).is(raw)
+            && level.getBlockState(untouched).is(raw),
             "Buried, floor, structure and other-chunk rock must remain raw");
         for (int i = 0; i < excluded.size(); i++) {
             BlockPos pos = new BlockPos(chunk.getMinBlockX() + i, ceiling.getY(), chunk.getMinBlockZ() + 4);
             helper.assertTrue(level.getBlockState(pos).is(excluded.get(i)),
-                "Non-netherrack ceiling blocks must remain unchanged");
+                "Non-target ceiling blocks must remain unchanged");
         }
         helper.succeed();
     }
 
-    @GameTest(template = "empty", batch = "climate", timeoutTicks = 120)
-    public static void netherCeilingDimension(GameTestHelper helper) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, "harden_nether_ceiling");
+    private static void checkUndersideDimension(GameTestHelper helper, String featureId, TagKey<Biome> biomes,
+        ResourceKey<Level> dimension, Block hardened) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TFCOverdims.MOD_ID, featureId);
         var registries = helper.getLevel().registryAccess();
         var placed = registries.registryOrThrow(Registries.PLACED_FEATURE);
-        helper.assertTrue(placed.containsKey(id), "Ceiling placed feature must load");
+        helper.assertTrue(placed.containsKey(id), "Underside placed feature must load");
         helper.assertTrue(registries.registryOrThrow(Registries.CONFIGURED_FEATURE).containsKey(id),
-            "Ceiling configured feature must load");
+            "Underside configured feature must load");
         var key = ResourceKey.create(Registries.PLACED_FEATURE, id);
         for (var biome : registries.registryOrThrow(Registries.BIOME).holders().toList()) {
             var steps = biome.value().getGenerationSettings().features();
             int step = GenerationStep.Decoration.TOP_LAYER_MODIFICATION.ordinal();
             boolean attached = step < steps.size() && steps.get(step).stream()
                 .anyMatch(feature -> feature.is(key));
-            helper.assertTrue(attached == biome.is(BiomeTags.IS_NETHER),
-                "Only Nether biomes may receive the ceiling feature: " + biome.key().location());
+            helper.assertTrue(attached == biome.is(biomes),
+                "Only target biomes may receive the underside feature: " + biome.key().location());
         }
 
-        var nether = helper.getLevel().getServer().getLevel(Level.NETHER);
+        var level = helper.getLevel().getServer().getLevel(dimension);
         int x = 1200 + (int) (helper.getLevel().getGameTime() % 1000);
         int z = -1200 - (int) (helper.getLevel().getGameTime() % 1000);
-        helper.assertTrue(!nether.getChunkSource().hasChunk(x, z), "Sample chunk must be new");
-        var chunk = nether.getChunk(x, z);
         boolean found = false;
-        for (int px = chunk.getPos().getMinBlockX(); px <= chunk.getPos().getMaxBlockX(); px++) {
-            for (int pz = chunk.getPos().getMinBlockZ(); pz <= chunk.getPos().getMaxBlockZ(); pz++) {
-                for (int py = nether.getMinBuildHeight() + 1; py < nether.getMaxBuildHeight(); py++) {
-                    BlockPos pos = new BlockPos(px, py, pz);
-                    if (nether.getBlockState(pos).is(block("tfcoverdims:hardened_netherrack"))) {
-                        found = true;
-                        helper.assertTrue(nether.getBlockState(pos.below()).is(Blocks.AIR)
-                            || nether.getBlockState(pos.below()).is(Blocks.CAVE_AIR),
-                            "Generated hardened rock must face a cave");
+        // End の外周は空白のチャンクがあるため、下面が見つかるまで新規チャンクを順に調べる
+        for (int offset = 0; offset < 64 && !found; offset++) {
+            helper.assertTrue(!level.getChunkSource().hasChunk(x + offset, z), "Sample chunk must be new");
+            var chunk = level.getChunk(x + offset, z);
+            for (int px = chunk.getPos().getMinBlockX(); px <= chunk.getPos().getMaxBlockX(); px++) {
+                for (int pz = chunk.getPos().getMinBlockZ(); pz <= chunk.getPos().getMaxBlockZ(); pz++) {
+                    for (int py = level.getMinBuildHeight() + 1; py < level.getMaxBuildHeight(); py++) {
+                        BlockPos pos = new BlockPos(px, py, pz);
+                        if (level.getBlockState(pos).is(hardened)) {
+                            found = true;
+                            helper.assertTrue(level.getBlockState(pos.below()).is(Blocks.AIR)
+                                || level.getBlockState(pos.below()).is(Blocks.CAVE_AIR),
+                                "Generated hardened rock must face open air");
+                        }
                     }
                 }
             }
         }
-        helper.assertTrue(found, "Fresh Nether terrain must contain a hardened ceiling");
+        helper.assertTrue(found, "Fresh terrain must contain a hardened underside");
         helper.succeed();
     }
 
