@@ -81,7 +81,7 @@ config="${mod_id}.mixins.json"
 [[dependencies.${mod_id}]]
     modId="tfc"
     type="required"
-    versionRange="[4.2.12,4.3)"
+    versionRange="[4.2.12,)"
     ordering="AFTER"
     side="BOTH"
 

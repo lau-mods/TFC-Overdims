@@ -36,7 +36,7 @@ M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装し
   `The Nether` / `The End`（日本語はネザーの気候 / エンドの気候）へ置き換える。
   気温・降水量の数値と Overworld の Köppen 分類は変更しない。
 - TFC 4.2.12 は Modrinth Maven から `compileOnly` と `localRuntime` で参照する。
-  mod metadata では `tfc` を required、`[4.2.12,4.3)`、ordering AFTER とする。
+  mod metadata では `tfc` を required、`[4.2.12,)`、ordering AFTER とする。
   Patchouli 1.21.1-93-neoforge は TFC の必須依存として `localRuntime` に置き、
   本 MOD の直接必須依存には追加しない。Beneath には依存しない。
 - `./gradlew runGameTestServer` は `@GameTestHolder("tfcoverdims")` のテストを実行する。
@@ -420,3 +420,8 @@ M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装し
   `plan` は Claude CLI の認証が利用できる環境で実行し、計画と進捗を commit する。
 - 製品コードを変更した場合の完了確認は `./gradlew build`。
   runtime 準備だけで製品の GameTest / E2E 成功とは扱わない。
+
+## 依存バージョンの許容範囲
+
+- NeoForge と依存 Mod の実行時制約は最低対応版以上の `[最低版,)` とする。完全一致指定や上限によって更新版の起動を拒否しない。
+- Gradle・Harness・製品仕様に記載した固定版はビルドと再現試験の基準版。実行時の許容範囲とは分けて扱い、依存バージョンのテストも最低版以上で判定する。
