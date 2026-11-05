@@ -357,19 +357,13 @@ Preconditions: 許可されたTFCアイテムを収納したShulker BoxがEndに
 Action: 破壊、持ち運び、再設置、ワールド保存・再読み込みを行う。
 Expected Result: 内容とItem Componentが保持され、色・モデル・動作はVanillaのままである。
 
-### F-015: Portal と既存TFC設備のDimension動作
+### F-015: 既存TFC設備のDimension動作
 
 #### Description
 
-Portalの生成条件、Fortress・Strongholdの攻略方法、Ender Dragon、ElytraはVanillaから変更しない。既存TFC設備をNether/Endへ持ち込んだ場合、Dimensionを理由として動作が失敗する箇所のみ互換修正する。新規Portal素材・専用Forge・専用Anvil・儀式を追加しない。
+Fortress・Strongholdの攻略方法、Ender Dragon、ElytraはVanillaから変更しない。既存TFC設備をNether/Endへ持ち込んだ場合、Dimensionを理由として動作が失敗する箇所のみ互換修正する。新規Portal素材・専用Forge・専用Anvil・儀式を追加しない。
 
 #### Acceptance Criteria
-
-##### AC-F015-001: 既存Portalの維持
-
-Preconditions: Vanilla Obsidian Portalと、Eye of Enderを使用できるStronghold End Portalがある。
-Action: 両PortalをVanillaの方法で開き、Dimension間を移動する。
-Expected Result: NetherとEndへ移動でき、Portalの形状・必要素材・生成条件はVanillaから変わらない。独自Portal itemは不要である。
 
 ##### AC-F015-002: TFC設備の持ち込み
 

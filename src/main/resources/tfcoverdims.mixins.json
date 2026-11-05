@@ -6,7 +6,6 @@
   "mixins": [
     "NetherWartBlockMixin",
     "ChorusFlowerBlockMixin",
-    "NetherPortalCompatibilityMixin",
     "PiglinAiMixin",
     "PiglinCurrencyMixin",
     "EnchantmentMenuMixin",

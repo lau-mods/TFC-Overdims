@@ -238,20 +238,16 @@ M12 の Nether Gravel 置換、および GameTest / E2E シナリオを実装し
   保存・腐敗・栄養は TFC、食後のテレポートは Vanilla の `finishUsingItem` に従う。
 - 設置水の Vanilla 蒸発、TFC Jug / Barrel の容器内水、気温に応じた渇き、
   Firepit・Barrel・Anvil の動作は既存処理で要件を満たし、互換用 Java は追加しない。
-- `NetherPortalCompatibilityMixin` は `ForgeEventHandler.onCreateNetherPortal` をスキップする。
-  TFC の `enableNetherPortals` の設定値にかかわらず Vanilla の Obsidian Portal 規則を適用する。
-  End Portal、Stronghold、Dragon、Elytra は変更せず、独自 Portal item・設備は追加しない。
 - GameTest は既存 climate batch / `run/gametest-results.xml`。
   `tests/acceptance.json` は F010-001=`hoglinfood`、F010-002=`chorusfood`、
-  F010-003=`netherwater` / `dimensionequipment`、F015-001=`vanillaportals`、
+  F010-003=`netherwater` / `dimensionequipment`、
   F015-002=`dimensionequipment` に対応する。
-  classname は `vanillaportals` が `tfcoverdims:nether_tree`、他は `tfcoverdims:empty`。
+  classname は全件 `tfcoverdims:empty`。
   固定複数シードと実際の Hoglin 討伐の loot、ドロップした Pork の調理・保存・腐敗、
   Chorus の食品情報・摂食・腐敗、容器の水・設置水蒸発・渇き、両 Dimension の
-  Firepit 加熱・Barrel 保存・Anvil 加工、Vanilla Portal の開通と移動を検証する。
-- E2E `tests/e2e/dimension-survival.mjs` は F010-002 / F015-001 に対応する。
-  Chorus の食品 tooltip と食前・テレポート後、着火した Obsidian Portal と Nether 到着、
-  Eye of Ender で開いた End Portal と End 到着を撮影する。
+  Firepit 加熱・Barrel 保存・Anvil 加工を検証する。
+- E2E `tests/e2e/dimension-survival.mjs` は F010-002 に対応する。
+  Chorus の食品 tooltip と食前・テレポート後を撮影する。
 
 ## M07 Mob と構造物報酬
 

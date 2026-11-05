@@ -313,12 +313,6 @@
       "name": "dimensionequipment"
     },
     {
-      "acId": "AC-F015-001",
-      "report": "run/gametest-results.xml",
-      "classname": "tfcoverdims:nether_tree",
-      "name": "vanillaportals"
-    },
-    {
       "acId": "AC-F015-002",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
@@ -536,10 +530,6 @@
     },
     {
       "acId": "AC-F010-002",
-      "scenario": "tests/e2e/dimension-survival.mjs"
-    },
-    {
-      "acId": "AC-F015-001",
       "scenario": "tests/e2e/dimension-survival.mjs"
     },
     {
