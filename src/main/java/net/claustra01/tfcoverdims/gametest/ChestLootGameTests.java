@@ -100,7 +100,7 @@ public final class ChestLootGameTests {
             helper.assertTrue(!chest.isEmpty(), "Opening generated chest fills inventory: " + name);
             for (int slot = 0; slot < chest.getContainerSize(); slot++) {
                 String id = id(chest.getItem(slot));
-                helper.assertTrue(!id.matches("minecraft:(iron|gold)_(ingot|nugget)|minecraft:(diamond|emerald|obsidian|crying_obsidian|quartz|chain)")
+                helper.assertTrue(!id.matches("minecraft:(iron|gold)_(ingot|nugget|block)|minecraft:(diamond|emerald|crying_obsidian|quartz|chain|porkchop|cooked_porkchop|beetroot_seeds)")
                     && equipmentShapes(id) == null, "Chest inventory contains replaced rewards: " + id);
             }
         }
@@ -115,7 +115,11 @@ public final class ChestLootGameTests {
             case "minecraft:iron_nugget" -> List.of("hematite", "magnetite", "limonite").forEach(ore -> values.add("tfc:ore/small_" + ore));
             case "minecraft:gold_nugget" -> values.add("tfc:ore/small_native_gold");
             case "minecraft:chain" -> values.add("tfc:metal/chain/wrought_iron");
-            case "minecraft:obsidian", "minecraft:crying_obsidian", "minecraft:quartz" -> values.addAll(UTILITY);
+            case "minecraft:crying_obsidian", "minecraft:quartz" -> values.addAll(UTILITY);
+            case "minecraft:iron_block", "minecraft:gold_block" -> ingots.forEach(metal -> values.add("tfc:metal/double_ingot/" + metal));
+            case "minecraft:porkchop" -> values.add("tfc:food/pork");
+            case "minecraft:cooked_porkchop" -> values.add("tfc:food/cooked_pork");
+            case "minecraft:beetroot_seeds" -> values.add("tfc:seeds/beet");
             default -> {
                 List<String> shapes = equipmentShapes(source);
                 if (shapes != null) {

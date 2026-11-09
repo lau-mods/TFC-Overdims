@@ -30,6 +30,22 @@ public final class TfcLootRules {
         "tfc:kaolin_clay", "tfc:powder/wood_ash", "tfc:powder/saltpeter", "tfc:powder/sylvite");
     private static final List<String> IRON_NUGGET = List.of("tfc:ore/small_hematite", "tfc:ore/small_magnetite",
         "tfc:ore/small_limonite");
+    /** Fixed replacements of food and seeds, kept in the same cooking state. */
+    private static final Map<String, String> FIXED = Map.ofEntries(
+        Map.entry("minecraft:porkchop", "tfc:food/pork"), Map.entry("minecraft:cooked_porkchop", "tfc:food/cooked_pork"),
+        Map.entry("minecraft:beef", "tfc:food/beef"), Map.entry("minecraft:cooked_beef", "tfc:food/cooked_beef"),
+        Map.entry("minecraft:chicken", "tfc:food/chicken"), Map.entry("minecraft:cooked_chicken", "tfc:food/cooked_chicken"),
+        Map.entry("minecraft:mutton", "tfc:food/mutton"), Map.entry("minecraft:cooked_mutton", "tfc:food/cooked_mutton"),
+        Map.entry("minecraft:rabbit", "tfc:food/rabbit"), Map.entry("minecraft:cooked_rabbit", "tfc:food/cooked_rabbit"),
+        Map.entry("minecraft:cod", "tfc:food/cod"), Map.entry("minecraft:cooked_cod", "tfc:food/cooked_cod"),
+        Map.entry("minecraft:salmon", "tfc:food/salmon"), Map.entry("minecraft:cooked_salmon", "tfc:food/cooked_salmon"),
+        Map.entry("minecraft:apple", "tfc:food/red_apple"), Map.entry("minecraft:melon_slice", "tfc:food/melon_slice"),
+        Map.entry("minecraft:carrot", "tfc:food/carrot"), Map.entry("minecraft:potato", "tfc:food/potato"),
+        Map.entry("minecraft:baked_potato", "tfc:food/baked_potato"), Map.entry("minecraft:beetroot", "tfc:food/beet"),
+        Map.entry("minecraft:bread", "tfc:food/wheat_bread"), Map.entry("minecraft:dried_kelp", "tfc:food/dried_kelp"),
+        Map.entry("minecraft:wheat_seeds", "tfc:seeds/wheat"), Map.entry("minecraft:beetroot_seeds", "tfc:seeds/beet"),
+        Map.entry("minecraft:pumpkin_seeds", "tfc:seeds/pumpkin"), Map.entry("minecraft:melon_seeds", "tfc:seeds/melon"),
+        Map.entry("minecraft:chain", "tfc:metal/chain/wrought_iron"));
     private static final Map<String, Group> GROUPS = new HashMap<>();
     private static final Map<String, Family> FAMILIES = new HashMap<>();
 
@@ -45,9 +61,10 @@ public final class TfcLootRules {
         GROUPS.put("minecraft:gold_nugget", Group.GOLD_NUGGET);
         GROUPS.put("minecraft:coal", Group.COAL_LIKE);
         GROUPS.put("minecraft:charcoal", Group.COAL_LIKE);
-        for (String id : List.of("minecraft:obsidian", "minecraft:crying_obsidian", "minecraft:quartz",
-            "minecraft:glowstone_dust")) {
-            GROUPS.put(id, Group.UTILITY);
+        GROUPS.put("minecraft:crying_obsidian", Group.UTILITY);
+        GROUPS.put("minecraft:quartz", Group.UTILITY);
+        for (String id : List.of("minecraft:iron_block", "minecraft:gold_block", "minecraft:copper_block")) {
+            GROUPS.put(id, Group.METAL_BLOCK);
         }
 
         for (String material : List.of("wooden", "stone", "golden", "iron", "diamond", "netherite")) {
@@ -92,8 +109,8 @@ public final class TfcLootRules {
         RandomSource random = context.getRandom();
         String target;
         boolean finished = false;
-        if (id.equals("minecraft:chain")) {
-            target = "tfc:metal/chain/wrought_iron";
+        if (FIXED.containsKey(id)) {
+            target = FIXED.get(id);
         } else if (family != null) {
             boolean unfinished = !family.unfinished.isEmpty() && random.nextInt(3) < 2;
             String shape = pick(unfinished ? family.unfinished : family.finished, random);
@@ -111,6 +128,7 @@ public final class TfcLootRules {
                 case GOLD_NUGGET -> "tfc:ore/small_native_gold";
                 case COAL_LIKE -> pick(COAL_LIKE, random);
                 case UTILITY -> pick(UTILITY, random);
+                case METAL_BLOCK -> "tfc:metal/double_ingot/" + pick(profile.ingots, random);
             };
         }
         Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(target));
@@ -157,7 +175,7 @@ public final class TfcLootRules {
     }
 
     private enum Group {
-        GEM, INGOT, IRON_NUGGET, GOLD_NUGGET, COAL_LIKE, UTILITY
+        GEM, INGOT, IRON_NUGGET, GOLD_NUGGET, COAL_LIKE, UTILITY, METAL_BLOCK
     }
 
     private enum Family {
