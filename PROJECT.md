@@ -395,7 +395,7 @@ Expected Result: すべての新規アイテムに有効なSize/Weightが1通り
 
 #### Description
 
-`tfcoverdims:cobble_netherrack`、`tfcoverdims:hardened_netherrack`、`tfcoverdims:cobble_end_stone`、`tfcoverdims:hardened_end_stone`を追加する。CobbleはTFCの`rock/cobble`、Hardenedは`rock/hardened`に準じた硬度・採掘工具・表示・収納分類を持つ。CobbleはRaw Rockの崩落結果となり、Loose Rock 4個の2×2クラフトから1個作成する。Cobble 1個からLoose Rock 4個へ戻せる。HardenedはRaw Rock 5個とTFC Mortar 4個を`XYX/YXY/XYX`（X=Raw、Y=Mortar）に配置して2個作る。Raw RockはF-002/F-005の孤立採掘で入手する。Netherrack / End Stone双方に同じ規則を適用する。`minecraft:soul_sand`と`minecraft:soul_soil`はTFC Sandと同じ`tfc:can_landslide`の地すべり対象とする。
+`tfcoverdims:cobble_netherrack`、`tfcoverdims:hardened_netherrack`、`tfcoverdims:cobble_end_stone`、`tfcoverdims:hardened_end_stone`を追加する。CobbleはTFCの`rock/cobble`、Hardenedは`rock/hardened`に準じた硬度・採掘工具・表示・収納分類を持つ。CobbleはRaw Rockの崩落結果となり、Loose Rock 4個の2×2クラフトから1個作成する。Cobble 1個からLoose Rock 4個へ戻せる。HardenedはRaw Rock 5個とTFC Mortar 4個を`XYX/YXY/XYX`（X=Raw、Y=Mortar）に配置して2個作る。Raw RockはF-002/F-005の孤立採掘で入手する。Netherrack / End Stone双方に同じ規則を適用する。
 
 #### Acceptance Criteria
 
@@ -413,9 +413,9 @@ Expected Result: 対応するHardened Rockを各2個取得し、Mortar4個を消
 
 ##### AC-F017-003: 採掘・崩落への接続
 
-Preconditions: Raw、Cobble、Hardenedの2系統のブロックと、下が空いたSoul Sand / Soul Soilがある。
+Preconditions: Raw、Cobble、Hardenedの2系統のブロックがある。
 Action: 採掘工具、TFCの石材・崩落・地すべり関連タグ、collapse recipeを検査する。
-Expected Result: Cobble/Hardenedは同等のTFC Rockと同じ工具区分・Size/Weight・基本挙動を持つ。Raw/Hardenedの崩落出力はそれぞれ対応するCobbleになり、CobbleとSoul Sand / Soul SoilはTFC標準の地すべり対象として動作し、Soul Sand / Soul Soilは崩落対象にならず同じブロックとして落下する。
+Expected Result: Cobble/Hardenedは同等のTFC Rockと同じ工具区分・Size/Weight・基本挙動を持つ。Raw/Hardenedの崩落出力はそれぞれ対応するCobbleになり、CobbleはTFC標準の地すべり対象として動作する。
 
 ### F-018: NetherのGravel生成置換
 

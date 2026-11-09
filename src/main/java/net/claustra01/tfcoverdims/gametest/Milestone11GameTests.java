@@ -174,28 +174,6 @@ public final class Milestone11GameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "empty", batch = "climate", timeoutTicks = 120)
-    public static void soulBlockLandslide(GameTestHelper helper) {
-        List<Block> blocks = List.of(Blocks.SOUL_SAND, Blocks.SOUL_SOIL);
-        for (int i = 0; i < blocks.size(); i++) {
-            Block block = blocks.get(i);
-            helper.assertTrue(block.defaultBlockState().is(TFCTags.Blocks.CAN_LANDSLIDE)
-                && LandslideRecipe.getRecipe(block.defaultBlockState())
-                .assembleBlock(block.defaultBlockState()).is(block)
-                && !block.defaultBlockState().is(TFCTags.Blocks.CAN_COLLAPSE),
-                "Soul blocks must landslide into themselves without collapse tags");
-            helper.setBlock(new BlockPos(1 + i * 3, 1, 2), Blocks.STONE);
-            helper.setBlock(new BlockPos(1 + i * 3, 5, 2), block);
-            helper.setBlock(new BlockPos(2 + i * 3, 5, 2), Blocks.STONE);
-        }
-        helper.succeedWhen(() -> {
-            for (int i = 0; i < blocks.size(); i++) {
-                helper.assertBlockPresent(blocks.get(i), new BlockPos(1 + i * 3, 2, 2));
-                helper.assertBlockNotPresent(blocks.get(i), new BlockPos(1 + i * 3, 5, 2));
-            }
-        });
-    }
-
     @GameTest(template = "empty", batch = "climate")
     public static void netherCeilingSelection(GameTestHelper helper) {
         checkUndersideSelection(helper, "harden_nether_ceiling", Blocks.NETHERRACK,

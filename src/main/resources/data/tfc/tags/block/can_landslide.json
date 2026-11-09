@@ -2,8 +2,6 @@
   "replace": false,
   "values": [
     "tfcoverdims:cobble_netherrack",
-    "tfcoverdims:cobble_end_stone",
-    "minecraft:soul_sand",
-    "minecraft:soul_soil"
+    "tfcoverdims:cobble_end_stone"
   ]
 }
