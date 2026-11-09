@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "entries": [
+    "tfcoverdims:chests/nether_bridge",
+    "tfcoverdims:chests/bastion_treasure",
+    "tfcoverdims:chests/bastion_other",
+    "tfcoverdims:chests/bastion_bridge",
+    "tfcoverdims:chests/bastion_hoglin_stable",
+    "tfcoverdims:chests/ruined_portal",
+    "tfcoverdims:chests/end_city_treasure"
+  ]
+}

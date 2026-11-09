@@ -1,0 +1,32 @@
+{
+  "type": "tfcoverdims:tfc_loot_replacement",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    }
+  ],
+  "profile": "dangerous",
+  "enchantments": {
+    "minecraft:diamond_sword": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_chestplate": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_helmet": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_leggings": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_boots": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    }
+  }
+}

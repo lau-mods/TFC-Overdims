@@ -12,6 +12,7 @@ import net.claustra01.tfcoverdims.common.items.OverdimsCreativeTabs;
 import net.claustra01.tfcoverdims.common.wood.OverdimsWoodBlocks;
 import net.claustra01.tfcoverdims.common.wood.OverdimsWood;
 import net.claustra01.tfcoverdims.events.NetherFungusEvents;
+import net.claustra01.tfcoverdims.loot.TfcLootReplacementModifier;
 import net.claustra01.tfcoverdims.worldgen.OverdimsFeatures;
 
 @Mod(TFCOverdims.MOD_ID)
@@ -27,6 +28,7 @@ public final class TFCOverdims {
         OverdimsCreativeTabs.TABS.register(modBus);
         OverdimsClimateModels.TYPES.register(modBus);
         OverdimsFeatures.FEATURES.register(modBus);
+        TfcLootReplacementModifier.SERIALIZERS.register(modBus);
         NeoForge.EVENT_BUS.addListener(OverdimsClimateModels::selectClimateModel);
         NeoForge.EVENT_BUS.addListener(NetherFungusEvents::bonemeal);
     }

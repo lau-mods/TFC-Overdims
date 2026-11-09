@@ -1,0 +1,138 @@
+{
+  "type": "tfcoverdims:tfc_loot_replacement",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/end_city_treasure"
+    }
+  ],
+  "profile": "lategame",
+  "enchantments": {
+    "minecraft:diamond_sword": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_boots": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_chestplate": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_leggings": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_helmet": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_pickaxe": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_shovel": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_sword": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_boots": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_chestplate": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_leggings": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_helmet": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_pickaxe": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:iron_shovel": {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 20.0,
+        "max": 39.0
+      },
+      "options": "#minecraft:on_random_loot"
+    }
+  }
+}

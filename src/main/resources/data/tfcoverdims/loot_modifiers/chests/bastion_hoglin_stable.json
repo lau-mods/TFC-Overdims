@@ -1,0 +1,24 @@
+{
+  "type": "tfcoverdims:tfc_loot_replacement",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_hoglin_stable"
+    }
+  ],
+  "profile": "dangerous",
+  "enchantments": {
+    "minecraft:diamond_shovel": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:diamond_pickaxe": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:golden_axe": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "tfcoverdims:tfc_loot_replacement",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_bridge"
+    }
+  ],
+  "profile": "dangerous",
+  "enchantments": {
+    "minecraft:golden_chestplate": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:golden_helmet": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:golden_leggings": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:golden_boots": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    },
+    "minecraft:golden_axe": {
+      "function": "minecraft:enchant_randomly",
+      "options": "#minecraft:on_random_loot"
+    }
+  }
+}
