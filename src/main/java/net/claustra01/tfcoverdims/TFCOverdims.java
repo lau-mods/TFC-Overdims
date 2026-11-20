@@ -1,8 +1,11 @@
 package net.claustra01.tfcoverdims;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 
 import net.claustra01.tfcoverdims.climate.OverdimsClimateModels;
 import net.claustra01.tfcoverdims.common.blocks.OverdimsBlocks;
@@ -29,7 +32,16 @@ public final class TFCOverdims {
         OverdimsClimateModels.TYPES.register(modBus);
         OverdimsFeatures.FEATURES.register(modBus);
         TfcLootReplacementModifier.SERIALIZERS.register(modBus);
+        NeoForge.EVENT_BUS.addListener(TFCOverdims::enableNetherPortals);
         NeoForge.EVENT_BUS.addListener(OverdimsClimateModels::selectClimateModel);
         NeoForge.EVENT_BUS.addListener(NetherFungusEvents::bonemeal);
+    }
+
+    private static void enableNetherPortals(ServerAboutToStartEvent event) {
+        ModConfigSpec.BooleanValue portals = TFCConfig.SERVER.spec().getValues().get("general.enableNetherPortals");
+        if (!portals.get()) {
+            portals.set(true);
+            portals.save();
+        }
     }
 }

@@ -365,6 +365,10 @@ Fortress・Strongholdの攻略方法、Ender Dragon、ElytraはVanillaから変�
 
 #### Acceptance Criteria
 
+##### AC-F015-001: Nether Portal の開通
+
+サーバー起動時（シングルプレイを含む）に、読み込み済みの TFC サーバー設定の `general.enableNetherPortals` が無効なら有効にして保存する。既存ワールドでも黒曜石の枠に点火すると Nether Portal が開く。
+
 ##### AC-F015-002: TFC設備の持ち込み
 
 Preconditions: Nether/Endそれぞれに既存のTFC Firepit、Barrel、Anvilがある。

@@ -45,6 +45,7 @@ import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import net.claustra01.tfcoverdims.TFCOverdims;
@@ -52,6 +53,25 @@ import net.claustra01.tfcoverdims.TFCOverdims;
 @GameTestHolder(TFCOverdims.MOD_ID)
 @PrefixGameTestTemplate(false)
 public final class SurvivalGameTests {
+    @GameTest(template = "nether_tree", batch = "climate")
+    public static void netherPortalCreation(GameTestHelper helper) {
+        helper.assertTrue(TFCConfig.SERVER.enableNetherPortals.get(), "TFC must allow Nether portal creation");
+        for (int x = 1; x <= 4; x++) {
+            for (int y = 1; y <= 5; y++) {
+                if (x == 1 || x == 4 || y == 1 || y == 5) {
+                    helper.setBlock(x, y, 2, Blocks.OBSIDIAN);
+                }
+            }
+        }
+        helper.setBlock(2, 2, 2, Blocks.FIRE);
+        for (int x = 2; x <= 3; x++) {
+            for (int y = 2; y <= 4; y++) {
+                helper.assertBlockPresent(Blocks.NETHER_PORTAL, new BlockPos(x, y, 2));
+            }
+        }
+        helper.succeed();
+    }
+
     @GameTest(template = "empty", batch = "climate")
     public static void hoglinFood(GameTestHelper helper) {
         ServerLevel level = helper.getLevel().getServer().getLevel(Level.NETHER);

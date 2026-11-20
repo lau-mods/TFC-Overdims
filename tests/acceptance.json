@@ -313,6 +313,12 @@
       "name": "dimensionequipment"
     },
     {
+      "acId": "AC-F015-001",
+      "report": "run/gametest-results.xml",
+      "classname": "tfcoverdims:nether_tree",
+      "name": "netherportalcreation"
+    },
+    {
       "acId": "AC-F015-002",
       "report": "run/gametest-results.xml",
       "classname": "tfcoverdims:empty",
